@@ -1,9 +1,12 @@
 package com.pridepoints.api.DTO;
 
+import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Fisica;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class FisicaDTO {
 
@@ -15,6 +18,8 @@ public class FisicaDTO {
 
     private String orientacaoSexual;
 
+    private List<Avaliacao> avaliacoes;
+
     public FisicaDTO(Fisica entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
@@ -22,6 +27,7 @@ public class FisicaDTO {
         this.email = entity.getEmail();
         this.genero = entity.getGenero();
         this.orientacaoSexual = entity.getOrientacaoSexual();
+        this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario());
     }
 
     public Long getId() {
@@ -46,5 +52,9 @@ public class FisicaDTO {
 
     public String getOrientacaoSexual() {
         return orientacaoSexual;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
     }
 }

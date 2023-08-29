@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tb_empresa")
@@ -15,31 +14,54 @@ public class Empresa {
     private Long id;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String cnpj;
-    private String email;
 
-    @OneToOne
-    @JoinColumn(name = "pessoaJuridica_id")
-    private Juridica pessoaJuridica;
+    private String cep;
+
+    private int numero;
+
+    private String cidade;
+    private String estado;
+
+    private String nomeFantasia;
 
     @OneToMany(mappedBy = "empresa")
-    private List<Avaliacao> Avaliacoes;
+    private List<Funcionario> funcionarios;
 
-    public Empresa() {}
+    @OneToMany(mappedBy = "empresa")
+    private List<Avaliacao> avaliacoes;
 
-    public Empresa(String cnpj, String email) {
-        this.cnpj = cnpj;
-        this.email = email;
-        this.Avaliacoes = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "metrica_id")
+    private Metrica metrica;
+
+    @OneToMany(mappedBy = "empresa")
+    private List<Evento> eventos;
+
+    public Empresa(){
+
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
+    public Empresa(String cnpj, String cep, int numero, String cidade, String estado, String nomeFantasia) {
+        this.cnpj = cnpj;
+        this.cep = cep;
+        this.numero = numero;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.nomeFantasia = nomeFantasia;
+        this.funcionarios = new ArrayList<>();
+        this.avaliacoes = new ArrayList<>();
+        this.eventos = new ArrayList<>();
     }
 
     public Long getId() {
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCnpj() {
         return cnpj;
     }
@@ -48,23 +70,59 @@ public class Empresa {
         this.cnpj = cnpj;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCep() {
+        return cep;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Empresa empresa)) return false;
-        return Objects.equals(id, empresa.id);
+    public int getNumero() {
+        return numero;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getNomeFantasia() {
+        return nomeFantasia;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
+    }
+
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 }

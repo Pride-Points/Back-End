@@ -18,6 +18,7 @@ public class FisicaService {
 
     @Autowired
     private FisicaRepository fisicaRepository;
+    private ModelMapper mapper = new ModelMapper();
 
     @Transactional
     public ResponseEntity<FisicaDTO> cadastrarUsuario(@RequestBody Fisica f){
@@ -37,9 +38,12 @@ public class FisicaService {
             return ResponseEntity.status(404).build();
     }
 
+
+
+
     @Transactional
     public ResponseEntity<List<FisicaDTO>> listarPessoasFisicas() {
-        ModelMapper mapper = new ModelMapper();
+
 
         List<FisicaDTO> pessoasFisicasList = fisicaRepository.findAll().stream()
                 .map(fisica -> mapper.map(fisica, FisicaDTO.class))

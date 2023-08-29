@@ -1,6 +1,7 @@
 package com.pridepoints.api.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_pessoa")
-public class Pessoa {
+public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,21 +18,17 @@ public class Pessoa {
 
     private String nome;
     private String senha;
-    private Date dtNascimento;
     private String email;
-    private String genero;
 
 
     public Pessoa(){
 
     }
 
-    public Pessoa(String nome, String senha, Date dtNascimento, String email, String genero) {
+    public Pessoa(String nome, String senha, String email) {
         this.nome = nome;
         this.senha = senha;
-        this.dtNascimento = dtNascimento;
         this.email = email;
-        this.genero = genero;
     }
 
     public String getNome() {
@@ -50,14 +47,6 @@ public class Pessoa {
         this.senha = senha;
     }
 
-    public Date getDtNascimento() {
-        return dtNascimento;
-    }
-
-    public void setDtNascimento(Date dtNascimento) {
-        this.dtNascimento = dtNascimento;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -66,19 +55,24 @@ public class Pessoa {
         this.email = email;
     }
 
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return Objects.equals(id, pessoa.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
