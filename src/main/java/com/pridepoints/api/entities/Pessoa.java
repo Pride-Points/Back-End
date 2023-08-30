@@ -1,14 +1,11 @@
 package com.pridepoints.api.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.Date;
 import java.util.Objects;
 
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "tb_pessoa")
 public abstract class Pessoa {
 

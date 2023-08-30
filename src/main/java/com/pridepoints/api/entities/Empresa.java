@@ -12,7 +12,9 @@ public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private String nomeFantasia;
+
     private String cnpj;
 
     private String cep;
@@ -22,20 +24,18 @@ public class Empresa {
     private String cidade;
     private String estado;
 
-    private String nomeFantasia;
-
     @OneToMany(mappedBy = "empresa")
     private List<Funcionario> funcionarios;
 
     @OneToMany(mappedBy = "empresa")
     private List<Avaliacao> avaliacoes;
-
+    @OneToMany(mappedBy = "empresa")
+    private List<Evento> eventos;
     @OneToOne
     @JoinColumn(name = "metrica_id")
     private Metrica metrica;
 
-    @OneToMany(mappedBy = "empresa")
-    private List<Evento> eventos;
+
 
     public Empresa(){
 
@@ -114,15 +114,15 @@ public class Empresa {
         return funcionarios;
     }
 
-    public void setFuncionarios(List<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
-    }
-
     public List<Avaliacao> getAvaliacoes() {
         return avaliacoes;
     }
 
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
+    }
+
+    public List<Evento> getEventos() {
+        return eventos;
     }
 }

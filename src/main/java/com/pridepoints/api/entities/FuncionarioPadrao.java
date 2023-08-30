@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_funcionarioPadrao")
-@DiscriminatorValue("FUNCIONARIO_PADRAO")
+@DiscriminatorValue("FP")
 public class FuncionarioPadrao extends Funcionario{
 
     public FuncionarioPadrao(String nome, String senha, String email, String cargo, String cpf, boolean isGerente, boolean isAtivo) {

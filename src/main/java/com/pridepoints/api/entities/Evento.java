@@ -1,18 +1,20 @@
 package com.pridepoints.api.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "tb_evento")
 public class Evento {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private String imgEvento;
     private String descricaoEvento;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dtEvento;
 
     @ManyToOne
@@ -27,6 +29,14 @@ public class Evento {
     }
 
     public Evento(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -58,5 +68,13 @@ public class Evento {
 
     public void setDtEvento(Date dtEvento) {
         this.dtEvento = dtEvento;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 }

@@ -59,5 +59,11 @@ public abstract class Funcionario extends Pessoa{
         isAtivo = ativo;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
 
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
 }
