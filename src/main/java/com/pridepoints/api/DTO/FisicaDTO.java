@@ -1,17 +1,22 @@
 package com.pridepoints.api.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Fisica;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FisicaDTO {
 
     private Long id;
     private String nome;
+
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private Date dtNascimento;
     private String email;
     private String genero;
@@ -20,6 +25,10 @@ public class FisicaDTO {
 
     private List<Avaliacao> avaliacoes;
 
+    public FisicaDTO(){
+
+    }
+
     public FisicaDTO(Fisica entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
@@ -27,7 +36,13 @@ public class FisicaDTO {
         this.email = entity.getEmail();
         this.genero = entity.getGenero();
         this.orientacaoSexual = entity.getOrientacaoSexual();
-        this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario());
+        if (entity.getAvaliacoesUsuario() != null) {
+            // Se o usuário possui avaliações, copie a lista existente.
+            this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario());
+        } else {
+            // Se o usuário não possui avaliações, inicialize a lista como vazia.
+            this.avaliacoes = Collections.emptyList();
+        }
     }
 
     public Long getId() {

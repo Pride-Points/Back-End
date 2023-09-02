@@ -1,5 +1,6 @@
 package com.pridepoints.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Fisica extends Pessoa{
 
     private String genero;
 
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private Date dtNascimento;
 
     @OneToMany(mappedBy = "pessoaFisica")
@@ -57,6 +59,4 @@ public class Fisica extends Pessoa{
     public List<Avaliacao> getAvaliacoesUsuario() {
         return avaliacoesUsuario;
     }
-
-
 }

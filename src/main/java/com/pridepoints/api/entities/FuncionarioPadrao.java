@@ -2,10 +2,8 @@ package com.pridepoints.api.entities;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_funcionarioPadrao")
 @DiscriminatorValue("FP")
 public class FuncionarioPadrao extends Funcionario{
 

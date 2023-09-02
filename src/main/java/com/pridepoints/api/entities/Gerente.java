@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_gerente")
 @DiscriminatorValue("G")
 public class Gerente extends Funcionario{
     public Gerente(String nome, String senha, String email, String cargo, String cpf, boolean isGerente, boolean isAtivo) {

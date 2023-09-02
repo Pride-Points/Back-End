@@ -1,18 +1,18 @@
 package com.pridepoints.api.entities;
 
 import jakarta.persistence.*;
+
 import java.util.Objects;
 
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_pessoa")
 public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
     private String senha;
     private String email;
