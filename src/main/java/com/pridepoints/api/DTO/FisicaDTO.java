@@ -5,6 +5,7 @@ import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Fisica;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -22,8 +23,11 @@ public class FisicaDTO {
     private String genero;
 
     private String orientacaoSexual;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime ultimaTrocaSenha;
 
     private List<AvaliacaoDTO> avaliacoes;
+
 
     public FisicaDTO(){
 
@@ -36,6 +40,7 @@ public class FisicaDTO {
         this.email = entity.getEmail();
         this.genero = entity.getGenero();
         this.orientacaoSexual = entity.getOrientacaoSexual();
+        this.ultimaTrocaSenha = entity.getUltimaTrocaSenha();
         if (entity.getAvaliacoesUsuario() != null) {
             // Se o usuário possui avaliações, copie a lista existente.
             this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario().stream().map(AvaliacaoDTO::new).collect(Collectors.toList()));
@@ -67,6 +72,10 @@ public class FisicaDTO {
 
     public String getOrientacaoSexual() {
         return orientacaoSexual;
+    }
+
+    public LocalDateTime getUltimaTrocaSenha() {
+        return ultimaTrocaSenha;
     }
 
     public List<AvaliacaoDTO> getAvaliacoes() {

@@ -2,6 +2,7 @@ package com.pridepoints.api.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -17,6 +18,9 @@ public abstract class Pessoa{
     private String senha;
     private String email;
 
+    @Column
+    private LocalDateTime ultimaTrocaSenha;
+
 
     public Pessoa(){
 
@@ -26,6 +30,7 @@ public abstract class Pessoa{
         this.nome = nome;
         this.senha = senha;
         this.email = email;
+        this.ultimaTrocaSenha = LocalDateTime.now();
     }
 
     public String getNome() {
@@ -60,7 +65,17 @@ public abstract class Pessoa{
         this.id = id;
     }
 
+    public LocalDateTime getUltimaTrocaSenha() {
+        return ultimaTrocaSenha;
+    }
+
+    public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
+        this.ultimaTrocaSenha = ultimaTrocaSenha;
+    }
+
     public abstract void setEmaileSenha(String email, String senha);
+
+
 
     @Override
     public boolean equals(Object o) {

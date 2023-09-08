@@ -1,14 +1,13 @@
 package com.pridepoints.api.Controller;
 
 import com.pridepoints.api.DTO.EmpresaDTO;
-import com.pridepoints.api.DTO.FisicaDTO;
 import com.pridepoints.api.DTO.FuncionarioDTO;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
-import com.pridepoints.api.utilities.EmpresaDonoRequest;
-import com.pridepoints.api.utilities.MetodosAuxiliares;
+import com.pridepoints.api.utilities.multiclasse.EmpresaDonoRequest;
+import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

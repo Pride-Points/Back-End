@@ -1,10 +1,9 @@
 package com.pridepoints.api.Controller;
 
 import com.pridepoints.api.DTO.AvaliacaoDTO;
-import com.pridepoints.api.DTO.EmpresaDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.services.AvaliacaoService;
-import com.pridepoints.api.utilities.MetodosAuxiliares;
+import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import java.util.List;
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
     MetodosAuxiliares validador = new MetodosAuxiliares();
+
     @Autowired
     private AvaliacaoService avaliacaoService;
 

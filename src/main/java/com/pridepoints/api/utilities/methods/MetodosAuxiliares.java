@@ -1,4 +1,4 @@
-package com.pridepoints.api.utilities;
+package com.pridepoints.api.utilities.methods;
 
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;

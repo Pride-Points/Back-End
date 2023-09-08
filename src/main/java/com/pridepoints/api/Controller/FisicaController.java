@@ -3,7 +3,7 @@ package com.pridepoints.api.Controller;
 import com.pridepoints.api.DTO.FisicaDTO;
 import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.services.FisicaService;
-import com.pridepoints.api.utilities.MetodosAuxiliares;
+import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

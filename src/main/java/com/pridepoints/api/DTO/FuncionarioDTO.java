@@ -1,7 +1,10 @@
 package com.pridepoints.api.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
+
+import java.time.LocalDateTime;
 
 public class FuncionarioDTO {
     private Long id;
@@ -14,6 +17,9 @@ public class FuncionarioDTO {
 
     private String tipoFuncionario;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime ultimaTrocaSenha;
+
     public FuncionarioDTO(Funcionario entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
@@ -23,6 +29,7 @@ public class FuncionarioDTO {
         this.isGerente = entity.isGerente();
         this.isAtivo = entity.isAtivo();
         this.tipoFuncionario = entity.getTipoFuncionario();
+        this.ultimaTrocaSenha = entity.getUltimaTrocaSenha();
     }
 
     public Long getId() {
@@ -47,6 +54,10 @@ public class FuncionarioDTO {
 
     public Empresa getEmpresa() {
         return empresa;
+    }
+
+    public LocalDateTime getUltimaTrocaSenha() {
+        return ultimaTrocaSenha;
     }
 
     public boolean isGerente() {

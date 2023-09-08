@@ -2,24 +2,25 @@ package com.pridepoints.api.services;
 
 import com.pridepoints.api.DTO.FisicaDTO;
 import com.pridepoints.api.entities.Fisica;
+import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.FisicaRepository;
+import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.AddressException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class FisicaService {
+public class FisicaService implements iValidarTrocaDeSenha {
 
     @Autowired
     private FisicaRepository fisicaRepository;
-
-    @Autowired
-    private ModelMapper mapper = new ModelMapper();
 
     @Transactional
     public FisicaDTO cadastrarUsuario(Fisica f){
@@ -71,5 +72,15 @@ public class FisicaService {
         return false;
     }
 
+    @Override
+    public void validatePasswordChange() {
+        LocalDateTime quatroMesesAtras = LocalDateTime.now().minusMonths(4);
+        List<Fisica> pessoasFisica = fisicaRepository.findAll();
 
+        for (Fisica pessoaFisica: pessoasFisica){
+            if(pessoaFisica.getUltimaTrocaSenha() == null || pessoaFisica.getUltimaTrocaSenha().isBefore(quatroMesesAtras));
+                pessoaFisica.setForcarTrocaDeSenha(true);
+                fisicaRepository.save(pessoaFisica);
+        }
+    }
 }

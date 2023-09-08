@@ -1,4 +1,4 @@
-package com.pridepoints.api.utilities;
+package com.pridepoints.api.utilities.multiclasse;
 
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
