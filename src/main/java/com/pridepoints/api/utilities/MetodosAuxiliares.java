@@ -1,6 +1,9 @@
 package com.pridepoints.api.utilities;
 
+import com.pridepoints.api.entities.Avaliacao;
+import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
+import com.pridepoints.api.entities.Funcionario;
 import org.springframework.http.ResponseEntity;
 
 public class MetodosAuxiliares {
@@ -12,6 +15,33 @@ public class MetodosAuxiliares {
         || f.getEmail().isBlank()
         || f.getOrientacaoSexual().isBlank()
         || f.getGenero().isBlank()){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean verificaObjetoAvaliacao(Avaliacao a){
+        if(a == null || a.getTag().isBlank()){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean verificaObjetoEmpresa(Empresa e){
+     if(e == null || e.getNomeFantasia().isBlank()
+     || e.getCnpj().isBlank()
+     || e.getCep().isBlank()
+     || e.getEstado().isBlank()
+     || e.getCidade().isBlank()){
+         return false;
+     }
+     return true;
+    }
+
+    public boolean verificaObjetoDonoEmpresa(Funcionario dono){
+        if(dono == null || dono.getTipoFuncionario().isBlank()
+        || dono.getSenha().isBlank()
+        || dono.getNome().isBlank()){
             return false;
         }
         return true;

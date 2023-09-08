@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_pessoa")
-public abstract class Pessoa {
+public abstract class Pessoa{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +59,8 @@ public abstract class Pessoa {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public abstract void setEmaileSenha(String email, String senha);
 
     @Override
     public boolean equals(Object o) {

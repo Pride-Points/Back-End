@@ -5,9 +5,7 @@ import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.repositories.FisicaRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,8 +54,7 @@ public class FisicaService {
         if(result.isPresent()){
             Fisica obj = result.get();
 
-            obj.setEmail(novosDados.getEmail());
-            obj.setSenha(novosDados.getSenha());
+            obj.setEmaileSenha(novosDados.getEmail(), novosDados.getSenha());
 
             fisicaRepository.save(obj);
             return new FisicaDTO(obj);
@@ -73,4 +70,6 @@ public class FisicaService {
         }
         return false;
     }
+
+
 }

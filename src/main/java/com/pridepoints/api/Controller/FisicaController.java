@@ -50,7 +50,7 @@ public class FisicaController {
     @PostMapping
     public ResponseEntity<FisicaDTO> cadastrarUsuario(@RequestBody Fisica f){
         if(!validador.verificaObjetoFisica(f)){
-                return ResponseEntity.status(404).build();
+                return ResponseEntity.status(400).build();
         } else {
             FisicaDTO result = fisicaService.cadastrarUsuario(f);
             if(result == null){
@@ -78,4 +78,7 @@ public class FisicaController {
         }
             return ResponseEntity.status(404).build();
     }
+
+
+
 }

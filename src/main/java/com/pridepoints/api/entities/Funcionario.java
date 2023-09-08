@@ -4,16 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_funcionario")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_funcionario", discriminatorType = DiscriminatorType.STRING)
-public abstract class Funcionario {
+public class Funcionario extends Pessoa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String senha;
-    private String email;
     private String cargo;
     private String cpf;
 
@@ -21,18 +13,22 @@ public abstract class Funcionario {
 
     private boolean isAtivo;
 
+    private String tipoFuncionario;
+
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    public Funcionario(String nome, String senha, String email, String cargo, String cpf, boolean isGerente, boolean isAtivo) {
-        this.nome = nome;
-        this.senha = senha;
-        this.email = email;
+    public  Funcionario(){}
+
+    public Funcionario(String nome, String senha, String email, String cargo, String cpf, boolean isGerente, boolean isAtivo, String tipoFuncionario, Empresa empresa) {
+        super(nome, senha, email);
         this.cargo = cargo;
         this.cpf = cpf;
         this.isGerente = isGerente;
         this.isAtivo = isAtivo;
+        this.tipoFuncionario = tipoFuncionario;
+        this.empresa = empresa;
     }
 
     public String getCargo() {
@@ -75,35 +71,17 @@ public abstract class Funcionario {
         this.empresa = empresa;
     }
 
-    public Long getId() {
-        return id;
+    public String getTipoFuncionario() {
+        return tipoFuncionario;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTipoFuncionario(String tipoFuncionario) {
+        this.tipoFuncionario = tipoFuncionario;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public void setEmaileSenha(String email, String senha) {
+        this.setEmail(email);
+        this.setSenha(senha);
     }
 }

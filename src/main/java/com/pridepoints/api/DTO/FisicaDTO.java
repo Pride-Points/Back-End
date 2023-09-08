@@ -23,7 +23,7 @@ public class FisicaDTO {
 
     private String orientacaoSexual;
 
-    private List<Avaliacao> avaliacoes;
+    private List<AvaliacaoDTO> avaliacoes;
 
     public FisicaDTO(){
 
@@ -38,7 +38,7 @@ public class FisicaDTO {
         this.orientacaoSexual = entity.getOrientacaoSexual();
         if (entity.getAvaliacoesUsuario() != null) {
             // Se o usuário possui avaliações, copie a lista existente.
-            this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario());
+            this.avaliacoes = new ArrayList<>(entity.getAvaliacoesUsuario().stream().map(AvaliacaoDTO::new).collect(Collectors.toList()));
         } else {
             // Se o usuário não possui avaliações, inicialize a lista como vazia.
             this.avaliacoes = Collections.emptyList();
@@ -69,7 +69,7 @@ public class FisicaDTO {
         return orientacaoSexual;
     }
 
-    public List<Avaliacao> getAvaliacoes() {
+    public List<AvaliacaoDTO> getAvaliacoes() {
         return avaliacoes;
     }
 }

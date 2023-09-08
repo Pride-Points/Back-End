@@ -1,8 +1,7 @@
 package com.pridepoints.api.DTO;
 
 import com.pridepoints.api.entities.Empresa;
-import com.pridepoints.api.entities.FuncionarioPadrao;
-import com.pridepoints.api.entities.Gerente;
+import com.pridepoints.api.entities.Funcionario;
 
 public class FuncionarioDTO {
     private Long id;
@@ -13,17 +12,9 @@ public class FuncionarioDTO {
     private boolean isGerente;
     private boolean isAtivo;
 
-    public FuncionarioDTO(Gerente entity) {
-        this.id = entity.getId();
-        this.nome = entity.getNome();
-        this.email = entity.getEmail();
-        this.cargo = entity.getCargo();
-        this.empresa = entity.getEmpresa();
-        this.isGerente = entity.isGerente();
-        this.isAtivo = entity.isAtivo();
-    }
+    private String tipoFuncionario;
 
-    public FuncionarioDTO(FuncionarioPadrao entity){
+    public FuncionarioDTO(Funcionario entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
         this.email = entity.getEmail();
@@ -31,6 +22,7 @@ public class FuncionarioDTO {
         this.empresa = entity.getEmpresa();
         this.isGerente = entity.isGerente();
         this.isAtivo = entity.isAtivo();
+        this.tipoFuncionario = entity.getTipoFuncionario();
     }
 
     public Long getId() {
@@ -49,6 +41,10 @@ public class FuncionarioDTO {
         return cargo;
     }
 
+    public String getTipoFuncionario() {
+        return tipoFuncionario;
+    }
+
     public Empresa getEmpresa() {
         return empresa;
     }
@@ -60,4 +56,5 @@ public class FuncionarioDTO {
     public boolean isAtivo() {
         return isAtivo;
     }
+
 }

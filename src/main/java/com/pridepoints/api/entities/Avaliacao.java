@@ -2,7 +2,9 @@ package com.pridepoints.api.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
@@ -14,6 +16,9 @@ public class Avaliacao {
     private Long id;
     private double nota;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dtAvaliacao;
     private String tag;
@@ -29,17 +34,14 @@ public class Avaliacao {
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    public Avaliacao(){
 
-    }
+    public Avaliacao(){}
 
-    public Avaliacao(double nota, Date dtAvaliacao, String tag, String comentario, Fisica pessoaFisica, Empresa empresa) {
+    public Avaliacao(double nota, Date dtAvaliacao, String tag, String comentario) {
         this.nota = nota;
         this.dtAvaliacao = dtAvaliacao;
         this.tag = tag;
         this.comentario = comentario;
-        this.pessoaFisica = pessoaFisica;
-        this.empresa = empresa;
     }
 
     public Long getId() {

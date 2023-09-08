@@ -31,14 +31,13 @@ public class Empresa {
     private List<Avaliacao> avaliacoes;
     @OneToMany(mappedBy = "empresa")
     private List<Evento> eventos;
-    @OneToOne
-    @JoinColumn(name = "metrica_id")
-    private Metrica metrica;
 
 
 
     public Empresa(){
-
+        this.funcionarios = new ArrayList<>();
+        this.avaliacoes = new ArrayList<>();
+        this.eventos = new ArrayList<>();
     }
 
 
@@ -118,11 +117,19 @@ public class Empresa {
         return avaliacoes;
     }
 
-    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
-        this.avaliacoes = avaliacoes;
-    }
-
     public List<Evento> getEventos() {
         return eventos;
+    }
+
+    public void adicionarFuncionario(Funcionario funcionario){
+       this.funcionarios.add(funcionario);
+    }
+
+    public void adicionarAvaliacao(Avaliacao avaliacao){
+        this.avaliacoes.add(avaliacao);
+    }
+
+    public void adicionarEvento(Evento evento){
+        this.eventos.add(evento);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_fisica")
-public class Fisica extends Pessoa{
+public class Fisica extends Pessoa {
 
     private String orientacaoSexual;
 
@@ -58,5 +58,13 @@ public class Fisica extends Pessoa{
 
     public List<Avaliacao> getAvaliacoesUsuario() {
         return avaliacoesUsuario;
+    }
+
+    public void adicionarAvaliacao(Avaliacao novaAvaliacao){ this.avaliacoesUsuario.add(novaAvaliacao); }
+
+    @Override
+    public void setEmaileSenha(String email, String senha) {
+        this.setEmail(email);
+        this.setSenha(senha);
     }
 }
