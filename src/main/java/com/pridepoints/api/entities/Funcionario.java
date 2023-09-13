@@ -1,5 +1,6 @@
 package com.pridepoints.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,25 +9,28 @@ public class Funcionario extends Pessoa {
 
     private String cargo;
     private String cpf;
-
+    @Column(columnDefinition = "BIT")
     private boolean isGerente;
-
+    @Column(columnDefinition = "BIT")
     private boolean isAtivo;
 
     private String tipoFuncionario;
+
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    public  Funcionario(){}
+    public  Funcionario(){
+        this.isAtivo = true;
+    }
 
-    public Funcionario(String nome, String senha, String email, String cargo, String cpf, boolean isGerente, boolean isAtivo, String tipoFuncionario, Empresa empresa) {
+    public Funcionario(String nome, String senha, String email, String cargo, String cpf, String tipoFuncionario, Empresa empresa) {
         super(nome, senha, email);
         this.cargo = cargo;
         this.cpf = cpf;
-        this.isGerente = isGerente;
-        this.isAtivo = isAtivo;
+        this.isGerente = true;
+        this.isAtivo = true;
         this.tipoFuncionario = tipoFuncionario;
         this.empresa = empresa;
     }
@@ -48,10 +52,10 @@ public class Funcionario extends Pessoa {
     }
 
     public boolean isGerente() {
-        return isGerente;
+        return this.isGerente;
     }
 
-    public void setGerente(boolean gerente) {
+    public void setIsGerente(boolean gerente) {
         isGerente = gerente;
     }
 
@@ -59,7 +63,7 @@ public class Funcionario extends Pessoa {
         return isAtivo;
     }
 
-    public void setAtivo(boolean ativo) {
+    public void setIsAtivo(boolean ativo) {
         isAtivo = ativo;
     }
 

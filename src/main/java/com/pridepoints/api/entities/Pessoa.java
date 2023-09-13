@@ -23,7 +23,7 @@ public abstract class Pessoa{
 
 
     public Pessoa(){
-
+        this.ultimaTrocaSenha = LocalDateTime.now();
     }
 
     public Pessoa(String nome, String senha, String email) {

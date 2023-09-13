@@ -26,6 +26,8 @@ public class Fisica extends Pessoa {
     private List<Avaliacao> avaliacoesUsuario;
 
     public Fisica() {
+        this.forcarTrocaDeSenha = false;
+        this.avaliacoesUsuario = new ArrayList<>();
     }
 
     public Fisica(String orientacaoSexual, String genero, Date dtNascimento) {

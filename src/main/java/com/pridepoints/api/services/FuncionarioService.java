@@ -1,8 +1,10 @@
 package com.pridepoints.api.services;
 
 import com.pridepoints.api.DTO.FuncionarioDTO;
+import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.entities.Funcionario;
+import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
 import jakarta.transaction.Transactional;
@@ -13,12 +15,16 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.AddressException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FuncionarioService implements iValidarTrocaDeSenha {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     @Autowired
     private EmailService emailService;
@@ -30,6 +36,23 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         if(consultaBanco == null){
             Funcionario result = funcionarioRepository.save(e);
             return new FuncionarioDTO(result);
+        }
+        return null;
+    }
+
+    @Transactional
+    public FuncionarioDTO cadastrarFuncionario(Funcionario funcionario, Long idEmpresa){
+        Funcionario consultaBancoFuncionario = funcionarioRepository.findByEmail(funcionario.getEmail());
+        Optional<Empresa> consultaBancoEmpresa = empresaRepository.findById(idEmpresa);
+        if(consultaBancoFuncionario == null && consultaBancoEmpresa.isPresent()){
+            funcionario.setEmpresa(consultaBancoEmpresa.get());
+
+            Empresa empresa = consultaBancoEmpresa.get();
+            empresa.adicionarFuncionario(funcionario);
+
+            empresaRepository.save(empresa);
+            funcionarioRepository.save(funcionario);
+            return new FuncionarioDTO(funcionario);
         }
         return null;
     }

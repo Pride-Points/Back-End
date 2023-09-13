@@ -20,6 +20,9 @@ public class FuncionarioDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime ultimaTrocaSenha;
 
+    public FuncionarioDTO() {
+    }
+
     public FuncionarioDTO(Funcionario entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
@@ -60,12 +63,13 @@ public class FuncionarioDTO {
         return ultimaTrocaSenha;
     }
 
-    public boolean isGerente() {
+    public Boolean isGerente() {
         return isGerente;
     }
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return isAtivo;
     }
+
 
 }

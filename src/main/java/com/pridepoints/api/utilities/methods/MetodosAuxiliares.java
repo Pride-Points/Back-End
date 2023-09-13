@@ -47,6 +47,19 @@ public class MetodosAuxiliares {
         return true;
     }
 
+    public boolean verificaObjetoFuncionario(Funcionario f){
+        if(f == null
+        || f.getNome().isBlank()
+        || f.getSenha().isBlank()
+        || f.getEmail().isBlank()
+        || f.getCargo().isBlank()
+        || f.getCpf().isBlank()
+        || f.getTipoFuncionario().isBlank()){
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean verificaEmaileSenha(Fisica f){
         if(f.getEmail() == null || f.getSenha() == null

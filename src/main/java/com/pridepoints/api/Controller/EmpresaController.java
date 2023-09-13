@@ -35,21 +35,26 @@ public class EmpresaController {
             dono.setEmpresa(empresa);
             empresa.adicionarFuncionario(dono);
             EmpresaDTO result = empresaService.cadastrarEmpresa(empresa);
-            FuncionarioDTO resultFunc = funcionarioService.cadastrarFuncionario(dono);
-            if(result == null || resultFunc == null){
-                return ResponseEntity.status(409).build();
+            if(result != null){
+                FuncionarioDTO resultFunc = funcionarioService.cadastrarFuncionario(dono);
+                if(resultFunc != null){
+                    return ResponseEntity.status(201).body(result);
+                } else {
+                    return ResponseEntity.status(409).build();
+                }
             } else {
-                return ResponseEntity.status(201).body(result);
+                return ResponseEntity.status(409).build();
             }
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<EmpresaDTO>> listarUsuarios(){
+    public ResponseEntity<List<EmpresaDTO>> listarEmpresas(){
         List<EmpresaDTO> listaDeEmpresas = empresaService.listarEmpresas();
         if(listaDeEmpresas.isEmpty()){
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(listaDeEmpresas);
     }
+
 }
