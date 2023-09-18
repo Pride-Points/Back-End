@@ -1,6 +1,7 @@
 package com.pridepoints.api.Controller;
 
-import com.pridepoints.api.DTO.AvaliacaoDTO;
+import com.pridepoints.api.DTO.Avaliacao.AvaliacaoCriacaoDTO;
+import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.services.AvaliacaoService;
 import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
@@ -19,7 +20,7 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @PostMapping("/{empresaId}/{usuarioId}")
-    public ResponseEntity<AvaliacaoDTO> publicarAvaliacao(@RequestBody Avaliacao f, @PathVariable Long empresaId, @PathVariable Long usuarioId){
+    public ResponseEntity<AvaliacaoDTO> publicarAvaliacao(@RequestBody AvaliacaoCriacaoDTO f, @PathVariable Long empresaId, @PathVariable Long usuarioId){
         if(!validador.verificaObjetoAvaliacao(f)){
             return ResponseEntity.status(400).build();
         } else {
@@ -40,4 +41,6 @@ public class AvaliacaoController {
         }
         return ResponseEntity.status(200).body(listaDeAvaliacoes);
     }
+
+    
 }

@@ -1,14 +1,15 @@
 package com.pridepoints.api.utilities.methods;
 
+import com.pridepoints.api.DTO.Avaliacao.AvaliacaoCriacaoDTO;
+import com.pridepoints.api.DTO.Usuario.Fisica.FisicaCriacaoDTO;
+import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;
-import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.entities.Funcionario;
-import org.springframework.http.ResponseEntity;
 
 public class MetodosAuxiliares {
 
-    public boolean verificaObjetoFisica(Fisica f){
+    public boolean verificaObjetoFisica(FisicaCriacaoDTO f){
         if(f == null || f.getDtNascimento() == null
         || f.getNome().isBlank()
         || f.getSenha().isBlank()
@@ -20,7 +21,7 @@ public class MetodosAuxiliares {
         return true;
     }
 
-    public boolean verificaObjetoAvaliacao(Avaliacao a){
+    public boolean verificaObjetoAvaliacao(AvaliacaoCriacaoDTO a){
         if(a == null || a.getTag().isBlank()){
             return false;
         }
@@ -47,7 +48,7 @@ public class MetodosAuxiliares {
         return true;
     }
 
-    public boolean verificaObjetoFuncionario(Funcionario f){
+    public boolean verificaObjetoFuncionario(FuncionarioCriacaoDTO f){
         if(f == null
         || f.getNome().isBlank()
         || f.getSenha().isBlank()
@@ -61,9 +62,16 @@ public class MetodosAuxiliares {
     }
 
 
-    public boolean verificaEmaileSenha(Fisica f){
-        if(f.getEmail() == null || f.getSenha() == null
-        || f.getEmail().isBlank() || f.getSenha().isBlank()){
+    public boolean verificaEmail(String novoEmail){
+        if(novoEmail == null || novoEmail.isBlank()){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean verificaEmaileSenha(FisicaCriacaoDTO f) {
+        if(f.getEmail() == null || f.getEmail().isBlank()
+        || f.getSenha() == null || f.getSenha().isBlank()){
             return false;
         }
         return true;

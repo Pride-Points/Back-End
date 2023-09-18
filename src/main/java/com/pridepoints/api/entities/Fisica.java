@@ -3,6 +3,7 @@ package com.pridepoints.api.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,25 +19,13 @@ public class Fisica extends Pessoa {
     private String genero;
 
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
-    private Date dtNascimento;
+    private LocalDate dtNascimento;
 
-    private boolean forcarTrocaDeSenha;
+    private boolean forcarTrocaDeSenha = false;
 
     @OneToMany(mappedBy = "pessoaFisica")
     private List<Avaliacao> avaliacoesUsuario;
 
-    public Fisica() {
-        this.forcarTrocaDeSenha = false;
-        this.avaliacoesUsuario = new ArrayList<>();
-    }
-
-    public Fisica(String orientacaoSexual, String genero, Date dtNascimento) {
-        this.orientacaoSexual = orientacaoSexual;
-        this.genero = genero;
-        this.dtNascimento = dtNascimento;
-        this.avaliacoesUsuario = new ArrayList<>();
-        this.forcarTrocaDeSenha = false;
-    }
 
     public String getOrientacaoSexual() {
         return orientacaoSexual;
@@ -54,11 +43,11 @@ public class Fisica extends Pessoa {
         this.genero = genero;
     }
 
-    public Date getDtNascimento() {
+    public LocalDate getDtNascimento() {
         return dtNascimento;
     }
 
-    public void setDtNascimento(Date dtNascimento) {
+    public void setDtNascimento(LocalDate dtNascimento) {
         this.dtNascimento = dtNascimento;
     }
 
@@ -76,9 +65,4 @@ public class Fisica extends Pessoa {
 
     public void adicionarAvaliacao(Avaliacao novaAvaliacao){ this.avaliacoesUsuario.add(novaAvaliacao); }
 
-    @Override
-    public void setEmaileSenha(String email, String senha) {
-        this.setEmail(email);
-        this.setSenha(senha);
-    }
 }

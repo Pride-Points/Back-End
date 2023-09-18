@@ -9,31 +9,17 @@ public class Funcionario extends Pessoa {
 
     private String cargo;
     private String cpf;
+    private String tipoFuncionario;
     @Column(columnDefinition = "BIT")
     private boolean isGerente;
     @Column(columnDefinition = "BIT")
-    private boolean isAtivo;
+    private boolean isAtivo = true;
 
-    private String tipoFuncionario;
 
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
-
-    public  Funcionario(){
-        this.isAtivo = true;
-    }
-
-    public Funcionario(String nome, String senha, String email, String cargo, String cpf, String tipoFuncionario, Empresa empresa) {
-        super(nome, senha, email);
-        this.cargo = cargo;
-        this.cpf = cpf;
-        this.isGerente = true;
-        this.isAtivo = true;
-        this.tipoFuncionario = tipoFuncionario;
-        this.empresa = empresa;
-    }
 
     public String getCargo() {
         return cargo;
@@ -81,11 +67,5 @@ public class Funcionario extends Pessoa {
 
     public void setTipoFuncionario(String tipoFuncionario) {
         this.tipoFuncionario = tipoFuncionario;
-    }
-
-    @Override
-    public void setEmaileSenha(String email, String senha) {
-        this.setEmail(email);
-        this.setSenha(senha);
     }
 }

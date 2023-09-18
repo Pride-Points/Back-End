@@ -1,7 +1,8 @@
 package com.pridepoints.api.Controller;
 
-import com.pridepoints.api.DTO.FisicaDTO;
-import com.pridepoints.api.entities.Fisica;
+import com.pridepoints.api.DTO.Usuario.Fisica.FisicaCriacaoDTO;
+import com.pridepoints.api.DTO.Usuario.Fisica.FisicaFullDTO;
+import com.pridepoints.api.DTO.Usuario.Fisica.FisicaMinDTO;
 import com.pridepoints.api.services.FisicaService;
 import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ public class FisicaController {
 
 
     @GetMapping("/login")
-    public ResponseEntity<FisicaDTO> loginUsuario(@RequestBody Fisica f){
+    public ResponseEntity<FisicaFullDTO> loginUsuario(@RequestBody FisicaCriacaoDTO f){
         if(!validador.verificaEmaileSenha(f)){
             return ResponseEntity.status(400).build();
         } else {
-            FisicaDTO result = fisicaService.loginUsuario(f);
+            FisicaFullDTO result = fisicaService.loginUsuario(f);
             if(result == null){
                 return ResponseEntity.status(404).build();
             } else {
@@ -34,11 +35,11 @@ public class FisicaController {
     }
 
     @PatchMapping("/{indice}")
-    public ResponseEntity<FisicaDTO> atualizarEmaileSenha(@RequestBody Fisica novosDados, @PathVariable Long indice){
-        if(!validador.verificaEmaileSenha(novosDados)){
+    public ResponseEntity<FisicaFullDTO> atualizarEmail(@RequestBody String novoEmail, @PathVariable Long indice){
+        if(!validador.verificaEmail(novoEmail)){
             return ResponseEntity.status(400).build();
         } else {
-            FisicaDTO result =  fisicaService.atualizarEmaileSenha(novosDados, indice);
+            FisicaFullDTO result =  fisicaService.atualizarEmail(novoEmail, indice);
             if(result == null){
                 return ResponseEntity.status(404).build();
             } else {
@@ -48,11 +49,11 @@ public class FisicaController {
     }
 
     @PostMapping
-    public ResponseEntity<FisicaDTO> cadastrarUsuario(@RequestBody Fisica f){
+    public ResponseEntity<FisicaFullDTO> cadastrarUsuario(@RequestBody FisicaCriacaoDTO f){
         if(!validador.verificaObjetoFisica(f)){
                 return ResponseEntity.status(400).build();
         } else {
-            FisicaDTO result = fisicaService.cadastrarUsuario(f);
+            FisicaFullDTO result = fisicaService.cadastrarUsuario(f);
             if(result == null){
                 return ResponseEntity.status(409).build();
             } else {
@@ -62,8 +63,8 @@ public class FisicaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FisicaDTO>> listarUsuarios(){
-        List<FisicaDTO> listaUsuarios = fisicaService.listarPessoasFisicas();
+    public ResponseEntity<List<FisicaMinDTO>> listarUsuarios(){
+        List<FisicaMinDTO> listaUsuarios = fisicaService.listarPessoasFisicas();
         if(listaUsuarios.isEmpty()){
             return ResponseEntity.status(204).build();
         }

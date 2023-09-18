@@ -1,6 +1,8 @@
 package com.pridepoints.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,19 +21,11 @@ public abstract class Pessoa{
     private String email;
 
     @Column
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime ultimaTrocaSenha;
 
-
-    public Pessoa(){
-        this.ultimaTrocaSenha = LocalDateTime.now();
-    }
-
-    public Pessoa(String nome, String senha, String email) {
-        this.nome = nome;
-        this.senha = senha;
-        this.email = email;
-        this.ultimaTrocaSenha = LocalDateTime.now();
-    }
 
     public String getNome() {
         return nome;
@@ -72,10 +66,6 @@ public abstract class Pessoa{
     public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
     }
-
-    public abstract void setEmaileSenha(String email, String senha);
-
-
 
     @Override
     public boolean equals(Object o) {

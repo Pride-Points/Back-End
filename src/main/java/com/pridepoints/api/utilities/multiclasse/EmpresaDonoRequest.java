@@ -1,30 +1,32 @@
 package com.pridepoints.api.utilities.multiclasse;
 
+import com.pridepoints.api.DTO.Empresa.EmpresaCriacaoDTO;
+import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 
 public class EmpresaDonoRequest {
-    private Empresa empresa;
-    private Funcionario funcionario;
+    private EmpresaCriacaoDTO empresa;
+    private FuncionarioCriacaoDTO funcionario;
 
-    public EmpresaDonoRequest(Empresa empresa, Funcionario funcionario) {
+    public EmpresaDonoRequest(EmpresaCriacaoDTO empresa, FuncionarioCriacaoDTO funcionario) {
         this.empresa = empresa;
         this.funcionario = funcionario;
     }
 
-    public Empresa getEmpresa() {
+    public EmpresaCriacaoDTO getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(Empresa empresa) {
+    public void setEmpresa(EmpresaCriacaoDTO empresa) {
         this.empresa = empresa;
     }
 
-    public Funcionario getFuncionario() {
+    public FuncionarioCriacaoDTO getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(FuncionarioCriacaoDTO funcionario) {
         this.funcionario = funcionario;
     }
 }

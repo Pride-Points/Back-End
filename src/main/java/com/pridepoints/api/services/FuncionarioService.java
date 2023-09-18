@@ -1,8 +1,9 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.FuncionarioDTO;
+import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
+import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
-import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
@@ -16,6 +17,7 @@ import javax.mail.internet.AddressException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FuncionarioService implements iValidarTrocaDeSenha {
@@ -30,29 +32,35 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     private EmailService emailService;
 
     @Transactional
-    public FuncionarioDTO cadastrarFuncionario(Funcionario e){
+    public FuncionarioFullDTO cadastrarFuncionario(Funcionario e){
         Funcionario consultaBanco = funcionarioRepository.findByEmail(e.getEmail());
 
         if(consultaBanco == null){
             Funcionario result = funcionarioRepository.save(e);
-            return new FuncionarioDTO(result);
+
+            return FuncionarioMapper.ofFull(result);
         }
         return null;
     }
 
     @Transactional
-    public FuncionarioDTO cadastrarFuncionario(Funcionario funcionario, Long idEmpresa){
+    public FuncionarioFullDTO cadastrarFuncionario(FuncionarioCriacaoDTO funcionario, Long idEmpresa){
+
         Funcionario consultaBancoFuncionario = funcionarioRepository.findByEmail(funcionario.getEmail());
         Optional<Empresa> consultaBancoEmpresa = empresaRepository.findById(idEmpresa);
+
         if(consultaBancoFuncionario == null && consultaBancoEmpresa.isPresent()){
             funcionario.setEmpresa(consultaBancoEmpresa.get());
 
+            Funcionario funcionarioMapeado = FuncionarioMapper.of(funcionario);
+
             Empresa empresa = consultaBancoEmpresa.get();
-            empresa.adicionarFuncionario(funcionario);
+            empresa.adicionarFuncionario(funcionarioMapeado);
 
             empresaRepository.save(empresa);
-            funcionarioRepository.save(funcionario);
-            return new FuncionarioDTO(funcionario);
+
+           Funcionario result = funcionarioRepository.save(funcionarioMapeado);
+            return FuncionarioMapper.ofFull(result);
         }
         return null;
     }
@@ -69,4 +77,21 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
                 }
             }
         }
+
+    @Transactional
+    public List<FuncionarioFullDTO> listarFuncionarios() {
+
+        List<Funcionario> funcionarioList = funcionarioRepository.findAll();
+
+            return FuncionarioMapper.of(funcionarioList);
     }
+
+    public List<FuncionarioFullDTO> listarFuncionariosAtivos() {
+
+        List<Funcionario> ativosList = funcionarioRepository.findAll()
+                .stream().filter(funcionario -> funcionario.isAtivo())
+                .collect(Collectors.toList());
+
+        return FuncionarioMapper.of(ativosList);
+    }
+}

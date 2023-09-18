@@ -1,7 +1,7 @@
-package com.pridepoints.api.DTO;
+package com.pridepoints.api.DTO.Evento;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pridepoints.api.entities.Empresa;
+import com.pridepoints.api.DTO.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.entities.Evento;
 
 import java.util.Date;
@@ -15,14 +15,13 @@ public class EventoDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dtEvento;
 
-    private Empresa empresa;
+    public EventoDTO(){}
 
     public EventoDTO(Evento entity) {
         this.nome = entity.getNome();
         this.imgEvento = entity.getImgEvento();
         this.descricaoEvento = entity.getDescricaoEvento();
         this.dtEvento = entity.getDtEvento();
-        this.empresa = entity.getEmpresa();
     }
 
     public Long getId() {
@@ -45,4 +44,23 @@ public class EventoDTO {
         return dtEvento;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setImgEvento(String imgEvento) {
+        this.imgEvento = imgEvento;
+    }
+
+    public void setDescricaoEvento(String descricaoEvento) {
+        this.descricaoEvento = descricaoEvento;
+    }
+
+    public void setDtEvento(Date dtEvento) {
+        this.dtEvento = dtEvento;
+    }
 }

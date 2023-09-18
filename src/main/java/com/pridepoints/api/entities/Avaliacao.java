@@ -35,15 +35,6 @@ public class Avaliacao {
     private Empresa empresa;
 
 
-    public Avaliacao(){}
-
-    public Avaliacao(double nota, Date dtAvaliacao, String tag, String comentario) {
-        this.nota = nota;
-        this.dtAvaliacao = dtAvaliacao;
-        this.tag = tag;
-        this.comentario = comentario;
-    }
-
     public Long getId() {
         return id;
     }
