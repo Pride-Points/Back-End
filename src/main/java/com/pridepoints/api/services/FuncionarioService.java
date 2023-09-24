@@ -50,9 +50,8 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         Optional<Empresa> consultaBancoEmpresa = empresaRepository.findById(idEmpresa);
 
         if(consultaBancoFuncionario == null && consultaBancoEmpresa.isPresent()){
-            funcionario.setEmpresa(consultaBancoEmpresa.get());
-
             Funcionario funcionarioMapeado = FuncionarioMapper.of(funcionario);
+            funcionarioMapeado.setEmpresa(consultaBancoEmpresa.get());
 
             Empresa empresa = consultaBancoEmpresa.get();
             empresa.adicionarFuncionario(funcionarioMapeado);
@@ -90,6 +89,14 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
 
         List<Funcionario> ativosList = funcionarioRepository.findAll()
                 .stream().filter(funcionario -> funcionario.isAtivo())
+                .collect(Collectors.toList());
+
+        return FuncionarioMapper.of(ativosList);
+    }
+
+    public List<FuncionarioFullDTO> listarFuncionariosInativos() {
+        List<Funcionario> ativosList = funcionarioRepository.findAll()
+                .stream().filter(funcionario -> !funcionario.isAtivo())
                 .collect(Collectors.toList());
 
         return FuncionarioMapper.of(ativosList);

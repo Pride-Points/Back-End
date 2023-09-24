@@ -28,17 +28,6 @@ public class FisicaFullDTO {
     public FisicaFullDTO() {
 
     }
-    public FisicaFullDTO(Fisica fisica) {
-        this.id = fisica.getId();
-        this.nome = fisica.getNome();
-        this.dtNascimento = fisica.getDtNascimento();
-        this.email = fisica.getEmail();
-        this.genero = fisica.getEmail();
-        this.genero = fisica.getGenero();
-        this.orientacaoSexual = fisica.getOrientacaoSexual();
-        this.ultimaTrocaSenha = fisica.getUltimaTrocaSenha();
-        this.avaliacoes = AvaliacaoMapper.of(fisica.getAvaliacoesUsuario());
-    }
 
     public Long getId() {
         return id;

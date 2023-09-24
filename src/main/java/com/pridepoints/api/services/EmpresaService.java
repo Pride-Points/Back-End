@@ -2,6 +2,7 @@ package com.pridepoints.api.services;
 
 import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
 import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
+import com.pridepoints.api.DTO.Empresa.EmpresaCriacaoDTO;
 import com.pridepoints.api.DTO.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.DTO.Empresa.EmpresaMapper;
 import com.pridepoints.api.DTO.Empresa.EmpresaMinDTO;
@@ -29,7 +30,7 @@ public class EmpresaService {
         if(consultaBanco == null){
             Empresa result = empresaRepository.save(e);
 
-            return new EmpresaFullDTO(result);
+            return EmpresaMapper.of(result);
         }
             return null;
     }
@@ -55,34 +56,25 @@ public class EmpresaService {
         }
     }
 
-    public List<AvaliacaoDTO> listarAvaliacoes(Long id) {
 
-        Optional<Empresa> result = empresaRepository.findById(id);
+    public EmpresaFullDTO atualizarEmpresa(EmpresaCriacaoDTO novosDados, Long idEmpresa) {
+        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
 
         if(result.isPresent()){
+            Empresa empresaAtualizada = EmpresaMapper.of(novosDados);
 
-            Empresa empresaBanco = result.get();
-
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(empresaBanco.getAvaliacoes());
-
-            return avaliacoes;
+            return EmpresaMapper.of(empresaRepository.save(empresaAtualizada));
         }
-
         return null;
     }
 
-    public List<EventoDTO> listarEventos(Long id) {
-        Optional<Empresa> result = empresaRepository.findById(id);
+    public boolean deletarEmpresa(Long idEmpresa) {
+        boolean exists = empresaRepository.existsById(idEmpresa);
 
-        if(result.isPresent()){
-
-            Empresa empresaBanco = result.get();
-
-            List<EventoDTO> eventos = EventoMapper.ofListDtos(empresaBanco.getEventos());
-
-            return eventos;
+        if(exists){
+            empresaRepository.deleteById(idEmpresa);
+            return true;
         }
-
-        return null;
+        return false;
     }
 }

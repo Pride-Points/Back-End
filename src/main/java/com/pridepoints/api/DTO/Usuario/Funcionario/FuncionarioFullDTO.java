@@ -22,18 +22,6 @@ public class FuncionarioFullDTO {
     public FuncionarioFullDTO() {
     }
 
-    public FuncionarioFullDTO(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.email = funcionario.getEmail();
-        this.cargo = funcionario.getCargo();
-        this.empresa = funcionario.getEmpresa().getNomeFantasia();
-        this.isGerente = funcionario.isGerente();
-        this.isAtivo = funcionario.isAtivo();
-        this.tipoFuncionario = funcionario.getTipoFuncionario();
-        this.ultimaTrocaSenha = funcionario.getUltimaTrocaSenha();
-    }
-
     public Long getId() {
         return id;
     }

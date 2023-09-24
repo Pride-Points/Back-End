@@ -2,11 +2,12 @@ package com.pridepoints.api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Table(name = "tb_funcionario")
 public class Funcionario extends Pessoa {
-
     private String cargo;
     private String cpf;
     private String tipoFuncionario;
@@ -14,8 +15,6 @@ public class Funcionario extends Pessoa {
     private boolean isGerente;
     @Column(columnDefinition = "BIT")
     private boolean isAtivo = true;
-
-
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")

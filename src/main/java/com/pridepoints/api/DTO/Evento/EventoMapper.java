@@ -7,9 +7,21 @@ import java.util.stream.Collectors;
 
 public class EventoMapper {
 
+    public static Evento of(EventoCriacaoDTO eventoCriacaoDTO){
+        Evento evento = new Evento();
+
+        evento.setNome(eventoCriacaoDTO.getNome());
+        evento.setImgEvento(eventoCriacaoDTO.getImgEvento());
+        evento.setDescricaoEvento(eventoCriacaoDTO.getDescricaoEvento());
+        evento.setDtEvento(eventoCriacaoDTO.getDtEvento());
+
+        return evento;
+    }
+
     public static EventoDTO of(Evento evento){
         EventoDTO eventoDTO = new EventoDTO();
 
+        eventoDTO.setId(evento.getId());
         eventoDTO.setNome(evento.getNome());
         eventoDTO.setImgEvento(evento.getImgEvento());
         eventoDTO.setDescricaoEvento(evento.getDescricaoEvento());
@@ -23,7 +35,7 @@ public class EventoMapper {
         List<EventoDTO> eventoDTOS;
 
         eventoDTOS = eventos.stream()
-                .map(EventoDTO::new)
+                .map(EventoMapper::of)
                 .collect(Collectors.toList());
 
         return eventoDTOS;

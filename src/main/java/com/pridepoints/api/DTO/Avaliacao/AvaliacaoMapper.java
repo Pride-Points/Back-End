@@ -12,7 +12,7 @@ public class AvaliacaoMapper {
         List<AvaliacaoDTO> avaliacoesDTO;
 
         avaliacoesDTO = avaliacoes.stream()
-                .map(avaliacao -> new AvaliacaoDTO(avaliacao))
+                .map(AvaliacaoMapper::of)
                 .collect(Collectors.toList());
 
         return avaliacoesDTO;
@@ -22,7 +22,7 @@ public class AvaliacaoMapper {
         Avaliacao avaliacao = new Avaliacao();
 
         avaliacao.setNota(avaliacaoCriacaoDTO.getNota());
-        avaliacao.setNota(avaliacaoCriacaoDTO.getNota());
+        avaliacao.setTag(avaliacaoCriacaoDTO.getTag());
         avaliacao.setComentario(avaliacaoCriacaoDTO.getComentario());
 
         return avaliacao;
@@ -35,8 +35,9 @@ public class AvaliacaoMapper {
         avaliacaoDTO.setNota(avaliacao.getNota());
         avaliacaoDTO.setDtAvaliacao(avaliacao.getDtAvaliacao());
         avaliacaoDTO.setTag(avaliacao.getTag());
-        avaliacao.setComentario(avaliacao.getComentario());
+        avaliacaoDTO.setComentario(avaliacao.getComentario());
 
         return avaliacaoDTO;
     }
+
 }

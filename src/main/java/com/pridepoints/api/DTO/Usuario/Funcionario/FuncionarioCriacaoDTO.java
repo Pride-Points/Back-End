@@ -1,17 +1,26 @@
 package com.pridepoints.api.DTO.Usuario.Funcionario;
 
 import com.pridepoints.api.entities.Empresa;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.br.CPF;
 
 public class FuncionarioCriacaoDTO {
+    @NotBlank
     private String nome;
+    @Email
     private String email;
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
+               message = "A senha deve conter pelo menos uma letra maiúscula," +
+                       " uma letra minúscula, um número e ter no mínimo 8 caracteres.")
     private String senha;
     private String cargo;
+    @CPF
     private String cpf;
+    @NotBlank
     private String tipoFuncionario;
     private Boolean isGerente;
-
-    private Empresa empresa;
 
     public String getNome() {
         return nome;
@@ -59,14 +68,6 @@ public class FuncionarioCriacaoDTO {
 
     public void setTipoFuncionario(String tipoFuncionario) {
         this.tipoFuncionario = tipoFuncionario;
-    }
-
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
     }
 
     public Boolean getIsGerente() {

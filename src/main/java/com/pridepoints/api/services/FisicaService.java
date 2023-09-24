@@ -54,12 +54,12 @@ public class FisicaService implements iValidarTrocaDeSenha {
     }
 
     @Transactional
-    public FisicaFullDTO atualizarEmail(String novoEmail, Long id){
+    public FisicaFullDTO atualizarEmail(FisicaCriacaoDTO obj, Long id){
         Optional<Fisica> result = fisicaRepository.findById(id);
 
         if(result.isPresent()){
             Fisica usuarioBanco = result.get();
-            usuarioBanco.setEmail(novoEmail);
+            usuarioBanco.setEmail(obj.getEmail());
             fisicaRepository.save(usuarioBanco);
 
             return FisicaMapper.of(usuarioBanco);

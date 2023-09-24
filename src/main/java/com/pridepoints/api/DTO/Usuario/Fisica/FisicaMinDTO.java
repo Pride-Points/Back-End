@@ -10,13 +10,6 @@ public class FisicaMinDTO {
     public FisicaMinDTO() {
     }
 
-    // Construtor com os atributos mínimos
-    public FisicaMinDTO(Fisica fisica) {
-        this.id = fisica.getId();
-        this.nome = fisica.getNome();
-        this.email = fisica.getEmail();
-    }
-
     public Long getId() {
         return id;
     }

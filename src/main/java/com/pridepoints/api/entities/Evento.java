@@ -13,8 +13,10 @@ public class Evento {
     private Long id;
     private String nome;
     private String imgEvento;
+
+    @Column(columnDefinition = "TEXT")
     private String descricaoEvento;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dtEvento;
 
     @ManyToOne

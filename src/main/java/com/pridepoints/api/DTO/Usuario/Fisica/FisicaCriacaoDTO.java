@@ -2,15 +2,18 @@ package com.pridepoints.api.DTO.Usuario.Fisica;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 
 import java.time.LocalDate;
 
 public class FisicaCriacaoDTO {
-    @Size(min = 3, max = 10)
+    @Size(min = 3)
     private String nome;
-    @Size(min = 6)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
+            message = "A senha deve conter pelo menos uma letra maiúscula," +
+                    " uma letra minúscula, um número e ter no mínimo 8 caracteres.")
     private String senha;
     @Email
     private String email;

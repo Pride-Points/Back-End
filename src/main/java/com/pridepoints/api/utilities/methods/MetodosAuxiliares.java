@@ -28,6 +28,13 @@ public class MetodosAuxiliares {
         return true;
     }
 
+    public boolean verificaObjetoAvaliacao(Avaliacao a){
+        if(a == null || a.getTag().isBlank()){
+            return false;
+        }
+        return true;
+    }
+
     public boolean verificaObjetoEmpresa(Empresa e){
      if(e == null || e.getNomeFantasia().isBlank()
      || e.getCnpj().isBlank()

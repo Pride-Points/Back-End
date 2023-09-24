@@ -36,10 +36,22 @@ public class EmpresaMapper {
         return empresaFullDTO;
     }
 
+    public static EmpresaMinDTO ofMin(Empresa empresa){
+        EmpresaMinDTO empresaMinDTO = new EmpresaMinDTO();
+
+        empresaMinDTO.setId(empresa.getId());
+        empresaMinDTO.setNomeFantasia(empresa.getNomeFantasia());
+        empresaMinDTO.setCidade(empresa.getCidade());
+        empresaMinDTO.setEstado(empresa.getEstado());
+        empresaMinDTO.setDono(empresa.getFuncionarios().get(0).getNome());
+
+        return empresaMinDTO;
+    }
+
     public static List<EmpresaMinDTO> ofListMin(List<Empresa> empresas){
 
         List<EmpresaMinDTO> empresasMinDTO = empresas.stream()
-                .map(EmpresaMinDTO::new)
+                .map(EmpresaMapper::ofMin)
                 .collect(Collectors.toList());
 
         return empresasMinDTO;

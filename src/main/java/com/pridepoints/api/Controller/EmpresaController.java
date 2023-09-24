@@ -1,19 +1,18 @@
 package com.pridepoints.api.Controller;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
+
+import com.pridepoints.api.DTO.Empresa.EmpresaCriacaoDTO;
 import com.pridepoints.api.DTO.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.DTO.Empresa.EmpresaMapper;
 import com.pridepoints.api.DTO.Empresa.EmpresaMinDTO;
-import com.pridepoints.api.DTO.Evento.EventoDTO;
 import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
-import com.pridepoints.api.entities.Evento;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.multiclasse.EmpresaDonoRequest;
-import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,15 +28,12 @@ public class EmpresaController {
 
     @Autowired
     private FuncionarioService funcionarioService;
-    MetodosAuxiliares validador = new MetodosAuxiliares();
 
     @PostMapping
-    public ResponseEntity<EmpresaFullDTO> cadastrarEmpresa(@RequestBody EmpresaDonoRequest request){
+    public ResponseEntity<EmpresaFullDTO> cadastrarEmpresa(@Valid @RequestBody EmpresaDonoRequest request){
         Empresa empresa = EmpresaMapper.of(request.getEmpresa());
         Funcionario dono = FuncionarioMapper.of(request.getFuncionario());
-        if(!validador.verificaObjetoEmpresa(empresa) && !validador.verificaObjetoDonoEmpresa(dono)){
-            return ResponseEntity.status(400).build();
-        } else {
+
             dono.setEmpresa(empresa);
             empresa.adicionarFuncionario(dono);
             EmpresaFullDTO result = empresaService.cadastrarEmpresa(empresa);
@@ -51,7 +47,6 @@ public class EmpresaController {
             } else {
                 return ResponseEntity.status(409).build();
             }
-        }
     }
 
     @GetMapping
@@ -74,28 +69,29 @@ public class EmpresaController {
         return ResponseEntity.status(200).body(result);
     }
 
-    @GetMapping("/{id}/avaliacoes")
-    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoes(@PathVariable Long id){
+    @PutMapping("/{idEmpresa}")
+    public ResponseEntity<EmpresaFullDTO> atualizarEmpresa(@Valid @RequestBody EmpresaCriacaoDTO
+            novosDados,
+                                                           @PathVariable Long idEmpresa){
+        EmpresaFullDTO result = empresaService.atualizarEmpresa(novosDados, idEmpresa);
 
-        List<AvaliacaoDTO> result = empresaService.listarAvaliacoes(id);
-
-        if(result == null || result.isEmpty()){
-            return ResponseEntity.status(204).build();
+        if(result == null){
+            return ResponseEntity.status(404).build();
+        } else {
+            return ResponseEntity.status(200).body(result);
         }
-
-        return ResponseEntity.status(200).body(result);
     }
 
-    @GetMapping("/{id}/eventos")
-    public ResponseEntity<List<EventoDTO>> listarEventos(@PathVariable Long id){
+    @DeleteMapping("/{idEmpresa}")
+    public ResponseEntity<Void> removerEmpresa(@PathVariable Long idEmpresa){
 
-        List<EventoDTO> result = empresaService.listarEventos(id);
+        boolean removeu = empresaService.deletarEmpresa(idEmpresa);
 
-        if(result == null || result.isEmpty()){
+        if(removeu){
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(result);
+        return ResponseEntity.status(404).build();
     }
 
 }

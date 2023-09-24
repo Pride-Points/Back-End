@@ -16,6 +16,7 @@ public class FuncionarioMapper {
         funcionario.setCargo(funcionarioCriacaoDTO.getCargo());
         funcionario.setCpf(funcionarioCriacaoDTO.getCpf());
         funcionario.setIsGerente(funcionarioCriacaoDTO.getIsGerente());
+        funcionario.setTipoFuncionario(funcionarioCriacaoDTO.getTipoFuncionario());
 
         return funcionario;
     }
@@ -24,14 +25,15 @@ public class FuncionarioMapper {
         FuncionarioFullDTO funcionarioFullDTO = new FuncionarioFullDTO();
 
         funcionarioFullDTO.setId(funcionario.getId());
-        funcionarioFullDTO.setNome(funcionarioFullDTO.getNome());
-        funcionarioFullDTO.setEmail(funcionarioFullDTO.getEmail());
-        funcionarioFullDTO.setCargo(funcionarioFullDTO.getCargo());
+        funcionarioFullDTO.setNome(funcionario.getNome());
+        funcionarioFullDTO.setEmail(funcionario.getEmail());
+        funcionarioFullDTO.setCargo(funcionario.getCargo());
         funcionarioFullDTO.setEmpresa(funcionario.getEmpresa().getNomeFantasia());
+        funcionarioFullDTO.setTipoFuncionario(funcionario.getTipoFuncionario());
+        funcionarioFullDTO.setUltimaTrocaSenha(funcionario.getUltimaTrocaSenha());
         funcionarioFullDTO.setGerente(funcionario.isGerente());
         funcionarioFullDTO.setAtivo(funcionario.isAtivo());
-        funcionario.setTipoFuncionario(funcionario.getTipoFuncionario());
-        funcionario.setUltimaTrocaSenha(funcionario.getUltimaTrocaSenha());
+
 
         return funcionarioFullDTO;
     }
@@ -50,7 +52,7 @@ public class FuncionarioMapper {
         List<FuncionarioFullDTO> funcionariosFullDTO;
 
         funcionariosFullDTO = funcionariosList.stream()
-                .map(funcionario -> new FuncionarioFullDTO(funcionario))
+                .map(FuncionarioMapper::ofFull)
                 .collect(Collectors.toList());
 
         return funcionariosFullDTO;

@@ -21,16 +21,6 @@ public class EmpresaFullDTO {
 
 
     public EmpresaFullDTO(){}
-    public EmpresaFullDTO(Empresa entity) {
-        this.id = entity.getId();
-        this.nomeFantasia = entity.getNomeFantasia();
-        this.cnpj = entity.getCnpj();
-        this.cep = entity.getCep();
-        this.numero = entity.getNumero();
-        this.cidade = entity.getCidade();
-        this.estado = entity.getEstado();
-        this.Dono = entity.getFuncionarios().get(0).getNome();
-    }
 
     public Long getId() {
         return id;

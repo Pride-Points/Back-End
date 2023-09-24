@@ -9,13 +9,7 @@ public class EmpresaMinDTO {
     private String estado;
     private String dono;
 
-    public EmpresaMinDTO(Empresa entity) {
-        this.id = entity.getId();
-        this.nomeFantasia = entity.getNomeFantasia();
-        this.cidade = entity.getCidade();
-        this.estado = entity.getEstado();
-        this.dono = entity.getFuncionarios().get(0).getNome();
-    }
+    public EmpresaMinDTO(){}
 
     public Long getId() {
         return id;
@@ -35,5 +29,25 @@ public class EmpresaMinDTO {
 
     public String getDono() {
         return dono;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setDono(String dono) {
+        this.dono = dono;
     }
 }

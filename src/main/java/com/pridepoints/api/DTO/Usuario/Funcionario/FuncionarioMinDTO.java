@@ -9,13 +9,6 @@ public class FuncionarioMinDTO {
 
     public FuncionarioMinDTO() {
     }
-
-    public FuncionarioMinDTO(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.cargo = funcionario.getCargo();
-    }
-
     public Long getId() {
         return id;
     }

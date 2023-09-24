@@ -1,8 +1,11 @@
 package com.pridepoints.api.DTO.Usuario.Fisica;
 
 import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
+import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
+import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Fisica;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,12 +33,14 @@ public class FisicaMapper {
         usuario.setOrientacaoSexual(fisica.getOrientacaoSexual());
         usuario.setGenero(fisica.getGenero());
         usuario.setDtNascimento(fisica.getDtNascimento());
-        usuario.setAvaliacoes(
-                fisica.getAvaliacoesUsuario().stream()
-                        .map(AvaliacaoDTO::new)
-                        .collect(Collectors.toList())
-        );
-
+        if(fisica.getAvaliacoesUsuario() == null) {
+            usuario.setAvaliacoes(Collections.emptyList());
+        } else {
+            usuario.setAvaliacoes(fisica.getAvaliacoesUsuario().stream()
+                    .map(AvaliacaoMapper::of)
+                    .collect(Collectors.toList()));
+        }
+        usuario.setUltimaTrocaSenha(fisica.getUltimaTrocaSenha());
         return usuario;
     }
 
@@ -52,7 +57,7 @@ public class FisicaMapper {
     public static List<FisicaMinDTO> ofListMin(List<Fisica> usuarios){
 
         List<FisicaMinDTO> usuariosDTO = usuarios.stream()
-                .map(FisicaMinDTO::new)
+                .map(FisicaMapper::ofMin)
                 .collect(Collectors.toList());
 
         return usuariosDTO;
@@ -60,7 +65,7 @@ public class FisicaMapper {
     public static List<FisicaFullDTO> ofListFull(List<Fisica> usuarios){
 
         List<FisicaFullDTO> usuariosDTO = usuarios.stream()
-                .map(FisicaFullDTO::new)
+                .map(FisicaMapper::of)
                 .collect(Collectors.toList());
 
             return usuariosDTO;
