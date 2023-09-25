@@ -34,19 +34,14 @@ public class EmpresaController {
         Empresa empresa = EmpresaMapper.of(request.getEmpresa());
         Funcionario dono = FuncionarioMapper.of(request.getFuncionario());
 
-            dono.setEmpresa(empresa);
-            empresa.adicionarFuncionario(dono);
-            EmpresaFullDTO result = empresaService.cadastrarEmpresa(empresa);
-            if(result != null){
-                FuncionarioFullDTO resultFunc = funcionarioService.cadastrarFuncionario(dono);
-                if(resultFunc != null){
-                    return ResponseEntity.status(201).body(result);
-                } else {
-                    return ResponseEntity.status(409).build();
-                }
-            } else {
-                return ResponseEntity.status(409).build();
-            }
+        dono.setEmpresa(empresa);
+        empresa.adicionarFuncionario(dono);
+        EmpresaFullDTO result = empresaService.cadastrarEmpresa(empresa);
+        if(result != null){
+            return ResponseEntity.status(200).body(result);
+        } else {
+            return ResponseEntity.status(409).build();
+        }
     }
 
     @GetMapping

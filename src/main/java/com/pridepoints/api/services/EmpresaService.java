@@ -10,6 +10,7 @@ import com.pridepoints.api.DTO.Evento.EventoDTO;
 import com.pridepoints.api.DTO.Evento.EventoMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.repositories.EmpresaRepository;
+import com.pridepoints.api.repositories.FuncionarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,21 @@ import java.util.Optional;
 public class EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
 
     @Transactional
     public EmpresaFullDTO cadastrarEmpresa(Empresa e){
         Empresa consultaBanco = empresaRepository.findByCnpj(e.getCnpj());
+        boolean existsFunc = funcionarioRepository.existsByEmail(e.getFuncionarios().get(0).getEmail());
 
-        if(consultaBanco == null){
+        if(consultaBanco == null && !existsFunc){
             Empresa result = empresaRepository.save(e);
 
             return EmpresaMapper.of(result);
         }
-            return null;
+        return null;
     }
 
 

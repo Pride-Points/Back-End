@@ -41,9 +41,6 @@ public class EventoService {
             Empresa empresa = result.get();
 
             eventoMapeado.setEmpresa(empresa);
-            empresa.adicionarEvento(eventoMapeado);
-
-            empresaRepository.save(empresa);
 
             return EventoMapper.of(eventoRepository.save(eventoMapeado));
         }

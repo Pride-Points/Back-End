@@ -31,25 +31,14 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     @Autowired
     private EmailService emailService;
 
-    @Transactional
-    public FuncionarioFullDTO cadastrarFuncionario(Funcionario e){
-        Funcionario consultaBanco = funcionarioRepository.findByEmail(e.getEmail());
-
-        if(consultaBanco == null){
-            Funcionario result = funcionarioRepository.save(e);
-
-            return FuncionarioMapper.ofFull(result);
-        }
-        return null;
-    }
 
     @Transactional
     public FuncionarioFullDTO cadastrarFuncionario(FuncionarioCriacaoDTO funcionario, Long idEmpresa){
 
-        Funcionario consultaBancoFuncionario = funcionarioRepository.findByEmail(funcionario.getEmail());
+        boolean existsByEmail = funcionarioRepository.existsByEmail(funcionario.getEmail());
         Optional<Empresa> consultaBancoEmpresa = empresaRepository.findById(idEmpresa);
 
-        if(consultaBancoFuncionario == null && consultaBancoEmpresa.isPresent()){
+        if(!existsByEmail && consultaBancoEmpresa.isPresent()){
             Funcionario funcionarioMapeado = FuncionarioMapper.of(funcionario);
             funcionarioMapeado.setEmpresa(consultaBancoEmpresa.get());
 

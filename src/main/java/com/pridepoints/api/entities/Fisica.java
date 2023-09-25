@@ -63,6 +63,7 @@ public class Fisica extends Pessoa {
         return avaliacoesUsuario;
     }
 
-    public void adicionarAvaliacao(Avaliacao novaAvaliacao){ this.avaliacoesUsuario.add(novaAvaliacao); }
+    public void adicionarAvaliacao(Avaliacao novaAvaliacao){
+        this.avaliacoesUsuario.add(novaAvaliacao); }
 
 }

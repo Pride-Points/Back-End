@@ -9,6 +9,7 @@ import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.repositories.AvaliacaoRepository;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FisicaRepository;
+import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,17 +44,9 @@ public class AvaliacaoService {
             novaAvaliacao.setEmpresa(resultEmpresa.get());
             novaAvaliacao.setPessoaFisica(resultFisica.get());
 
-            Empresa empresa = resultEmpresa.get();
-            empresa.adicionarAvaliacao(novaAvaliacao);
 
-            Fisica pessoaFisica = resultFisica.get();
-            pessoaFisica.adicionarAvaliacao(novaAvaliacao);
 
-            empresaRepository.save(empresa);
-            fisicaRepository.save(pessoaFisica);
-            avaliacaoRepository.save(novaAvaliacao);
-
-            return AvaliacaoMapper.of(novaAvaliacao);
+            return AvaliacaoMapper.of(avaliacaoRepository.save(novaAvaliacao));
         }
             return null;
     }
@@ -147,4 +140,34 @@ public class AvaliacaoService {
 
         return null;
     }
+
+    @Transactional
+    public List<AvaliacaoDTO> listarAvaliacoesPorMenorNota(Long idEmpresa) {
+        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
+        Ordenacao ordenacaoNota = new Ordenacao();
+        if (result.isPresent()) {
+            Empresa empresaBanco = result.get();
+            List<Avaliacao> avaliacoesEmpresa = empresaBanco.getAvaliacoes();
+
+            return AvaliacaoMapper.of(ordenacaoNota.ordenaPorMenorNota(avaliacoesEmpresa));
+
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<AvaliacaoDTO> listarAvaliacoesPorMaiorNota(Long idEmpresa) {
+        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
+        Ordenacao ordenacaoNota = new Ordenacao();
+        if (result.isPresent()) {
+            Empresa empresaBanco = result.get();
+            List<Avaliacao> avaliacoesEmpresa = empresaBanco.getAvaliacoes();
+
+            return AvaliacaoMapper.of(ordenacaoNota.ordenaPorMaiorNota(avaliacoesEmpresa));
+
+        }
+        return null;
+    }
+
+
 }

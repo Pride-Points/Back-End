@@ -29,6 +29,30 @@ public class AvaliacaoController {
         return ResponseEntity.status(200).body(listaDeAvaliacoes);
     }
 
+    @GetMapping("/nota/listar-menor/{idEmpresa}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarPorMenorNota(@PathVariable Long idEmpresa){
+
+        List<AvaliacaoDTO> result = avaliacaoService.listarAvaliacoesPorMenorNota(idEmpresa);
+
+        if(result == null || result.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(result);
+    }
+
+    @GetMapping("/nota/listar-maior/{idEmpresa}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarPorMaiorNota(@PathVariable Long idEmpresa){
+
+        List<AvaliacaoDTO> result = avaliacaoService.listarAvaliacoesPorMaiorNota(idEmpresa);
+
+        if(result == null || result.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(result);
+    }
+
     @GetMapping("/empresa/{idEmpresa}")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesDaEmpresa(@PathVariable Long idEmpresa){
 
@@ -92,5 +116,7 @@ public class AvaliacaoController {
 
         return ResponseEntity.status(404).build();
     }
+
+
     
 }
