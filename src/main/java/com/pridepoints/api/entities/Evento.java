@@ -22,14 +22,6 @@ public class Evento {
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
-
-    public Evento(String nome, String imgEvento, String descricaoEvento, Date dtEvento) {
-        this.nome = nome;
-        this.imgEvento = imgEvento;
-        this.descricaoEvento = descricaoEvento;
-        this.dtEvento = dtEvento;
-    }
-
     public Evento(){}
 
     public Long getId() {

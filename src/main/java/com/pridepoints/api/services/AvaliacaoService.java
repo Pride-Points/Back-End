@@ -60,13 +60,11 @@ public class AvaliacaoService {
 
     public List<AvaliacaoDTO> listarAvaliacoesDaEmpresa(Long id) {
 
-        Optional<Empresa> result = empresaRepository.findById(id);
+        List<Avaliacao> result = avaliacaoRepository.findByEmpresaId(id);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Empresa empresaBanco = result.get();
-
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(empresaBanco.getAvaliacoes());
+            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(result);
 
             return avaliacoes;
         }
@@ -112,14 +110,10 @@ public class AvaliacaoService {
     @Transactional
     public boolean deletarAvaliacaoDaEmpresa(Long idAvaliacao) {
 
-        Optional<Avaliacao> avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao);
+        boolean exists = avaliacaoRepository.existsById(idAvaliacao);
 
-        if(avaliacaoBanco.isPresent()){
-
-            Avaliacao avaliacaoEncontrada = avaliacaoBanco.get();
-
-            avaliacaoRepository.delete(avaliacaoEncontrada);
-
+        if(exists){
+            avaliacaoRepository.deleteById(idAvaliacao);
             return true;
         }
         return false;
@@ -127,13 +121,11 @@ public class AvaliacaoService {
 
 
     public List<AvaliacaoDTO> listarAvaliacoesDoUsuario(Long idUsuario) {
-        Optional<Fisica> result = fisicaRepository.findById(idUsuario);
+        List<Avaliacao> result = avaliacaoRepository.findByPessoaFisicaId(idUsuario);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Fisica fisicaBanco = result.get();
-
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(fisicaBanco.getAvaliacoesUsuario());
+            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(result);
 
             return avaliacoes;
         }

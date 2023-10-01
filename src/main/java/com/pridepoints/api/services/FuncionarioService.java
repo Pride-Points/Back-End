@@ -42,11 +42,6 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             Funcionario funcionarioMapeado = FuncionarioMapper.of(funcionario);
             funcionarioMapeado.setEmpresa(consultaBancoEmpresa.get());
 
-            Empresa empresa = consultaBancoEmpresa.get();
-            empresa.adicionarFuncionario(funcionarioMapeado);
-
-            empresaRepository.save(empresa);
-
            Funcionario result = funcionarioRepository.save(funcionarioMapeado);
             return FuncionarioMapper.ofFull(result);
         }
@@ -74,20 +69,35 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             return FuncionarioMapper.of(funcionarioList);
     }
 
+    @Transactional
     public List<FuncionarioFullDTO> listarFuncionariosAtivos() {
 
-        List<Funcionario> ativosList = funcionarioRepository.findAll()
-                .stream().filter(funcionario -> funcionario.isAtivo())
-                .collect(Collectors.toList());
+        List<Funcionario> ativosList = funcionarioRepository.findByIsAtivoTrue();
+
+        if(ativosList.isEmpty()){
+            return null;
+        }
 
         return FuncionarioMapper.of(ativosList);
     }
 
+    @Transactional
     public List<FuncionarioFullDTO> listarFuncionariosInativos() {
-        List<Funcionario> ativosList = funcionarioRepository.findAll()
-                .stream().filter(funcionario -> !funcionario.isAtivo())
-                .collect(Collectors.toList());
+        List<Funcionario> ativosList = funcionarioRepository.findByIsAtivoFalse();
+
+        if(ativosList.isEmpty()){
+            return null;
+        }
 
         return FuncionarioMapper.of(ativosList);
+    }
+    @Transactional
+    public FuncionarioFullDTO listarPorId(Long idFunc) {
+        Optional<Funcionario> func = funcionarioRepository.findById(idFunc);
+
+        if(func.isPresent()){
+            return FuncionarioMapper.ofFull(func.get());
+        }
+        return null;
     }
 }

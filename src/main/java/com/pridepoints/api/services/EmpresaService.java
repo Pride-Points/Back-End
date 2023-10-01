@@ -28,10 +28,10 @@ public class EmpresaService {
 
     @Transactional
     public EmpresaFullDTO cadastrarEmpresa(Empresa e){
-        Empresa consultaBanco = empresaRepository.findByCnpj(e.getCnpj());
+        boolean existEmp = empresaRepository.existsByCnpj(e.getCnpj());
         boolean existsFunc = funcionarioRepository.existsByEmail(e.getFuncionarios().get(0).getEmail());
 
-        if(consultaBanco == null && !existsFunc){
+        if(!existEmp && !existsFunc){
             Empresa result = empresaRepository.save(e);
 
             return EmpresaMapper.of(result);
@@ -43,8 +43,6 @@ public class EmpresaService {
     @Transactional
     public List<EmpresaMinDTO> listarEmpresas() {
         List<Empresa> empresaList = empresaRepository.findAll();
-
-
         return EmpresaMapper.ofListMin(empresaList);
     }
 

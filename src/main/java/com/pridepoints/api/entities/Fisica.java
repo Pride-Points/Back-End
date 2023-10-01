@@ -14,6 +14,10 @@ import java.util.List;
 @Table(name = "tb_fisica")
 public class Fisica extends Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String orientacaoSexual;
 
     private String genero;
@@ -26,6 +30,8 @@ public class Fisica extends Pessoa {
     @OneToMany(mappedBy = "pessoaFisica")
     private List<Avaliacao> avaliacoesUsuario;
 
+    public Fisica() {
+    }
 
     public String getOrientacaoSexual() {
         return orientacaoSexual;
@@ -61,6 +67,14 @@ public class Fisica extends Pessoa {
 
     public List<Avaliacao> getAvaliacoesUsuario() {
         return avaliacoesUsuario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void adicionarAvaliacao(Avaliacao novaAvaliacao){

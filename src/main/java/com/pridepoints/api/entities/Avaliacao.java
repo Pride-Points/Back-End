@@ -30,9 +30,14 @@ public class Avaliacao {
     @JoinColumn(name = "fisica_id")
     private Fisica pessoaFisica;
 
+    public Avaliacao() {
+    }
+
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
+
+
 
 
     public Long getId() {

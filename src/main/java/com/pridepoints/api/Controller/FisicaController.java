@@ -4,7 +4,6 @@ import com.pridepoints.api.DTO.Usuario.Fisica.FisicaCriacaoDTO;
 import com.pridepoints.api.DTO.Usuario.Fisica.FisicaFullDTO;
 import com.pridepoints.api.DTO.Usuario.Fisica.FisicaMinDTO;
 import com.pridepoints.api.services.FisicaService;
-import com.pridepoints.api.utilities.methods.MetodosAuxiliares;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class FisicaController {
-
-    MetodosAuxiliares validador = new MetodosAuxiliares();
     @Autowired
     private FisicaService fisicaService;
 

@@ -23,8 +23,8 @@ public class FisicaService implements iValidarTrocaDeSenha {
 
     @Transactional
     public FisicaFullDTO cadastrarUsuario(FisicaCriacaoDTO f){
-        Fisica consultaBanco = fisicaRepository.findByEmail(f.getEmail());
-        if(consultaBanco == null){
+        boolean consultaBanco = fisicaRepository.existsByEmail(f.getEmail());
+        if(!consultaBanco){
             final Fisica novoUsuario = FisicaMapper.of(f);
 
             Fisica result = fisicaRepository.save(novoUsuario);

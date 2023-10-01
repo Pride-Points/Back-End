@@ -39,7 +39,6 @@ public class EventoService {
         if(result.isPresent()){
             Evento eventoMapeado = EventoMapper.of(eventoCriacaoDTO);
             Empresa empresa = result.get();
-
             eventoMapeado.setEmpresa(empresa);
 
             return EventoMapper.of(eventoRepository.save(eventoMapeado));
@@ -68,13 +67,9 @@ public class EventoService {
 
     @Transactional
     public boolean removerEvento(Long idEvento) {
-        Optional<Evento> resultEvent = eventoRepository.findById(idEvento);
-
-        if(resultEvent.isPresent()){
-            Evento evento = resultEvent.get();
-
-            eventoRepository.delete(evento);
-
+        boolean exists = eventoRepository.existsById(idEvento);
+        if(exists){
+            eventoRepository.deleteById(idEvento);
             return true;
         }
 
@@ -82,32 +77,25 @@ public class EventoService {
     }
 
     public List<EventoDTO> listarEventosDaEmpresa(Long idEmpresa) {
-        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
+        List<Evento> result = eventoRepository.findByEmpresaId(idEmpresa);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Empresa empresaBanco = result.get();
-
-            List<EventoDTO> eventos = EventoMapper.ofListDtos(empresaBanco.getEventos());
+            List<EventoDTO> eventos = EventoMapper.ofListDtos(result);
 
             return eventos;
         }
-
         return null;
     }
 
     public EventoDTO buscarEventoPorId(Long idEmpresa, Long idEvento) {
-        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
-        Optional<Evento> resultEvent = eventoRepository.findById(idEvento);
 
-        if(result.isPresent()){
-            Empresa empresaBanco = result.get();
-            Evento eventoBanco = resultEvent.get();
+        boolean exists = empresaRepository.existsById(idEmpresa);
 
-            for(Evento evento : empresaBanco.getEventos()){
-                if(evento.equals(eventoBanco)){
-                    return EventoMapper.of(eventoBanco);
-                }
+        if(exists){
+            Optional<Evento> resultEvent = eventoRepository.findByEmpresaIdAndId(idEmpresa, idEvento);
+            if(resultEvent.isPresent()){
+                return EventoMapper.of(resultEvent.get());
             }
         }
         return null;
