@@ -1,9 +1,7 @@
 package com.pridepoints.api.utilities.multiclasse;
 
-import com.pridepoints.api.DTO.Empresa.EmpresaCriacaoDTO;
-import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
-import com.pridepoints.api.entities.Empresa;
-import com.pridepoints.api.entities.Funcionario;
+import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 
 public class EmpresaDonoRequest {
     private EmpresaCriacaoDTO empresa;
