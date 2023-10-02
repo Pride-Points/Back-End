@@ -1,8 +1,8 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoCriacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoCriacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoMapper;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AvaliacaoService {

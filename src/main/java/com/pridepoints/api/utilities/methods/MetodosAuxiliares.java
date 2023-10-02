@@ -1,8 +1,8 @@
 package com.pridepoints.api.utilities.methods;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoCriacaoDTO;
-import com.pridepoints.api.DTO.Usuario.Fisica.FisicaCriacaoDTO;
-import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoCriacaoDTO;
+import com.pridepoints.api.dto.Usuario.Fisica.FisicaCriacaoDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;

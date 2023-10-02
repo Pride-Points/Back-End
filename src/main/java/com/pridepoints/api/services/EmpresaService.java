@@ -1,13 +1,9 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
-import com.pridepoints.api.DTO.Empresa.EmpresaCriacaoDTO;
-import com.pridepoints.api.DTO.Empresa.EmpresaFullDTO;
-import com.pridepoints.api.DTO.Empresa.EmpresaMapper;
-import com.pridepoints.api.DTO.Empresa.EmpresaMinDTO;
-import com.pridepoints.api.DTO.Evento.EventoDTO;
-import com.pridepoints.api.DTO.Evento.EventoMapper;
+import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
+import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
+import com.pridepoints.api.dto.Empresa.EmpresaMapper;
+import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;

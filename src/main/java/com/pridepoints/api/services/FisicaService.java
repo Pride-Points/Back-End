@@ -1,14 +1,21 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Usuario.Fisica.FisicaCriacaoDTO;
-import com.pridepoints.api.DTO.Usuario.Fisica.FisicaFullDTO;
-import com.pridepoints.api.DTO.Usuario.Fisica.FisicaMapper;
-import com.pridepoints.api.DTO.Usuario.Fisica.FisicaMinDTO;
+import com.pridepoints.api.utilities.security.GerenciadorTokenJwt;
+import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
+import com.pridepoints.api.dto.Usuario.Fisica.FisicaCriacaoDTO;
+import com.pridepoints.api.dto.Usuario.Fisica.FisicaFullDTO;
+import com.pridepoints.api.dto.Usuario.Fisica.FisicaMapper;
+import com.pridepoints.api.dto.Usuario.Fisica.FisicaMinDTO;
 import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.repositories.FisicaRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,12 +27,24 @@ public class FisicaService implements iValidarTrocaDeSenha {
 
     @Autowired
     private FisicaRepository fisicaRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private GerenciadorTokenJwt gerenciadorTokenJwt;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Transactional
     public FisicaFullDTO cadastrarUsuario(FisicaCriacaoDTO f){
-        Fisica consultaBanco = fisicaRepository.findByEmail(f.getEmail());
-        if(consultaBanco == null){
+
+        Optional<Fisica> consultaBanco = fisicaRepository.findByEmailOptional(f.getEmail());
+        if(consultaBanco.isEmpty()){
             final Fisica novoUsuario = FisicaMapper.of(f);
+
+            String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
+            novoUsuario.setSenha(senhaCriptografada);
 
             Fisica result = fisicaRepository.save(novoUsuario);
 
@@ -35,13 +54,17 @@ public class FisicaService implements iValidarTrocaDeSenha {
     }
 
     @Transactional
-    public FisicaFullDTO loginUsuario(FisicaCriacaoDTO f){
-        Fisica result = fisicaRepository.findByEmailAndSenha(f.getEmail(), f.getSenha());
-        if(result != null){
+    public UsuarioTokenDTO autenticarFisica(FisicaCriacaoDTO f){
+        final UsernamePasswordAuthenticationToken credenciais =
+                new UsernamePasswordAuthenticationToken(f.getEmail(),f.getSenha());
 
-            return FisicaMapper.of(result);
-        }
-            return null;
+        final Authentication authentication = this.authenticationManager.authenticate(credenciais);
+
+        Fisica fisicaAutenticada = fisicaRepository.findByEmail(f.getEmail());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+            return FisicaMapper.of(fisicaAutenticada,token);
     }
 
 

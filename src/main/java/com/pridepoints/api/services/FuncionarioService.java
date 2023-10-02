@@ -1,8 +1,8 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioCriacaoDTO;
-import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioFullDTO;
-import com.pridepoints.api.DTO.Usuario.Funcionario.FuncionarioMapper;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
