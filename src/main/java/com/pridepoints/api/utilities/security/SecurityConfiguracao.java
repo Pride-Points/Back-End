@@ -2,6 +2,7 @@ package com.pridepoints.api.utilities.security;
 
 import com.pridepoints.api.services.AutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ public class SecurityConfiguracao {
 
     @Autowired
     private AutenticacaoService autenticacaoService;
+
 
     @Autowired
     private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;

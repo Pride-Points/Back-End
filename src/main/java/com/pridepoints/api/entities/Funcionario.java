@@ -83,4 +83,5 @@ public class Funcionario extends Pessoa {
     public void setId(Long id) {
         this.id = id;
     }
+
 }

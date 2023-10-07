@@ -3,6 +3,7 @@ package com.pridepoints.api.controller;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.services.FuncionarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @SecurityRequirement(name = "Bearer")
     @GetMapping
     public ResponseEntity<List<FuncionarioFullDTO>> listarFuncionarios(){
 
@@ -28,6 +30,7 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(result);
     }
 
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/ativos")
     public ResponseEntity<List<FuncionarioFullDTO>> listarAtivos(){
 
@@ -38,7 +41,7 @@ public class FuncionarioController {
         }
         return ResponseEntity.status(200).body(result);
     }
-
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/inativos")
     public ResponseEntity<List<FuncionarioFullDTO>> listarInativos(){
 
@@ -49,7 +52,7 @@ public class FuncionarioController {
         }
         return ResponseEntity.status(200).body(result);
     }
-
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/{idFunc}")
     public ResponseEntity<FuncionarioFullDTO> listarPorId(@PathVariable Long idFunc){
         FuncionarioFullDTO fullDTO = funcionarioService.listarPorId(idFunc);
@@ -58,7 +61,7 @@ public class FuncionarioController {
         }
         return ResponseEntity.status(200).body(fullDTO);
     }
-
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/ordenados")
     public ResponseEntity<List<FuncionarioFullDTO>> listarFuncionariosOrdenadosPorNome() {
         List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosOrdenadosPorNome();
@@ -68,7 +71,7 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(result);
     }
 
-
+    @SecurityRequirement(name = "Bearer")
     @PostMapping("/{empresaId}")
     public ResponseEntity<FuncionarioFullDTO> cadastrarFuncionario(@Valid @RequestBody FuncionarioCriacaoDTO f,
                                                                    @PathVariable Long empresaId){

@@ -11,6 +11,7 @@ import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.multiclasse.EmpresaDonoRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,11 @@ public class EmpresaController {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @SecurityRequirement(name = "Bearer")
     @PostMapping
     public ResponseEntity<EmpresaFullDTO> cadastrarEmpresa(@Valid @RequestBody EmpresaDonoRequest request){
         Empresa empresa = EmpresaMapper.of(request.getEmpresa());
         Funcionario dono = FuncionarioMapper.of(request.getFuncionario());
-
         dono.setEmpresa(empresa);
         empresa.adicionarFuncionario(dono);
         EmpresaFullDTO result = empresaService.cadastrarEmpresa(empresa);
@@ -42,7 +43,7 @@ public class EmpresaController {
             return ResponseEntity.status(409).build();
         }
     }
-
+    @SecurityRequirement(name = "Bearer")
     @GetMapping
     public ResponseEntity<List<EmpresaMinDTO>> listarEmpresas(){
         List<EmpresaMinDTO> listaDeEmpresas = empresaService.listarEmpresas();
@@ -51,7 +52,7 @@ public class EmpresaController {
         }
         return ResponseEntity.status(200).body(listaDeEmpresas);
     }
-
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/{id}")
     public ResponseEntity<EmpresaFullDTO> buscarPorId(@PathVariable Long id){
         EmpresaFullDTO result = empresaService.buscarPorId(id);
@@ -62,7 +63,7 @@ public class EmpresaController {
 
         return ResponseEntity.status(200).body(result);
     }
-
+    @SecurityRequirement(name = "Bearer")
     @PutMapping("/{idEmpresa}")
     public ResponseEntity<EmpresaFullDTO> atualizarEmpresa(@Valid @RequestBody EmpresaCriacaoDTO
             novosDados,
@@ -75,7 +76,7 @@ public class EmpresaController {
             return ResponseEntity.status(200).body(result);
         }
     }
-
+    @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{idEmpresa}")
     public ResponseEntity<Void> removerEmpresa(@PathVariable Long idEmpresa){
 
