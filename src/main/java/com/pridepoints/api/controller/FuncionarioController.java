@@ -59,6 +59,16 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(fullDTO);
     }
 
+    @GetMapping("/ordenados")
+    public ResponseEntity<List<FuncionarioFullDTO>> listarFuncionariosOrdenadosPorNome() {
+        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosOrdenadosPorNome();
+        if (result.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(result);
+    }
+
+
     @PostMapping("/{empresaId}")
     public ResponseEntity<FuncionarioFullDTO> cadastrarFuncionario(@Valid @RequestBody FuncionarioCriacaoDTO f,
                                                                    @PathVariable Long empresaId){

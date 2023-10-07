@@ -8,6 +8,7 @@ import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
+import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -98,5 +99,15 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             return FuncionarioMapper.ofFull(func.get());
         }
         return null;
+    }
+
+    @Transactional
+    public List<FuncionarioFullDTO> listarFuncionariosOrdenadosPorNome() {
+        List<Funcionario> funcionarioList = funcionarioRepository.findAll();
+
+        Ordenacao ordenacaoNome = new Ordenacao();
+        List<Funcionario> funcionarioOrdenado = ordenacaoNome.ordenaAlfabeticamente(funcionarioList);
+
+        return FuncionarioMapper.of(funcionarioOrdenado);
     }
 }
