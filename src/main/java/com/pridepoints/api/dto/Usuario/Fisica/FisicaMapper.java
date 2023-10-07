@@ -80,4 +80,17 @@ public class FisicaMapper {
 
         return usuarioTokenDTO;
     }
+
+    public static FisicaFullDTO of(Fisica fisica, String token){
+        UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
+
+        usuarioTokenDTO.setUserId(fisica.getId());
+        usuarioTokenDTO.setEmail(fisica.getEmail());
+        usuarioTokenDTO.setNome(fisica.getNome());
+        usuarioTokenDTO.setToken(token);
+
+        return usuarioTokenDTO;
+    }
+
+
 }

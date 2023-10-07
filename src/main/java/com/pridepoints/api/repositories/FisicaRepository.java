@@ -10,8 +10,15 @@ import java.util.Optional;
 
 @Repository
 public interface FisicaRepository extends JpaRepository<Fisica, Long> {
+    @Query("SELECT f FROM Fisica f WHERE f.email = :email")
+    Optional<Fisica> findByEmailOptional(@Param("email") String email);
 
+    @Query("SELECT f FROM Fisica f WHERE f.email = :email AND f.senha = :senha")
+    Fisica findByEmailAndSenha(@Param("email") String email,@Param("senha") String senha);
+
+    @Query("SELECT f FROM Fisica f WHERE f.email = :email")
+    Fisica findByEmail(@Param("email") String email);
     boolean existsByEmail(String email);
 
-    Optional<Fisica> findByEmail(String email);
+
 }

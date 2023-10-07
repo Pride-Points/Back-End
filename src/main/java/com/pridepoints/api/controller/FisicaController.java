@@ -16,13 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+
 public class FisicaController {
     @Autowired
     private FisicaService fisicaService;
 
 
     @PostMapping("/login")
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<UsuarioTokenDTO> loginUsuario(@Valid @RequestBody FisicaCriacaoDTO f){
 
         UsuarioTokenDTO result = fisicaService.autenticarFisica(f);
@@ -34,7 +34,6 @@ public class FisicaController {
     }
 
     @PatchMapping("/{indice}")
-    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<FisicaFullDTO> atualizarEmail(@RequestBody FisicaCriacaoDTO obj, @PathVariable Long indice){
             FisicaFullDTO result =  fisicaService.atualizarEmail(obj, indice);
             if(result == null){
@@ -59,6 +58,7 @@ public class FisicaController {
     @GetMapping("/listar-usuarios")
     @SecurityRequirement(name = "Bearer")
     @PreAuthorize("isAuthenticated()")
+
     public ResponseEntity<List<FisicaMinDTO>> listarUsuarios(){
         List<FisicaMinDTO> listaUsuarios = fisicaService.listarPessoasFisicas();
         if(listaUsuarios.isEmpty()){

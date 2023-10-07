@@ -37,19 +37,42 @@ public class FisicaService implements iValidarTrocaDeSenha {
 
     @Transactional
     public FisicaFullDTO cadastrarUsuario(FisicaCriacaoDTO f){
-        boolean consultaBanco = fisicaRepository.existsByEmail(f.getEmail());
-        if(!consultaBanco){
-            final Fisica novoUsuario = FisicaMapper.of(f);
+        Fisica consultaBanco = fisicaRepository.findByEmail(f.getEmail());
+        if(consultaBanco == null){
 
-            String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-            novoUsuario.setSenha(senhaCriptografada);
+            Optional<Fisica> consultaBanco = fisicaRepository.findByEmailOptional(f.getEmail());
+            if(consultaBanco.isEmpty()){
+                final Fisica novoUsuario = FisicaMapper.of(f);
 
-            Fisica result = fisicaRepository.save(novoUsuario);
+                String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
+                novoUsuario.setSenha(senhaCriptografada);
 
-            return FisicaMapper.of(result);
-        }
+                Fisica result = fisicaRepository.save(novoUsuario);
+
+                return FisicaMapper.of(result);
+            }
             return null;
-    }
+        }}
+
+        @Transactional
+        public FisicaFullDTO loginUsuario(FisicaCriacaoDTO f){
+            Fisica result = fisicaRepository.findByEmailAndSenha(f.getEmail(), f.getSenha());
+            if(result != null){
+                public UsuarioTokenDTO autenticarFisica(FisicaCriacaoDTO f){
+                    final UsernamePasswordAuthenticationToken credenciais =
+                            new UsernamePasswordAuthenticationToken(f.getEmail(),f.getSenha());
+
+                    return FisicaMapper.of(result);
+                }
+                return null;
+                final Authentication authentication = this.authenticationManager.authenticate(credenciais);
+
+                Fisica fisicaAutenticada = fisicaRepository.findByEmail(f.getEmail());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+                return FisicaMapper.of(fisicaAutenticada,token);
+            }}
 
     @Transactional
     public UsuarioTokenDTO autenticarFisica(FisicaCriacaoDTO f){
@@ -112,4 +135,5 @@ public class FisicaService implements iValidarTrocaDeSenha {
                     fisicaRepository.save(pessoaFisica);
         }
     }
+
 }

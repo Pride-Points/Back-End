@@ -1,13 +1,18 @@
 package com.pridepoints.api.services;
 
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoMapper;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
+import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
+import com.pridepoints.api.utilities.PesquisaBinaria.PesquisaBinaria;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
+import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -99,4 +104,15 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         }
         return null;
     }
+
+    @Transactional
+    public List<FuncionarioFullDTO> listarFuncionariosOrdenadosPorNome() {
+        List<Funcionario> funcionarioList = funcionarioRepository.findAll();
+
+        Ordenacao ordenacaoNome = new Ordenacao();
+        List<Funcionario> funcionarioOrdenado = ordenacaoNome.ordenaAlfabeticamente(funcionarioList);
+
+        return FuncionarioMapper.of(funcionarioOrdenado);
+    }
+
 }

@@ -72,4 +72,13 @@ public class FuncionarioController {
                 return ResponseEntity.status(201).body(result);
             }
         }
+
+    @GetMapping("/ordenados")
+    public ResponseEntity<List<FuncionarioFullDTO>> listarFuncionariosOrdenadosPorNome() {
+        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosOrdenadosPorNome();
+        if (result.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(result);
+    }
 }
