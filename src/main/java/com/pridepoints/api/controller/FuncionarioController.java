@@ -85,4 +85,15 @@ public class FuncionarioController {
                 return ResponseEntity.status(201).body(result);
             }
         }
+
+    @GetMapping("/cpf")
+    public ResponseEntity<FuncionarioFullDTO> encontrarFuncionarioPorCpf(@RequestParam String cpf) {
+        FuncionarioFullDTO result = funcionarioService.encontrarFuncionarioPorCpf(cpf);
+
+        if (result != null) {
+            return ResponseEntity.status(200).body(result);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+    }
 }
