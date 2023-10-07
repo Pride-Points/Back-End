@@ -53,7 +53,6 @@ public class AvaliacaoService {
     @Transactional
     public List<AvaliacaoDTO> listarTodasAvaliacoes() {
         List<Avaliacao> avaliacaoList = avaliacaoRepository.findAll();
-
         return AvaliacaoMapper.of(avaliacaoList);
     }
 

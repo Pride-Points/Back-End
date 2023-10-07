@@ -72,7 +72,6 @@ public class FisicaMapper {
 
     public static UsuarioTokenDTO of(Fisica fisica, String token){
         UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
-
         usuarioTokenDTO.setUserId(fisica.getId());
         usuarioTokenDTO.setEmail(fisica.getEmail());
         usuarioTokenDTO.setNome(fisica.getNome());

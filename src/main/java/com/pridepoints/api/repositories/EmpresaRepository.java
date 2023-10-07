@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
-    @Query("SELECT e FROM Empresa e WHERE e.cnpj = :cnpj")
-    boolean existsByCnpj(@Param("cnpj") String cnpj);
+
+    boolean existsByCnpj(String cnpj);
 }
