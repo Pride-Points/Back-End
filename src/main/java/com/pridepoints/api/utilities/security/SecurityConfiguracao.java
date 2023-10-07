@@ -4,7 +4,6 @@ import com.pridepoints.api.services.AutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,19 +40,19 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
             new AntPathRequestMatcher("/swagger-resources"),
-            new AntPathRequestMatcher("/swagger-resourcer/**"),
+            new AntPathRequestMatcher("/swagger-resources/**"),
             new AntPathRequestMatcher("/configuration/ui"),
             new AntPathRequestMatcher("/configuration/security"),
             new AntPathRequestMatcher("/public/**"),
             new AntPathRequestMatcher("/public/authenticate"),
             new AntPathRequestMatcher("/webjars/**"),
-            new AntPathRequestMatcher("/V3/api-docs/**"),
-            new AntPathRequestMatcher("/actuator/**"),
+            new AntPathRequestMatcher("/v3/api-docs/**"),
+            new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/users/**"),
-            new AntPathRequestMatcher("/users/login"),
             new AntPathRequestMatcher("/users/login/**"),
             new AntPathRequestMatcher("/h2-console/**"),
-            new AntPathRequestMatcher("/error/**")};
+            new AntPathRequestMatcher("/error/**")
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
