@@ -3,10 +3,10 @@ package com.pridepoints.api.controller;
 import com.pridepoints.api.dto.Avaliacao.AvaliacaoCriacaoDTO;
 import com.pridepoints.api.dto.Avaliacao.AvaliacaoDTO;
 import com.pridepoints.api.services.AvaliacaoService;
-import com.pridepoints.api.services.EmpresaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
-    @Autowired
-    private EmpresaService empresaService;
 
-    @Autowired
-    private AvaliacaoService avaliacaoService;
+    private final AvaliacaoService avaliacaoService;
+
+    public AvaliacaoController(AvaliacaoService avaliacaoService){
+        this.avaliacaoService = avaliacaoService;
+    }
 
     @GetMapping
     public ResponseEntity<List<AvaliacaoDTO>> listarTodasAvaliacoes(){
@@ -66,6 +67,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesDoUsuario(@PathVariable Long idUsuario){
 
         List<AvaliacaoDTO> result = avaliacaoService.listarAvaliacoesDoUsuario(idUsuario);
@@ -80,6 +82,7 @@ public class AvaliacaoController {
 
 
     @PostMapping("/{empresaId}/{usuarioId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<AvaliacaoDTO> publicarAvaliacao(@Valid @RequestBody AvaliacaoCriacaoDTO f, @PathVariable Long empresaId, @PathVariable Long usuarioId){
 
         AvaliacaoDTO result = avaliacaoService.publicarAvaliacaoDaEmpresa(f,empresaId,usuarioId);
@@ -91,6 +94,7 @@ public class AvaliacaoController {
     }
 
     @PutMapping("/{idUsuario}/{idAvaliacao}/{idEmpresa}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<AvaliacaoDTO> atualizarAvaliacaoDaEmpresa(@Valid @RequestBody AvaliacaoCriacaoDTO novaAvaliacao
             , @PathVariable Long idAvaliacao, @PathVariable Long idEmpresa, @PathVariable Long idUsuario){
 
@@ -106,6 +110,7 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/{idAvaliacao}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> deletarAvaliacaoDaEmpresa(@PathVariable Long idAvaliacao){
 
         boolean removeu = avaliacaoService.deletarAvaliacaoDaEmpresa(idAvaliacao);

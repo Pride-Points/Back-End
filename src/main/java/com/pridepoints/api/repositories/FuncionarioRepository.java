@@ -8,12 +8,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     boolean existsByEmail(String email);
 
-    List<Funcionario> findByIsAtivoTrue();
+    List<Funcionario> findByEmpresaByIsAtivoTrue(Long idEmpresa);
 
-    List<Funcionario> findByIsAtivoFalse();
+    List<Funcionario> findByEmpresaByIsAtivoFalse(Long idEmpresa);
+
+    Optional<Funcionario> findByEmail(String email);
 }
