@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     boolean existsByEmail(String email);
 
-    List<Funcionario> findByEmpresaByIsAtivoTrue(Long idEmpresa);
+    List<Funcionario> findByEmpresaAndIsAtivoTrue(Long idEmpresa);
 
-    List<Funcionario> findByEmpresaByIsAtivoFalse(Long idEmpresa);
+    List<Funcionario> findByEmpresaAndIsAtivoFalse(Long idEmpresa);
 
     Optional<Funcionario> findByEmail(String email);
 }

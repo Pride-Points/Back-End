@@ -102,7 +102,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     @Transactional
     public List<FuncionarioFullDTO> listarFuncionariosAtivos(Long idEmpresa) {
 
-        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaByIsAtivoTrue(idEmpresa);
+        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaAndIsAtivoTrue(idEmpresa);
 
         if(ativosList.isEmpty()){
             return null;
@@ -113,7 +113,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
 
     @Transactional
     public List<FuncionarioFullDTO> listarFuncionariosInativos(Long idEmpresa) {
-        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaByIsAtivoFalse(idEmpresa);
+        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaAndIsAtivoFalse(idEmpresa);
 
         if(ativosList.isEmpty()){
             return null;
@@ -142,6 +142,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     }
 
 
+
     public boolean findUser(UserDTO usuario) {
         boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
         if(exists){
@@ -167,11 +168,12 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     public boolean deletarFunc(Long idFunc) {
         Optional<Funcionario> funcOpt = funcionarioRepository.findById(idFunc);
 
-        if(funcOpt.isPresent()){
+        if (funcOpt.isPresent()) {
             funcOpt.get().setIsAtivo(false);
             return true;
         }
         return false;
+    }
 
     @Transactional
     public FuncionarioFullDTO encontrarFuncionarioPorCpf(String cpf) {
