@@ -1,6 +1,7 @@
 package com.pridepoints.api.dto.Autenticacao;
 
 import com.pridepoints.api.entities.Fisica;
+import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.utilities.security.CustomAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,33 +10,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PessoaFisicaDetalhesDTO implements UserDetails {
+public class FuncionarioDetalhesDTO implements UserDetails {
     private final String email;
     private final String senha;
     private final String nome;
 
-    public PessoaFisicaDetalhesDTO(Fisica fisica) {
-        this.email = fisica.getEmail();
-        this.senha = fisica.getSenha();
-        this.nome = fisica.getNome();
-    }
+    private final String permissaoFunc;
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNome() {
-        return nome;
+    public FuncionarioDetalhesDTO(Funcionario funcionario) {
+        this.email = funcionario.getEmail();
+        this.senha = funcionario.getSenha();
+        this.nome = funcionario.getNome();
+        this.permissaoFunc = funcionario.getTipoFuncionario();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-            authorities.add(new CustomAuthority("ROLE_FISICA"));
-
-        // Adicione outras autorizações conforme necessário
+        if(permissaoFunc.equalsIgnoreCase("Admin")){
+            authorities.add(new CustomAuthority("ROLE_ADMIN"));
+        }else {
+            authorities.add(new CustomAuthority("ROLE_USER"));
+        }
         return authorities;
     }
 

@@ -1,5 +1,7 @@
 package com.pridepoints.api.dto.Usuario.Funcionario;
 
+import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
+import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.entities.Funcionario;
 
 import java.util.List;
@@ -58,4 +60,13 @@ public class FuncionarioMapper {
         return funcionariosFullDTO;
     }
 
+    public static UsuarioTokenDTO of(Funcionario funcionario, String token){
+            UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
+            usuarioTokenDTO.setUserId(funcionario.getId());
+            usuarioTokenDTO.setEmail(funcionario.getEmail());
+            usuarioTokenDTO.setNome(funcionario.getNome());
+            usuarioTokenDTO.setToken(token);
+
+            return usuarioTokenDTO;
+    }
 }
