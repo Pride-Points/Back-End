@@ -6,6 +6,7 @@ import com.pridepoints.api.services.EventoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +15,12 @@ import java.util.List;
 @RequestMapping("/eventos")
 public class EventoController {
 
-    @Autowired
-    private EventoService eventoService;
+
+    private final EventoService eventoService;
+
+    public EventoController(EventoService eventoService){
+        this.eventoService = eventoService;
+    }
 
 
     @GetMapping
@@ -54,6 +59,7 @@ public class EventoController {
     }
 
     @PostMapping("/{idEmpresa}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<EventoDTO> adicionarEvento(@Valid @RequestBody EventoCriacaoDTO eventoCriacaoDTO, @PathVariable Long idEmpresa){
         EventoDTO result = eventoService.adicionarEvento(eventoCriacaoDTO, idEmpresa);
 
@@ -65,6 +71,7 @@ public class EventoController {
     }
 
     @PutMapping("/{idEmpresa}/{idEvento}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<EventoDTO> atualizarEvento(@Valid @RequestBody EventoCriacaoDTO eventoAtualizado,
                                                      @PathVariable Long idEmpresa,
                                                      @PathVariable Long idEvento){
@@ -79,6 +86,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{idEvento}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Void> removerEvento(@PathVariable Long idEvento){
 
         boolean removeu = eventoService.removerEvento(idEvento);

@@ -11,7 +11,7 @@ import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FisicaRepository;
 import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,12 +21,20 @@ import java.util.Optional;
 @Service
 public class AvaliacaoService {
 
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
-    @Autowired
-    private EmpresaRepository empresaRepository;
-    @Autowired
-    private FisicaRepository fisicaRepository;
+
+    private final AvaliacaoRepository avaliacaoRepository;
+
+    private final EmpresaRepository empresaRepository;
+
+    private final FisicaRepository fisicaRepository;
+
+    public AvaliacaoService(AvaliacaoRepository avaliacaoRepository,
+                            EmpresaRepository empresaRepository,
+                            FisicaRepository fisicaRepository){
+        this.avaliacaoRepository = avaliacaoRepository;
+        this.empresaRepository = empresaRepository;
+        this.fisicaRepository = fisicaRepository;
+    }
 
     @Transactional
     public AvaliacaoDTO publicarAvaliacaoDaEmpresa(AvaliacaoCriacaoDTO avaliacao,
@@ -62,9 +70,7 @@ public class AvaliacaoService {
 
         if(!result.isEmpty()){
 
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(result);
-
-            return avaliacoes;
+            return AvaliacaoMapper.of(result);
         }
 
         return null;
@@ -91,11 +97,9 @@ public class AvaliacaoService {
             avaliacaoConvertida.setPessoaFisica(usuarioEncontrado);
             avaliacaoConvertida.setDtAvaliacao(new Date());
 
-            AvaliacaoDTO avaliacaoAtualizada = AvaliacaoMapper
+                return AvaliacaoMapper
                     .of(avaliacaoRepository
                             .save(avaliacaoConvertida));
-
-            return avaliacaoAtualizada;
 
             }
         }
@@ -123,9 +127,7 @@ public class AvaliacaoService {
 
         if(!result.isEmpty()){
 
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(result);
-
-            return avaliacoes;
+            return AvaliacaoMapper.of(result);
         }
 
         return null;
