@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +15,8 @@ import java.util.List;
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
 
-
-    private final FuncionarioService funcionarioService;
-
-    public FuncionarioController(FuncionarioService funcionarioService) {
-        this.funcionarioService = funcionarioService;
-    }
+    @Autowired
+    private FuncionarioService funcionarioService;
 
     @SecurityRequirement(name = "Bearer")
     @GetMapping
@@ -36,11 +31,10 @@ public class FuncionarioController {
     }
 
     @SecurityRequirement(name = "Bearer")
-    @GetMapping("/ativos/{idEmpresa}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<FuncionarioFullDTO>> listarAtivos(@PathVariable Long idEmpresa){
+    @GetMapping("/ativos")
+    public ResponseEntity<List<FuncionarioFullDTO>> listarAtivos(){
 
-        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosAtivos(idEmpresa);
+        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosAtivos();
 
         if(result.isEmpty()){
             return ResponseEntity.status(204).build();
@@ -48,11 +42,10 @@ public class FuncionarioController {
         return ResponseEntity.status(200).body(result);
     }
     @SecurityRequirement(name = "Bearer")
-    @GetMapping("/inativos/{idEmpresa}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<FuncionarioFullDTO>> listarInativos(Long idEmpresa){
+    @GetMapping("/inativos")
+    public ResponseEntity<List<FuncionarioFullDTO>> listarInativos(){
 
-        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosInativos(idEmpresa);
+        List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosInativos();
 
         if(result.isEmpty()){
             return ResponseEntity.status(204).build();
@@ -61,7 +54,6 @@ public class FuncionarioController {
     }
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/{idFunc}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<FuncionarioFullDTO> listarPorId(@PathVariable Long idFunc){
         FuncionarioFullDTO fullDTO = funcionarioService.listarPorId(idFunc);
         if(fullDTO == null){
@@ -71,7 +63,6 @@ public class FuncionarioController {
     }
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/ordenados")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<FuncionarioFullDTO>> listarFuncionariosOrdenadosPorNome() {
         List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosOrdenadosPorNome();
         if (result.isEmpty()) {
@@ -82,7 +73,6 @@ public class FuncionarioController {
 
     @SecurityRequirement(name = "Bearer")
     @PostMapping("/{empresaId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<FuncionarioFullDTO> cadastrarFuncionario(@Valid @RequestBody FuncionarioCriacaoDTO f,
                                                                    @PathVariable Long empresaId){
 
@@ -95,27 +85,4 @@ public class FuncionarioController {
                 return ResponseEntity.status(201).body(result);
             }
         }
-  
-    @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{idFunc}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deletarFunc( @PathVariable Long idFunc){
-        boolean result = funcionarioService.deletarFunc(idFunc);
-
-        if(result){
-            return ResponseEntity.status(200).build();
-        }
-        return ResponseEntity.status(404).build();
-
-  
-    @GetMapping("/cpf")
-    public ResponseEntity<FuncionarioFullDTO> encontrarFuncionarioPorCpf(@RequestParam String cpf) {
-        FuncionarioFullDTO result = funcionarioService.encontrarFuncionarioPorCpf(cpf);
-
-        if (result != null) {
-            return ResponseEntity.status(200).body(result);
-        } else {
-            return ResponseEntity.status(404).build();
-        }
-    }
 }

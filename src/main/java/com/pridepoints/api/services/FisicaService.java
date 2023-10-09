@@ -1,6 +1,5 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.dto.Autenticacao.UserDTO;
 import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
 import com.pridepoints.api.dto.Usuario.Fisica.FisicaCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Fisica.FisicaFullDTO;
@@ -26,25 +25,15 @@ import java.util.Optional;
 @Service
 public class FisicaService implements iValidarTrocaDeSenha {
 
+    @Autowired
+    private FisicaRepository fisicaRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private GerenciadorTokenJwt gerenciadorTokenJwt;
 
-    private final FisicaRepository fisicaRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
-    private final GerenciadorTokenJwt gerenciadorTokenJwt;
-
-
-    private final AuthenticationManager authenticationManager;
-
-    public FisicaService(FisicaRepository fisicaRepository,
-                         PasswordEncoder passwordEncoder,
-                         GerenciadorTokenJwt gerenciadorTokenJwt,
-                         AuthenticationManager authenticationManager) {
-        this.fisicaRepository = fisicaRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.gerenciadorTokenJwt = gerenciadorTokenJwt;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Transactional
     public FisicaFullDTO cadastrarUsuario(FisicaCriacaoDTO f){
@@ -63,7 +52,7 @@ public class FisicaService implements iValidarTrocaDeSenha {
     }
 
     @Transactional
-    public UsuarioTokenDTO autenticarFisica(UserDTO f){
+    public UsuarioTokenDTO autenticarFisica(FisicaCriacaoDTO f){
         final UsernamePasswordAuthenticationToken credenciais =
                 new UsernamePasswordAuthenticationToken(f.getEmail(),f.getSenha());
 
@@ -73,7 +62,10 @@ public class FisicaService implements iValidarTrocaDeSenha {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = gerenciadorTokenJwt.generateToken(authentication);
 
-        return fisicaAutenticada.map(fisica -> FisicaMapper.of(fisica, token)).orElse(null);
+        if(fisicaAutenticada.isPresent()){
+            return FisicaMapper.of(fisicaAutenticada.get(),token);
+        }
+        return null;
     }
 
     @Transactional
@@ -119,13 +111,5 @@ public class FisicaService implements iValidarTrocaDeSenha {
                 pessoaFisica.setForcarTrocaDeSenha(true);
                     fisicaRepository.save(pessoaFisica);
         }
-    }
-
-    public boolean findUser(UserDTO usuario) {
-        boolean exists = fisicaRepository.existsByEmail(usuario.getEmail());
-        if(exists){
-            return true;
-        }
-        return false;
     }
 }

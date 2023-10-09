@@ -1,7 +1,5 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.dto.Autenticacao.UserDTO;
-import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
@@ -11,16 +9,9 @@ import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
 import com.pridepoints.api.utilities.ordenacao.Ordenacao;
-import com.pridepoints.api.utilities.security.GerenciadorTokenJwt;
-import com.pridepoints.api.utilities.pesquisaBinaria.PesquisaBinaria;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.AddressException;
@@ -31,34 +22,15 @@ import java.util.Optional;
 @Service
 public class FuncionarioService implements iValidarTrocaDeSenha {
 
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
-    private final FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
+    @Autowired
+    private EmailService emailService;
 
-    private final EmpresaRepository empresaRepository;
-
-
-    private final EmailService emailService;
-
-    private final AuthenticationManager authenticationManager;
-
-    private final PasswordEncoder passwordEncoder;
-
-    private final GerenciadorTokenJwt gerenciadorTokenJwt;
-
-    public FuncionarioService(FuncionarioRepository funcionarioRepository,
-                              EmpresaRepository empresaRepository,
-                              EmailService emailService,
-                              AuthenticationManager authenticationManager,
-                              PasswordEncoder passwordEncoder,
-                              GerenciadorTokenJwt gerenciadorTokenJwt){
-        this.funcionarioRepository = funcionarioRepository;
-        this.empresaRepository = empresaRepository;
-        this.emailService = emailService;
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.gerenciadorTokenJwt = gerenciadorTokenJwt;
-    }
 
     @Transactional
     public FuncionarioFullDTO cadastrarFuncionario(FuncionarioCriacaoDTO funcionario, Long idEmpresa){
@@ -67,8 +39,6 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         Optional<Empresa> consultaBancoEmpresa = empresaRepository.findById(idEmpresa);
 
         if(!existsByEmail && consultaBancoEmpresa.isPresent()){
-            String senhaCriptografada = passwordEncoder.encode(funcionario.getSenha());
-            funcionario.setSenha(senhaCriptografada);
             Funcionario funcionarioMapeado = FuncionarioMapper.of(funcionario);
             funcionarioMapeado.setEmpresa(consultaBancoEmpresa.get());
 
@@ -100,9 +70,9 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     }
 
     @Transactional
-    public List<FuncionarioFullDTO> listarFuncionariosAtivos(Long idEmpresa) {
+    public List<FuncionarioFullDTO> listarFuncionariosAtivos() {
 
-        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaByIsAtivoTrue(idEmpresa);
+        List<Funcionario> ativosList = funcionarioRepository.findByIsAtivoTrue();
 
         if(ativosList.isEmpty()){
             return null;
@@ -112,8 +82,8 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     }
 
     @Transactional
-    public List<FuncionarioFullDTO> listarFuncionariosInativos(Long idEmpresa) {
-        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaByIsAtivoFalse(idEmpresa);
+    public List<FuncionarioFullDTO> listarFuncionariosInativos() {
+        List<Funcionario> ativosList = funcionarioRepository.findByIsAtivoFalse();
 
         if(ativosList.isEmpty()){
             return null;
@@ -139,51 +109,5 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         List<Funcionario> funcionarioOrdenado = ordenacaoNome.ordenaAlfabeticamente(funcionarioList);
 
         return FuncionarioMapper.of(funcionarioOrdenado);
-    }
-
-
-    public boolean findUser(UserDTO usuario) {
-        boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
-        if(exists){
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    public UsuarioTokenDTO autenticarFuncionario(UserDTO usuario) {
-        final UsernamePasswordAuthenticationToken credenciais =
-                new UsernamePasswordAuthenticationToken(usuario.getEmail(),usuario.getSenha());
-
-        final Authentication authentication = this.authenticationManager.authenticate(credenciais);
-
-        Optional<Funcionario> funcOpt = funcionarioRepository.findByEmail(usuario.getEmail());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
-
-        return funcOpt.map(funcionario -> FuncionarioMapper.of(funcionario, token)).orElse(null);
-    }
-
-    public boolean deletarFunc(Long idFunc) {
-        Optional<Funcionario> funcOpt = funcionarioRepository.findById(idFunc);
-
-        if(funcOpt.isPresent()){
-            funcOpt.get().setIsAtivo(false);
-            return true;
-        }
-        return false;
-
-    @Transactional
-    public FuncionarioFullDTO encontrarFuncionarioPorCpf(String cpf) {
-        List<Funcionario> funcionarios = funcionarioRepository.findAll();
-
-        PesquisaBinaria pesquisaBinaria = new PesquisaBinaria();
-        Funcionario funcionarioEncontrado = pesquisaBinaria.binarySearch(funcionarios, cpf);
-
-        if (funcionarioEncontrado != null) {
-            return FuncionarioMapper.ofFull(funcionarioEncontrado);
-        }
-
-        return null;
     }
 }
