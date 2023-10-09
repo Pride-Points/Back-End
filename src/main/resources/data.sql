@@ -3,9 +3,8 @@ INSERT INTO tb_empresa
 (nome_fantasia, cnpj, cep, numero, cidade, estado)
 VALUES ('SPTECH', '101024944910000', '07243270', 49, 'Guarulhos', 'São Paulo');
 
-INSERT INTO tb_funcionario (ultima_troca_senha, email, nome, senha, cargo, cpf, is_ativo, is_gerente, tipo_funcionario, empresa_id)
-
-VALUES (CURRENT_DATE(), 'caique@gmail.com', 'Caique Gomes', 'Caique@123', 'Gerente', '51127145819', 1, 1, 'Admin', 1);
+INSERT INTO tb_funcionario (id, ultima_troca_senha, email, nome, senha, cargo, cpf, is_ativo, is_gerente, tipo_funcionario, empresa_id)
+VALUES (1, CURRENT_DATE(), 'caique@gmail.com', 'Caique Gomes', 'caique@123', 'Gerente', '51127145819', 1, 1, 'Admin', 1);
 
 -- Inserir dados na tabela tb_fisica
 INSERT INTO tb_fisica (id, ultima_troca_senha, email, nome, senha, dt_nascimento, forcar_troca_de_senha, genero, orientacao_sexual)

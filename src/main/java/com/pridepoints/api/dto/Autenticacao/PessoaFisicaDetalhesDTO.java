@@ -1,13 +1,10 @@
 package com.pridepoints.api.dto.Autenticacao;
 
 import com.pridepoints.api.entities.Fisica;
-import com.pridepoints.api.utilities.security.CustomAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class PessoaFisicaDetalhesDTO implements UserDetails {
     private final String email;
@@ -31,12 +28,7 @@ public class PessoaFisicaDetalhesDTO implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-            authorities.add(new CustomAuthority("ROLE_FISICA"));
-
-        // Adicione outras autorizações conforme necessário
-        return authorities;
+        return null;
     }
 
     @Override
