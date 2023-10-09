@@ -12,6 +12,7 @@ import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
 import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import com.pridepoints.api.utilities.security.GerenciadorTokenJwt;
+import com.pridepoints.api.utilities.pesquisaBinaria.PesquisaBinaria;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -140,6 +141,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return FuncionarioMapper.of(funcionarioOrdenado);
     }
 
+
     public boolean findUser(UserDTO usuario) {
         boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
         if(exists){
@@ -170,5 +172,18 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             return true;
         }
         return false;
+
+    @Transactional
+    public FuncionarioFullDTO encontrarFuncionarioPorCpf(String cpf) {
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+
+        PesquisaBinaria pesquisaBinaria = new PesquisaBinaria();
+        Funcionario funcionarioEncontrado = pesquisaBinaria.binarySearch(funcionarios, cpf);
+
+        if (funcionarioEncontrado != null) {
+            return FuncionarioMapper.ofFull(funcionarioEncontrado);
+        }
+
+        return null;
     }
 }

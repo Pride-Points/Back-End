@@ -95,7 +95,7 @@ public class FuncionarioController {
                 return ResponseEntity.status(201).body(result);
             }
         }
-
+  
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{idFunc}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -106,5 +106,16 @@ public class FuncionarioController {
             return ResponseEntity.status(200).build();
         }
         return ResponseEntity.status(404).build();
+
+  
+    @GetMapping("/cpf")
+    public ResponseEntity<FuncionarioFullDTO> encontrarFuncionarioPorCpf(@RequestParam String cpf) {
+        FuncionarioFullDTO result = funcionarioService.encontrarFuncionarioPorCpf(cpf);
+
+        if (result != null) {
+            return ResponseEntity.status(200).body(result);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 }
