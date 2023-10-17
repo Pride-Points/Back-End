@@ -1,5 +1,6 @@
 package com.pridepoints.api.repositories;
 
+import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.entities.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,10 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     boolean existsByEmail(String email);
 
     List<Funcionario> findByEmpresaAndIsAtivoTrue(Long idEmpresa);
+
+    List<Funcionario> findByIsAtivoFalse();
+
+    List<Funcionario> findByEmpresa_Id(Long empresaId);
 
     List<Funcionario> findByEmpresaAndIsAtivoFalse(Long idEmpresa);
 
