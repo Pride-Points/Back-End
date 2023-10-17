@@ -15,11 +15,13 @@ import java.util.Optional;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     boolean existsByEmail(String email);
 
-    List<Funcionario> findByIsAtivoTrue();
+    List<Funcionario> findByEmpresaAndIsAtivoTrue(Long idEmpresa);
 
     List<Funcionario> findByIsAtivoFalse();
 
-
     List<Funcionario> findByEmpresa_Id(Long empresaId);
 
+    List<Funcionario> findByEmpresaAndIsAtivoFalse(Long idEmpresa);
+
+    Optional<Funcionario> findByEmail(String email);
 }

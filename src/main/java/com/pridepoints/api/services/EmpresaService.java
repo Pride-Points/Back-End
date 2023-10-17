@@ -10,7 +10,6 @@ import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.lista.ListaObj;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +17,16 @@ import java.util.Optional;
 
 @Service
 public class EmpresaService {
-    @Autowired
-    private EmpresaRepository empresaRepository;
-    @Autowired
-    private FuncionarioRepository funcionarioRepository;
 
+    private final EmpresaRepository empresaRepository;
+
+    private final FuncionarioRepository funcionarioRepository;
+
+    public EmpresaService(EmpresaRepository empresaRepository,
+                          FuncionarioRepository funcionarioRepository){
+        this.empresaRepository = empresaRepository;
+        this.funcionarioRepository = funcionarioRepository;
+    }
 
     @Transactional
     public EmpresaFullDTO cadastrarEmpresa(Empresa e){
@@ -50,12 +54,7 @@ public class EmpresaService {
 
         Optional<Empresa> result = empresaRepository.findById(id);
 
-        if(result.isPresent()){
-            return EmpresaMapper.of(result.get());
-        } else {
-
-            return null;
-        }
+        return result.map(EmpresaMapper::of).orElse(null);
     }
 
     @Transactional

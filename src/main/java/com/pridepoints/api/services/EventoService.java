@@ -17,11 +17,16 @@ import java.util.Optional;
 @Service
 public class EventoService {
 
-    @Autowired
-    private EventoRepository eventoRepository;
+    private final EventoRepository eventoRepository;
 
-    @Autowired
-    private EmpresaRepository empresaRepository;
+
+    private final EmpresaRepository empresaRepository;
+
+    public EventoService(EventoRepository eventoRepository,
+                         EmpresaRepository empresaRepository){
+        this.eventoRepository = eventoRepository;
+        this.empresaRepository = empresaRepository;
+    }
 
     @Transactional
     public List<EventoDTO> listarEventos() {

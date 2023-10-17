@@ -1,14 +1,13 @@
 package com.pridepoints.api.utilities.security;
 
 import com.pridepoints.api.services.AutenticacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,15 +28,15 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguracao {
-    private static final String ORIGENS_PERMITIDAS = "*";
+    private final AutenticacaoService autenticacaoService;
 
-    @Autowired
-    private AutenticacaoService autenticacaoService;
+    private final AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
-
-    @Autowired
-    private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
-
+    public SecurityConfiguracao(AutenticacaoService autenticacaoService,
+                                AutenticacaoEntryPoint autenticacaoEntryPoint){
+        this.autenticacaoService = autenticacaoService;
+        this.autenticacaoJwtEntryPoint = autenticacaoEntryPoint;
+    }
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
@@ -53,7 +52,10 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/users/**"),
             new AntPathRequestMatcher("/users/login/**"),
             new AntPathRequestMatcher("/h2-console/**"),
-            new AntPathRequestMatcher("/error/**")
+            new AntPathRequestMatcher("/error/**"),
+            new AntPathRequestMatcher("/eventos"),
+            new AntPathRequestMatcher("/empresas"),
+            new AntPathRequestMatcher("/funcionarios/cpf/**")
     };
 
     @Bean

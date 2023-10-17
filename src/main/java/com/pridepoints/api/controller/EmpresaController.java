@@ -10,12 +10,12 @@ import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.EmpresaService;
-import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.multiclasse.EmpresaDonoRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,16 +24,20 @@ import java.util.List;
 @RequestMapping("/empresas")
 public class EmpresaController {
 
-    @Autowired
-    private EmpresaService empresaService;
+    private final EmpresaService empresaService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private FuncionarioService funcionarioService;
+    public EmpresaController(EmpresaService empresaService,
+                             PasswordEncoder passwordEncoder){
+        this.empresaService = empresaService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-    @SecurityRequirement(name = "Bearer")
     @PostMapping
     public ResponseEntity<EmpresaFullDTO> cadastrarEmpresa(@Valid @RequestBody EmpresaDonoRequest request){
         Empresa empresa = EmpresaMapper.of(request.getEmpresa());
+        String senhaCriptografada = passwordEncoder.encode(request.getFuncionario().getSenha());
+        request.getFuncionario().setSenha(senhaCriptografada);
         Funcionario dono = FuncionarioMapper.of(request.getFuncionario());
         dono.setEmpresa(empresa);
         empresa.adicionarFuncionario(dono);
@@ -44,7 +48,6 @@ public class EmpresaController {
             return ResponseEntity.status(409).build();
         }
     }
-    @SecurityRequirement(name = "Bearer")
     @GetMapping
     public ResponseEntity<List<EmpresaMinDTO>> listarEmpresas(){
         List<EmpresaMinDTO> listaDeEmpresas = empresaService.listarEmpresas();
@@ -66,6 +69,7 @@ public class EmpresaController {
     }
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{idEmpresa}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<EmpresaFullDTO> atualizarEmpresa(@Valid @RequestBody EmpresaCriacaoDTO
             novosDados,
                                                            @PathVariable Long idEmpresa){
