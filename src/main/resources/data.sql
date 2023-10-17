@@ -1,10 +1,10 @@
 -- Inserir dados na tabela TB_EMPRESA
 INSERT INTO tb_empresa
 (nome_fantasia, cnpj, cep, numero, cidade, estado)
-VALUES ('SPTECH', '101024944910000', '07243270', 49, 'Guarulhos', 'São Paulo');
+VALUES ('SPTECH', '101024944910000', '07243270', 49, 'Guarulhos', 'São Paulo'),('STEFANINI', '101024943910000', '07243270', 49, 'Eusabio matoso', 'São Paulo');
 
-INSERT INTO tb_funcionario (id, ultima_troca_senha, email, nome, senha, cargo, cpf, is_ativo, is_gerente, tipo_funcionario, empresa_id)
-VALUES (1, CURRENT_DATE(), 'caique@gmail.com', 'Caique Gomes', 'caique@123', 'Gerente', '51127145819', 1, 1, 'Admin', 1);
+INSERT INTO tb_funcionario (ultima_troca_senha, email, nome, senha, cargo, cpf, is_ativo, is_gerente, tipo_funcionario, empresa_id)
+VALUES (CURRENT_DATE(), 'caique@gmail.com', 'Caique Gomes', 'caique@123', 'Gerente', '51127145819', 1, 1, 'Admin', 1),(CURRENT_DATE(), 'douglas@gmail.com', 'Douglas Santos', 'douglas@123', 'Gerente', '51227145819', 1, 1, 'Admin', 2);
 
 -- Inserir dados na tabela tb_fisica
 INSERT INTO tb_fisica (id, ultima_troca_senha, email, nome, senha, dt_nascimento, forcar_troca_de_senha, genero, orientacao_sexual)

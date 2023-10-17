@@ -5,6 +5,7 @@ import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaMapper;
 import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
@@ -87,6 +88,18 @@ public class EmpresaController {
         }
 
         return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/funcionarios-por-cnpj")
+    public ResponseEntity<List<FuncionarioFullDTO>> getFuncionariosDaEmpresa(@RequestParam String cnpj) {
+        Long empresaId = empresaService.procurarPorCnpj(cnpj);
+
+        if (empresaId != null) {
+            List<FuncionarioFullDTO> funcionarios = funcionarioService.listarFuncionarioPeloIdEmpresa(empresaId);
+            return ResponseEntity.ok(funcionarios);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

@@ -5,8 +5,10 @@ import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaMapper;
 import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
 import com.pridepoints.api.entities.Empresa;
+import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
+import com.pridepoints.api.utilities.lista.ListaObj;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,8 @@ public class EmpresaService {
         return EmpresaMapper.ofListMin(empresaList);
     }
 
+    @Transactional
+
     public EmpresaFullDTO buscarPorId(Long id) {
 
         Optional<Empresa> result = empresaRepository.findById(id);
@@ -53,6 +57,20 @@ public class EmpresaService {
             return null;
         }
     }
+
+    @Transactional
+    public Long procurarPorCnpj(String cnpj) {
+
+        Optional<Empresa> result = empresaRepository.findByCnpj(cnpj);
+
+        if(result.isPresent()){
+            return EmpresaMapper.of(result.get()).getId();
+        } else {
+
+            return null;
+        }
+    }
+
 
 
     public EmpresaFullDTO atualizarEmpresa(EmpresaCriacaoDTO novosDados, Long idEmpresa) {
@@ -74,5 +92,24 @@ public class EmpresaService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public ListaObj<Funcionario> getFuncionariosDaEmpresa(String cnpj) {
+        Optional<Empresa> empresaOptional = empresaRepository.findByCnpj(cnpj);
+
+        if (empresaOptional.isPresent()) {
+            Empresa empresa = empresaOptional.get();
+            List<Funcionario> funcionariosDaEmpresa = empresa.getFuncionarios();
+            ListaObj<Funcionario> listaFuncionarios = new ListaObj<>(funcionariosDaEmpresa.size());
+
+            for (Funcionario funcionario : funcionariosDaEmpresa) {
+                listaFuncionarios.adiciona(funcionario);
+            }
+
+            return listaFuncionarios;
+        } else {
+            return null;
+        }
     }
 }
