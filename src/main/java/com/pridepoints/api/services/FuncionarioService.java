@@ -141,10 +141,6 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return FuncionarioMapper.of(funcionarioOrdenado);
     }
 
-    @Transactional
-    public List<FuncionarioFullDTO> listarFuncionarioPeloIdEmpresa(Long id) {
-        List<Funcionario> funcionarioList = funcionarioRepository.findByEmpresa_Id(id);
-        return FuncionarioMapper.of(funcionarioList);
 
 
     public boolean findUser(UserDTO usuario) {

@@ -95,19 +95,4 @@ public class FuncionarioFullDTO {
     public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
     }
-
-    @Override
-    public String toString() {
-        return "FuncionarioFullDTO{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", empresa='" + empresa + '\'' +
-                ", isGerente=" + isGerente +
-                ", isAtivo=" + isAtivo +
-                ", tipoFuncionario='" + tipoFuncionario + '\'' +
-                ", ultimaTrocaSenha=" + ultimaTrocaSenha +
-                '}';
-    }
 }
