@@ -141,7 +141,30 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return FuncionarioMapper.of(funcionarioOrdenado);
     }
 
+    @Transactional
+    public List<FuncionarioFullDTO> listarFuncionariosOrdenadosPorCPF() {
+        List<Funcionario> funcionarioList = funcionarioRepository.findAll();
+        Ordenacao ordenacao = new Ordenacao();
+        ordenacao.ordenaPorCPF(funcionarioList);
 
+        return FuncionarioMapper.of(funcionarioList);
+    }
+
+    @Transactional
+    public FuncionarioFullDTO buscarFuncionarioPorCPF(String cpf) {
+        List<Funcionario> funcionarioList = funcionarioRepository.findAll();
+        PesquisaBinaria pesquisaBinaria = new PesquisaBinaria();
+        Ordenacao ordenacao = new Ordenacao();
+        ordenacao.ordenaPorCPF(funcionarioList);
+
+        int indiceFuncionario = pesquisaBinaria.pesquisaBinariaPorCPF(funcionarioList, cpf);
+        Funcionario funcionario =   funcionarioList.get(indiceFuncionario);
+        if (indiceFuncionario != -1) {
+            return FuncionarioMapper.ofFull(funcionario);
+        } else {
+            return null; // ou outra resposta apropriada
+        }
+    }
 
     public boolean findUser(UserDTO usuario) {
         boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
@@ -187,5 +210,11 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         }
 
         return null;
+    }
+    @Transactional
+    public List<FuncionarioFullDTO> listarFuncionarioPeloIdEmpresa(Long id) {
+        List<Funcionario> funcionarioList = funcionarioRepository.findByEmpresa_Id(id);
+        return FuncionarioMapper.of(funcionarioList);
+
     }
 }

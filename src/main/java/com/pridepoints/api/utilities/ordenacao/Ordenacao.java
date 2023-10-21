@@ -7,6 +7,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ordenacao {
+
+
+    public long formatarDadoCpf(String cpf) {
+        // tudo que for diferente entre 0 e 9 ele transforma em espaço vazio
+        String numericCpf = cpf.replaceAll("[^0-9]", "");
+
+        // pega a String e transforma em Long para a gente consegui fazer a pesquisa binaria
+        return Long.parseLong(cpf);
+    }
+
+    public List<Funcionario> ordenaPorCPF(List<Funcionario> funcionarios) {
+        int n = funcionarios.size();
+
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+
+            for (int j = i + 1; j < n; j++) {
+                long cpf1 = formatarDadoCpf(funcionarios.get(j).getCpf());
+                long cpf2 = formatarDadoCpf(funcionarios.get(minIndex).getCpf());
+
+//                Compara se o cpf anterior é igual ao proximo cpf
+                if (cpf1 < cpf2) {
+//                    Caso seja ele guarda o indice do menor cpf para ser setado mais para frente
+                    minIndex = j;
+                }
+            }
+
+            // Trocar o funcionário atual pelo funcionário com menor CPF
+            Funcionario temp = funcionarios.get(i);
+            funcionarios.set(i, funcionarios.get(minIndex));
+            funcionarios.set(minIndex, temp);
+        }
+
+        return funcionarios;
+    }
+
+
     public List<Avaliacao> ordenaPorMaiorNota(List<Avaliacao> avaliacoes) {
 
         int n = avaliacoes.size();
