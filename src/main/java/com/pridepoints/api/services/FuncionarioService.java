@@ -10,6 +10,7 @@ import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
 import com.pridepoints.api.utilities.interfaces.iValidarTrocaDeSenha;
+import com.pridepoints.api.utilities.lista.ListaObj;
 import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import com.pridepoints.api.utilities.security.GerenciadorTokenJwt;
 import com.pridepoints.api.utilities.pesquisaBinaria.PesquisaBinaria;
@@ -158,8 +159,9 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         ordenacao.ordenaPorCPF(funcionarioList);
 
         int indiceFuncionario = pesquisaBinaria.pesquisaBinariaPorCPF(funcionarioList, cpf);
-        Funcionario funcionario =   funcionarioList.get(indiceFuncionario);
+       
         if (indiceFuncionario != -1) {
+            Funcionario funcionario =   funcionarioList.get(indiceFuncionario);
             return FuncionarioMapper.ofFull(funcionario);
         } else {
             return null; // ou outra resposta apropriada
@@ -215,6 +217,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     public List<FuncionarioFullDTO> listarFuncionarioPeloIdEmpresa(Long id) {
         List<Funcionario> funcionarioList = funcionarioRepository.findByEmpresa_Id(id);
         return FuncionarioMapper.of(funcionarioList);
-
     }
+
+
 }

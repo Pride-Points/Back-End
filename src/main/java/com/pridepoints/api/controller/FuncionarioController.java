@@ -2,7 +2,9 @@ package com.pridepoints.api.controller;
 
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.FuncionarioService;
+import com.pridepoints.api.utilities.lista.ListaObj;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -173,18 +176,23 @@ public class FuncionarioController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Resource> downloadCSVFuncionarios(@RequestParam String cnpj) {
-        long idEmpresa = empresaService.procurarPorCnpj(cnpj);
-        List<FuncionarioFullDTO> funcionarios = funcionarioService.listarFuncionarioPeloIdEmpresa(idEmpresa);
-        if (funcionarios.isEmpty()) {
+        ListaObj<FuncionarioFullDTO> funcionarios = empresaService.getFuncionariosDaEmpresa(cnpj);
+        if (funcionarios == null || funcionarios.getTamanho() == 0) {
             // Se não houver funcionários, retorne uma resposta vazia com status 204
-            System.out.println("Vazio");
             return ResponseEntity.noContent().build();
         } else {
             try {
+                List<FuncionarioFullDTO> funcionariosList = new ArrayList<>();
+
+                int tamanho = funcionarios.getTamanho();
+                for (int i = 0; i < tamanho; i++) {
+                    FuncionarioFullDTO funcionario = funcionarios.getElemento(i);
+                    funcionariosList.add(funcionario);
+                }
                 // Gere um arquivo CSV com os funcionários
                 String csvFilename = "funcionarios.csv";
                 DownloadCSV<FuncionarioFullDTO> csvExporter = new DownloadCSV<>();
-                csvExporter.exportToCSV(funcionarios, csvFilename);
+                csvExporter.exportToCSV(funcionariosList, csvFilename);
 
                 // Crie um recurso FileSystemResource para o arquivo CSV gerado
                 Resource resource = new FileSystemResource(csvFilename);
@@ -205,4 +213,5 @@ public class FuncionarioController {
             }
         }
     }
-    }
+
+}
