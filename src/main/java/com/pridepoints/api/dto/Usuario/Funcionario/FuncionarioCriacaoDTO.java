@@ -9,6 +9,7 @@ public class FuncionarioCriacaoDTO {
     @NotBlank
     private String nome;
     @Email
+    @NotBlank
     private String email;
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",
                message = "A senha deve conter pelo menos uma letra maiúscula," +
