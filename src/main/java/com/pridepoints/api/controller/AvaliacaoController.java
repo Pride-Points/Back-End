@@ -67,7 +67,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_FISICA')")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesDoUsuario(@PathVariable Long idUsuario){
 
         List<AvaliacaoDTO> result = avaliacaoService.listarAvaliacoesDoUsuario(idUsuario);
@@ -80,9 +80,8 @@ public class AvaliacaoController {
     }
 
 
-
     @PostMapping("/{empresaId}/{usuarioId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_FISICA')")
     public ResponseEntity<AvaliacaoDTO> publicarAvaliacao(@Valid @RequestBody AvaliacaoCriacaoDTO f, @PathVariable Long empresaId, @PathVariable Long usuarioId){
 
         AvaliacaoDTO result = avaliacaoService.publicarAvaliacaoDaEmpresa(f,empresaId,usuarioId);
@@ -94,7 +93,7 @@ public class AvaliacaoController {
     }
 
     @PutMapping("/{idUsuario}/{idAvaliacao}/{idEmpresa}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_FISICA')")
     public ResponseEntity<AvaliacaoDTO> atualizarAvaliacaoDaEmpresa(@Valid @RequestBody AvaliacaoCriacaoDTO novaAvaliacao
             , @PathVariable Long idAvaliacao, @PathVariable Long idEmpresa, @PathVariable Long idUsuario){
 
@@ -110,7 +109,7 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/{idAvaliacao}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_FISICA')")
     public ResponseEntity<Void> deletarAvaliacaoDaEmpresa(@PathVariable Long idAvaliacao){
 
         boolean removeu = avaliacaoService.deletarAvaliacaoDaEmpresa(idAvaliacao);
