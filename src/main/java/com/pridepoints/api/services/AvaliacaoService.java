@@ -107,6 +107,25 @@ public class AvaliacaoService {
         return null;
     }
 
+    @Transactional
+    public Avaliacao buscarAvaliacaoDeUsuario(Long idAvaliacao, Long idUsuario, Long idEmpresa){
+        Optional<Empresa> empresaBanco = empresaRepository.findById(idEmpresa);
+        Optional<Fisica> usuarioBanco = fisicaRepository.findById(idUsuario);
+
+        if(empresaBanco.isPresent() && usuarioBanco.isPresent()){
+            Empresa empresaEncontrada = empresaBanco.get();
+            Fisica usuarioEncontrado = usuarioBanco.get();
+
+            Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(idAvaliacao);
+
+            if(avaliacao.isPresent()){
+                return avaliacao.get();
+
+            }
+        }
+        
+        return null;
+    }
 
 
     @Transactional
@@ -132,6 +151,12 @@ public class AvaliacaoService {
 
         return null;
     }
+
+    @Transactional
+    public Integer contarAvaliacoes(Long idUsuario){
+        return avaliacaoRepository.countByPessoaFisicaId(idUsuario);
+    }
+
 
     @Transactional
     public List<AvaliacaoDTO> listarAvaliacoesPorMenorNota(Long idEmpresa) {
