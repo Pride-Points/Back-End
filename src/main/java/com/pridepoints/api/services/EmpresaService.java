@@ -4,9 +4,13 @@ import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaMapper;
 import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
+import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FuncionarioRepository;
+import com.pridepoints.api.utilities.lista.ListaObj;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmpresaService {
+public class    EmpresaService {
 
     private final EmpresaRepository empresaRepository;
 
@@ -65,6 +69,19 @@ public class EmpresaService {
         return null;
     }
 
+    @Transactional
+    public Long procurarPorCnpj(String cnpj) {
+
+        Optional<Empresa> result = empresaRepository.findByCnpj(cnpj);
+
+        if(result.isPresent()){
+            return EmpresaMapper.of(result.get()).getId();
+        } else {
+
+            return null;
+        }
+    }
+
     public boolean deletarEmpresa(Long idEmpresa) {
         boolean exists = empresaRepository.existsById(idEmpresa);
 
@@ -73,5 +90,24 @@ public class EmpresaService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public ListaObj<FuncionarioFullDTO> getFuncionariosDaEmpresa(String cnpj) {
+        Optional<Empresa> empresaOptional = empresaRepository.findByCnpj(cnpj);
+
+        if (empresaOptional.isPresent()) {
+            Empresa empresa = empresaOptional.get();
+            List<Funcionario> funcionariosDaEmpresa = empresa.getFuncionarios();
+            ListaObj<FuncionarioFullDTO> listaFuncionarios = new ListaObj<>(funcionariosDaEmpresa.size());
+            List<FuncionarioFullDTO> funcionarios = FuncionarioMapper.of(funcionariosDaEmpresa);
+                for (FuncionarioFullDTO funcionario : funcionarios) {
+                listaFuncionarios.adiciona(funcionario);
+            }
+
+            return listaFuncionarios;
+        } else {
+            return null;
+        }
     }
 }

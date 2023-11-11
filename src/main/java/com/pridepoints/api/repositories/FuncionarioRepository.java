@@ -17,6 +17,10 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     List<Funcionario> findByEmpresaAndIsAtivoTrue(Long idEmpresa);
 
     List<Funcionario> findByEmpresaAndIsAtivoFalse(Long idEmpresa);
+    List<Funcionario> findByIsAtivoFalse();
 
     Optional<Funcionario> findByEmail(String email);
+
+    List<Funcionario> findByEmpresa_Id(Long empresaId);
+
 }
