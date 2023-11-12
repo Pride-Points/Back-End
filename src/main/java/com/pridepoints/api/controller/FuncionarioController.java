@@ -172,7 +172,7 @@ public class FuncionarioController {
     }
 
     @GetMapping("/download-csv")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Resource> downloadCSVFuncionarios(@RequestParam String cnpj) {
         ListaObj<FuncionarioFullDTO> funcionarios = empresaService.getFuncionariosDaEmpresa(cnpj);
