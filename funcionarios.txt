@@ -1,0 +1,3 @@
+00Funcionarios20-11-2023 16:3301
+02000001Gerente        51127145819Admin          true true 00001Caique Gomes                                                                                                                                                                                                                                                   caique@gmail.com                                                                                                                                                                                                                                               2023-11-20
+010000000001

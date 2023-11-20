@@ -4,6 +4,7 @@ import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.FuncionarioService;
+import com.pridepoints.api.utilities.exportacao.Exportacao;
 import com.pridepoints.api.utilities.lista.ListaObj;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -171,6 +172,41 @@ public class FuncionarioController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    @GetMapping("/exportar-txt")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Resource> exportarFuncionariosParaTXT(@RequestParam String cnpj) {
+        List<Funcionario> funcionarios = empresaService.getFuncionariosDaEmpresaa(cnpj);
+        Exportacao exportar = new Exportacao();
+        if (funcionarios == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+
+        if (funcionarios == null || funcionarios.isEmpty()) {
+            // Se não houver funcionários, retorne uma resposta vazia com status 204
+            return ResponseEntity.noContent().build();
+        } else {
+            // Gere um arquivo TXT com os funcionários
+            String txtFilename = "funcionarios.txt";
+            Exportacao.gravaArquivoFuncionarios(funcionarios, txtFilename);
+
+            // Crie um recurso FileSystemResource para o arquivo TXT gerado
+            Resource resource = new FileSystemResource(txtFilename);
+
+            // Configure os cabeçalhos da resposta para indicar o tipo de mídia e o nome do arquivo
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=funcionarios.txt");
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+
+            // Retorne a resposta com o arquivo TXT como anexo
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(resource);
+        }
+    }
+
 
     @GetMapping("/download-csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

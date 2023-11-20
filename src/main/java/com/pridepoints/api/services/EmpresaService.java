@@ -110,4 +110,16 @@ public class    EmpresaService {
             return null;
         }
     }
+    @Transactional
+    public List<Funcionario> getFuncionariosDaEmpresaa(String cnpj) {
+        Optional<Empresa> empresaOptional = empresaRepository.findByCnpj(cnpj);
+
+        if (empresaOptional.isPresent()) {
+            Empresa empresa = empresaOptional.get();
+            List<Funcionario> funcionariosDaEmpresa = empresa.getFuncionarios();
+            return funcionariosDaEmpresa;
+        } else {
+            return null;
+        }
+    }
 }
