@@ -188,4 +188,11 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
 
         return null;
     }
+
+    @Transactional
+    public List<FuncionarioFullDTO> salvarFuncionarios(List<Funcionario> listaLida) {
+      List<Funcionario> funcionariosSalvos = funcionarioRepository.saveAll(listaLida);
+
+      return FuncionarioMapper.of(funcionariosSalvos);
+    }
 }

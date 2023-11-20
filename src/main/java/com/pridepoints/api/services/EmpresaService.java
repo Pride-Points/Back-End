@@ -53,6 +53,13 @@ public class EmpresaService {
         return result.map(EmpresaMapper::of).orElse(null);
     }
 
+    public Empresa buscarPorIdTxt(Long id) {
+
+        Optional<Empresa> result = empresaRepository.findById(id);
+
+        return result.get();
+    }
+
 
     public EmpresaFullDTO atualizarEmpresa(EmpresaCriacaoDTO novosDados, Long idEmpresa) {
         Optional<Empresa> result = empresaRepository.findById(idEmpresa);
