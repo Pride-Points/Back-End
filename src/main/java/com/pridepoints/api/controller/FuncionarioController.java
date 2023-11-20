@@ -218,10 +218,10 @@ public class FuncionarioController {
                     fila.poll();
                     return responseEntity;
 
+                }else{
+                    fila.poll();
+                    return responseEntity;
                 }
-
-                // Retorne a resposta com o arquivo CSV como anexo
-                return null;
 
 
 
