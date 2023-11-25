@@ -4,10 +4,11 @@ import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.FuncionarioService;
+import com.pridepoints.api.utilities.Fila.FilaObj;
 import com.pridepoints.api.utilities.lista.ListaObj;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,6 @@ import com.pridepoints.api.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -194,6 +193,12 @@ public class FuncionarioController {
                 DownloadCSV<FuncionarioFullDTO> csvExporter = new DownloadCSV<>();
                 csvExporter.exportToCSV(funcionariosList, csvFilename);
 
+                //Instancia um objeto do tipo fila e armazena o nome do arquivo como para
+                FilaObj<String> fila= new FilaObj<>(10);
+                fila.insert(csvFilename);
+                System.out.println("ARQUIVO SENDO PROCESSADO....");
+                fila.exibe();
+
                 // Crie um recurso FileSystemResource para o arquivo CSV gerado
                 Resource resource = new FileSystemResource(csvFilename);
 
@@ -202,11 +207,24 @@ public class FuncionarioController {
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=funcionarios.csv");
                 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 
-                // Retorne a resposta com o arquivo CSV como anexo
-                return ResponseEntity.ok()
+                // Armazena o resultado do ResponseEntity em uma variavel
+                ResponseEntity<Resource> responseEntity = ResponseEntity.ok()
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .body(resource);
+
+
+                if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                    fila.poll();
+                    return responseEntity;
+
+                }else{
+                    fila.poll();
+                    return responseEntity;
+                }
+
+
+
             } catch (IOException e) {
                 // Em caso de erro ao criar o arquivo CSV, retorne uma resposta de erro 500
                 return ResponseEntity.internalServerError().build();
