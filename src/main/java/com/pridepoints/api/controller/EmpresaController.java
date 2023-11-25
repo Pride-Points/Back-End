@@ -5,13 +5,16 @@ import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
 import com.pridepoints.api.dto.Empresa.EmpresaMapper;
 import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.EmpresaService;
+import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.multiclasse.EmpresaDonoRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,10 +29,14 @@ public class EmpresaController {
     private final EmpresaService empresaService;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private final FuncionarioService funcionarioService;
+
     public EmpresaController(EmpresaService empresaService,
-                             PasswordEncoder passwordEncoder){
+                             PasswordEncoder passwordEncoder, FuncionarioService funcionarioService){
         this.empresaService = empresaService;
         this.passwordEncoder = passwordEncoder;
+        this.funcionarioService = funcionarioService;
     }
 
     @PostMapping
@@ -91,6 +98,19 @@ public class EmpresaController {
         }
 
         return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/funcionarios-por-cnpj")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<FuncionarioFullDTO>> getFuncionariosDaEmpresa(@RequestParam String cnpj) {
+        Long empresaId = empresaService.procurarPorCnpj(cnpj);
+
+        if (empresaId != null) {
+            List<FuncionarioFullDTO> funcionarios = funcionarioService.listarFuncionarioPeloIdEmpresa(empresaId);
+            return ResponseEntity.ok(funcionarios);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

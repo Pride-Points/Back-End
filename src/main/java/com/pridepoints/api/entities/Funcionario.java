@@ -84,4 +84,12 @@ public class Funcionario extends Pessoa {
         this.id = id;
     }
 
+
+    public void setGerente(boolean gerente) {
+        isGerente = gerente;
+    }
+
+    public void setAtivo(boolean ativo) {
+        isAtivo = ativo;
+    }
 }
