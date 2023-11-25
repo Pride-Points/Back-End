@@ -54,8 +54,6 @@ public class FuncionarioController {
         this.empresaService = empresaService;
     }
 
-    @Autowired
-    private EmpresaService empresaService;
 
     @SecurityRequirement(name = "Bearer")
     @GetMapping
