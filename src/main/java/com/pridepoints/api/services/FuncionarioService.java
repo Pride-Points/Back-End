@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.AddressException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +83,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     @Override
     @Scheduled(cron = "0 0 0 1 */2 ?") // Agendar a cada 2 meses
     public void validatePasswordChange() throws AddressException {
-            LocalDateTime doisMesesAtras = LocalDateTime.now().minusMonths(2);
+            LocalDate doisMesesAtras = LocalDate.now().minusMonths(2);
             List<Funcionario> funcionarios = funcionarioRepository.findAll();
 
             for (Funcionario f: funcionarios){

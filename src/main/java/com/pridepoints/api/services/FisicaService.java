@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +111,7 @@ public class FisicaService implements iValidarTrocaDeSenha {
 
     @Override
     public void validatePasswordChange() {
-        LocalDateTime quatroMesesAtras = LocalDateTime.now().minusMonths(4);
+        LocalDate quatroMesesAtras = LocalDate.now().minusMonths(4);
         List<Fisica> pessoasFisica = fisicaRepository.findAll();
 
         for (Fisica pessoaFisica: pessoasFisica){

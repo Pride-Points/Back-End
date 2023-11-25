@@ -19,7 +19,7 @@ public class FisicaFullDTO {
 
     private String orientacaoSexual;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime ultimaTrocaSenha;
+    private LocalDate ultimaTrocaSenha;
 
     private List<AvaliacaoDTO> avaliacoes;
 
@@ -51,7 +51,7 @@ public class FisicaFullDTO {
         return orientacaoSexual;
     }
 
-    public LocalDateTime getUltimaTrocaSenha() {
+    public LocalDate getUltimaTrocaSenha() {
         return ultimaTrocaSenha;
     }
 
@@ -83,7 +83,7 @@ public class FisicaFullDTO {
         this.orientacaoSexual = orientacaoSexual;
     }
 
-    public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
+    public void setUltimaTrocaSenha(LocalDate ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
     }
 

@@ -146,7 +146,7 @@ public class FuncionarioController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<FuncionarioFullDTO>> cadastrarFuncionariosTxt(
             @PathVariable Long empresaId,
-            @RequestParam("file") MultipartFile file
+            @RequestParam MultipartFile file
     ) {
         // Verifique se o arquivo é nulo ou vazio antes de prosseguir
         if (file == null || file.isEmpty()) {
@@ -212,7 +212,7 @@ public class FuncionarioController {
         } else {
             // Gere um arquivo TXT com os funcionários
             String txtFilename = "funcionarios.txt";
-            Exportacao.gravaArquivoFuncionarios(funcionarios, txtFilename);
+            exportar.gravaArquivoFuncionarios(funcionarios, txtFilename);
 
             // Crie um recurso FileSystemResource para o arquivo TXT gerado
             Resource resource = new FileSystemResource(txtFilename);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,9 +18,8 @@ public abstract class Pessoa{
 
     @Column
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime ultimaTrocaSenha;
+    private LocalDate ultimaTrocaSenha;
 
 
     public String getNome() {
@@ -46,11 +46,11 @@ public abstract class Pessoa{
         this.email = email;
     }
 
-    public LocalDateTime getUltimaTrocaSenha() {
+    public LocalDate getUltimaTrocaSenha() {
         return ultimaTrocaSenha;
     }
 
-    public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
+    public void setUltimaTrocaSenha(LocalDate ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
     }
 }

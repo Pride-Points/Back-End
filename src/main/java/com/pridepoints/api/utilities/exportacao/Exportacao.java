@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Exportacao {
-    public static void gravaArquivoFuncionarios(List<Funcionario> lista, String nomeArq) {
+    public void gravaArquivoFuncionarios(List<Funcionario> lista, String nomeArq) {
         int contaRegDados = 0;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
@@ -48,7 +48,7 @@ public class Exportacao {
 
         gravaRegistro(trailer, nomeArq);
     }
-    public static void gravaRegistro(String registro, String nomeArq) {
+    public void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
 
         // Abre o arquivo

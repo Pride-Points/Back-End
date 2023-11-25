@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class EventoCriacaoDTO {
@@ -15,7 +16,7 @@ public class EventoCriacaoDTO {
     private String descricaoEvento;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date dtEvento;
+    private LocalDate dtEvento;
 
     public String getNome() {
         return nome;
@@ -41,11 +42,11 @@ public class EventoCriacaoDTO {
         this.descricaoEvento = descricaoEvento;
     }
 
-    public Date getDtEvento() {
+    public LocalDate getDtEvento() {
         return dtEvento;
     }
 
-    public void setDtEvento(Date dtEvento) {
+    public void setDtEvento(LocalDate dtEvento) {
         this.dtEvento = dtEvento;
     }
 }

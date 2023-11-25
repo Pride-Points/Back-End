@@ -2,6 +2,7 @@ package com.pridepoints.api.dto.Usuario.Funcionario;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class FuncionarioFullDTO {
@@ -16,7 +17,7 @@ public class FuncionarioFullDTO {
     private String tipoFuncionario;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime ultimaTrocaSenha;
+    private LocalDate ultimaTrocaSenha;
 
     public FuncionarioFullDTO() {
     }
@@ -48,7 +49,7 @@ public class FuncionarioFullDTO {
         return empresa;
     }
 
-    public LocalDateTime getUltimaTrocaSenha() {
+    public LocalDate getUltimaTrocaSenha() {
         return ultimaTrocaSenha;
     }
 
@@ -92,7 +93,7 @@ public class FuncionarioFullDTO {
         this.tipoFuncionario = tipoFuncionario;
     }
 
-    public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
+    public void setUltimaTrocaSenha(LocalDate ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
     }
 }

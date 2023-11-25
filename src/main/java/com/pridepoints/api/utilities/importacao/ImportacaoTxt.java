@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,22 +28,24 @@ public class ImportacaoTxt {
 
     public List<FuncionarioFullDTO> leArquivoTxt(MultipartFile file, long empresaId) {
         List<Funcionario> listaLida = new ArrayList<>();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try (BufferedReader entrada = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String registro;
             while ((registro = entrada.readLine()) != null) {
                 String tipoRegistro = registro.substring(0, 2);
 
                 if (tipoRegistro.equals("02")) {
-                    long id = Integer.parseInt(registro.substring(2, 8).trim());
+                    long id = Long.parseLong(registro.substring(2, 8).trim());
                     String cargo = registro.substring(8, 23).trim();
                     String cpf = registro.substring(23, 34).trim();
                     String tipoFuncionario = registro.substring(34, 49).trim();
-                    boolean isGerente = registro.substring(49, 50).equals("1");
-                    boolean isAtivo = registro.substring(50, 51).equals("1");
-                    String nome = registro.substring(56, 311).trim();
-                    String email = registro.substring(311, 566).trim();
-                    LocalDateTime ultimaTrocaSenha = LocalDateTime.parse(registro.substring(566, 576), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+                    boolean isGerente = registro.substring(49, 54).trim().equalsIgnoreCase("true");
+                    boolean isAtivo = registro.substring(54, 59).trim().equalsIgnoreCase("true");
+                    String nome = registro.substring(64, 319).trim();
+                    String email = registro.substring(319, 574).trim();
+                    String ultimaTrocaSenha = registro.substring(574, 584).trim();
+                    System.out.println(ultimaTrocaSenha);
+                    LocalDate dataFormatada = LocalDate.parse(ultimaTrocaSenha, formatter);
 
                     Funcionario funcionario = new Funcionario();
                     funcionario.setId(id);
@@ -58,7 +61,7 @@ public class ImportacaoTxt {
                     funcionario.setIsAtivo(isAtivo);
                     funcionario.setNome(nome);
                     funcionario.setEmail(email);
-                    funcionario.setUltimaTrocaSenha(ultimaTrocaSenha);
+                    funcionario.setUltimaTrocaSenha(dataFormatada);
 
                     listaLida.add(funcionario);
                 }

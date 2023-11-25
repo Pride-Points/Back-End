@@ -2,6 +2,7 @@ package com.pridepoints.api.dto.Evento;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class EventoDTO {
@@ -11,7 +12,7 @@ public class EventoDTO {
     private String imgEvento;
     private String descricaoEvento;
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date dtEvento;
+    private LocalDate dtEvento;
 
     public EventoDTO(){}
 
@@ -31,7 +32,7 @@ public class EventoDTO {
         return descricaoEvento;
     }
 
-    public Date getDtEvento() {
+    public LocalDate getDtEvento() {
         return dtEvento;
     }
 
@@ -51,7 +52,7 @@ public class EventoDTO {
         this.descricaoEvento = descricaoEvento;
     }
 
-    public void setDtEvento(Date dtEvento) {
+    public void setDtEvento(LocalDate dtEvento) {
         this.dtEvento = dtEvento;
     }
 }
