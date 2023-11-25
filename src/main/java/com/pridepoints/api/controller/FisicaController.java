@@ -63,7 +63,7 @@ public class FisicaController {
 
     @PostMapping
     public ResponseEntity<FisicaFullDTO> cadastrarUsuario(@Valid @RequestBody FisicaCriacaoDTO f){
-
+        System.out.println(f);
             FisicaFullDTO result = fisicaService.cadastrarUsuario(f);
             if(result == null){
                 return ResponseEntity.status(409).build();

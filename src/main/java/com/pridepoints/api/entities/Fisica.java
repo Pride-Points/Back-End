@@ -22,6 +22,8 @@ public class Fisica extends Pessoa {
 
     private String genero;
 
+    private String cpf;
+
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private LocalDate dtNascimento;
 
@@ -75,6 +77,14 @@ public class Fisica extends Pessoa {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public void adicionarAvaliacao(Avaliacao novaAvaliacao){

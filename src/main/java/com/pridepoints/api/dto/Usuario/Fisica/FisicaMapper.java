@@ -17,6 +17,7 @@ public class FisicaMapper {
         usuario.setSenha(fisicaCriacaoDTO.getSenha());
         usuario.setEmail(fisicaCriacaoDTO.getEmail());
         usuario.setOrientacaoSexual(fisicaCriacaoDTO.getOrientacaoSexual());
+        usuario.setCpf(fisicaCriacaoDTO.getCpf());
         usuario.setGenero(fisicaCriacaoDTO.getGenero());
         usuario.setDtNascimento(fisicaCriacaoDTO.getDtNascimento());
 
