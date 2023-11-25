@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.br.CPF;
 
 
 import java.time.LocalDate;
@@ -19,6 +20,9 @@ public class FisicaCriacaoDTO {
     private String email;
     private String orientacaoSexual;
     private String genero;
+
+    @CPF
+    private String cpf;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private LocalDate dtNascimento;
 
@@ -62,11 +66,32 @@ public class FisicaCriacaoDTO {
         this.genero = genero;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     public LocalDate getDtNascimento() {
         return dtNascimento;
     }
 
     public void setDtNascimento(LocalDate dtNascimento) {
         this.dtNascimento = dtNascimento;
+    }
+
+    @Override
+    public String toString() {
+        return "FisicaCriacaoDTO{" +
+                "nome='" + nome + '\'' +
+                ", senha='" + senha + '\'' +
+                ", email='" + email + '\'' +
+                ", orientacaoSexual='" + orientacaoSexual + '\'' +
+                ", genero='" + genero + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", dtNascimento=" + dtNascimento +
+                '}';
     }
 }

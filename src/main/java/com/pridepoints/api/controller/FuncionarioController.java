@@ -2,6 +2,9 @@ package com.pridepoints.api.controller;
 
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.services.EmpresaService;
+import com.pridepoints.api.services.FuncionarioService;
+import com.pridepoints.api.utilities.importacao.ImportacaoTxt;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.exportacao.Exportacao;
@@ -23,6 +26,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +47,11 @@ public class FuncionarioController {
 
 
     private final FuncionarioService funcionarioService;
+    private final EmpresaService empresaService;
 
-    public FuncionarioController(FuncionarioService funcionarioService) {
+    public FuncionarioController(FuncionarioService funcionarioService, EmpresaService empresaService) {
         this.funcionarioService = funcionarioService;
+        this.empresaService = empresaService;
     }
 
     @Autowired
@@ -133,6 +139,26 @@ public class FuncionarioController {
 
         if (result == null) {
             return ResponseEntity.status(409).build();
+        } else {
+            return ResponseEntity.status(201).body(result);
+        }
+    }
+    @SecurityRequirement(name = "Bearer")
+    @PostMapping("/importacao/{empresaId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<FuncionarioFullDTO>> cadastrarFuncionariosTxt(
+            @PathVariable Long empresaId,
+            @RequestParam("file") MultipartFile file
+    ) {
+        // Verifique se o arquivo é nulo ou vazio antes de prosseguir
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<FuncionarioFullDTO> result = new ImportacaoTxt(funcionarioService, empresaService).leArquivoTxt(file, empresaId);
+
+        if (result.isEmpty()) {
+            return ResponseEntity.status(404).build();
         } else {
             return ResponseEntity.status(201).body(result);
         }
