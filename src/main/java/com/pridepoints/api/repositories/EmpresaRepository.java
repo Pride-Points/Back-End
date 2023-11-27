@@ -14,6 +14,8 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     boolean existsByCnpj(String cnpj);
     Optional<Empresa> findByCnpj(String cnpj);
-
     Optional<Empresa> findByFuncionariosEmail(String email);
+
+    @Query("SELECT AVG(a.nota) FROM Avaliacao a WHERE a.empresa.id = :empresaId")
+    Optional<Double> calcularMediaAvaliacoes(@Param("empresaId") Long empresaId);
 }

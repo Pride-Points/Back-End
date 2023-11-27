@@ -56,4 +56,15 @@ public class EmpresaMapper {
         return empresasMinDTO;
     }
 
+    public static EmpresaMediaDTO ofMedia(Empresa empresa){
+        EmpresaMediaDTO empresaMediaDTO = new EmpresaMediaDTO();
+
+        empresaMediaDTO.setId(empresa.getId());
+        empresaMediaDTO.setNomeFantasia(empresa.getNomeFantasia());
+        empresaMediaDTO.setCidade(empresa.getCidade());
+        empresaMediaDTO.setEstado(empresa.getEstado());
+        empresaMediaDTO.setDono(empresa.getFuncionarios().get(0).getNome());
+
+        return empresaMediaDTO;
+    }
 }
