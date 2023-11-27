@@ -1,2 +1,2 @@
 id;nome;email;cargo;empresa;isGerente;isAtivo;tipoFuncionario;ultimaTrocaSenha;
-3,Ana Julia,anaj@gmail.com,Gerente,Logicalis,true,true,Admin,2023-11-11T21:03:01.634297,
+1,Ronald McDonald,mcdonalds@gmail.com,Gerente,Mc Donald's,true,true,Admin,2023-11-27,

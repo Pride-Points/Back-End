@@ -16,23 +16,15 @@ import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
-import com.pridepoints.api.services.EmpresaService;
-import com.pridepoints.api.services.FuncionarioService;
+
 import com.pridepoints.api.utilities.download.DownloadCSV;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.multipart.MultipartFile;
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
-import com.pridepoints.api.services.FuncionarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,12 +60,10 @@ public class FuncionarioController {
     }
 
     @SecurityRequirement(name = "Bearer")
-    @GetMapping("/ativos/{idEmpresa}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/ativos/{idEmpresa}")
     public ResponseEntity<List<FuncionarioFullDTO>> listarAtivos(@PathVariable Long idEmpresa) {
-
         List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosAtivos(idEmpresa);
-
         if (result.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -81,8 +71,8 @@ public class FuncionarioController {
     }
 
     @SecurityRequirement(name = "Bearer")
-    @GetMapping("/inativos/{idEmpresa}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/inativos/{idEmpresa}")
     public ResponseEntity<List<FuncionarioFullDTO>> listarInativos(Long idEmpresa) {
 
         List<FuncionarioFullDTO> result = funcionarioService.listarFuncionariosInativos(idEmpresa);
@@ -94,8 +84,8 @@ public class FuncionarioController {
     }
 
     @SecurityRequirement(name = "Bearer")
-    @GetMapping("/{idFunc}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{idFunc}")
     public ResponseEntity<FuncionarioFullDTO> listarPorId(@PathVariable Long idFunc) {
         FuncionarioFullDTO fullDTO = funcionarioService.listarPorId(idFunc);
         if (fullDTO == null) {

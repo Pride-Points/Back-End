@@ -36,7 +36,6 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
 
     private final FuncionarioRepository funcionarioRepository;
 
-
     private final EmpresaRepository empresaRepository;
 
 
@@ -101,15 +100,10 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             return FuncionarioMapper.of(funcionarioList);
     }
 
+
     @Transactional
     public List<FuncionarioFullDTO> listarFuncionariosAtivos(Long idEmpresa) {
-
-        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaAndIsAtivoTrue(idEmpresa);
-
-        if(ativosList.isEmpty()){
-            return null;
-        }
-
+        List<Funcionario> ativosList = funcionarioRepository.findByEmpresaIdAndIsAtivoTrue(idEmpresa);
         return FuncionarioMapper.of(ativosList);
     }
 
@@ -185,10 +179,13 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         final Authentication authentication = this.authenticationManager.authenticate(credenciais);
 
         Optional<Funcionario> funcOpt = funcionarioRepository.findByEmail(usuario.getEmail());
+        Optional<Empresa> empresa = empresaRepository.findByFuncionariosEmail(usuario.getEmail());
+        final Long idEmpresa = empresa.get().getId();
+        final String cnpj = empresa.get().getCnpj();
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = gerenciadorTokenJwt.generateToken(authentication);
 
-        return funcOpt.map(funcionario -> FuncionarioMapper.of(funcionario, token)).orElse(null);
+        return funcOpt.map(funcionario -> FuncionarioMapper.of(funcionario, idEmpresa, cnpj, token)).orElse(null);
     }
 
     public boolean deletarFunc(Long idFunc) {

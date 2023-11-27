@@ -16,7 +16,11 @@ public class FuncionarioMapper {
         funcionario.setSenha(funcionarioCriacaoDTO.getSenha());
         funcionario.setEmail(funcionarioCriacaoDTO.getEmail());
         funcionario.setCargo(funcionarioCriacaoDTO.getCargo());
-        funcionario.setCpf("");
+        if(funcionarioCriacaoDTO.getCpf() == null){
+            funcionario.setCpf("");
+        } else {
+            funcionario.setCpf(funcionarioCriacaoDTO.getCpf());
+        }
         funcionario.setIsGerente(funcionarioCriacaoDTO.getIsGerente());
         funcionario.setTipoFuncionario(funcionarioCriacaoDTO.getTipoFuncionario());
 
@@ -60,10 +64,12 @@ public class FuncionarioMapper {
         return funcionariosFullDTO;
     }
 
-    public static UsuarioTokenDTO of(Funcionario funcionario, String token){
+    public static UsuarioTokenDTO of(Funcionario funcionario, Long idEmpresa, String cnpj, String token){
             UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
             usuarioTokenDTO.setUserId(funcionario.getId());
             usuarioTokenDTO.setEmail(funcionario.getEmail());
+            usuarioTokenDTO.setIdEmpresa(idEmpresa);
+            usuarioTokenDTO.setCnpj(cnpj);
             usuarioTokenDTO.setNome(funcionario.getNome());
             usuarioTokenDTO.setToken(token);
 
