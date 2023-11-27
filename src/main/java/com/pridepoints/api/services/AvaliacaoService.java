@@ -46,7 +46,7 @@ public class AvaliacaoService {
 
         if(resultFisica.isPresent() && resultEmpresa.isPresent()){
 
-            Avaliacao novaAvaliacao = AvaliacaoMapper.of(avaliacao);
+            Avaliacao novaAvaliacao = AvaliacaoMapper.of(avaliacao, resultFisica.get());
 
             novaAvaliacao.setEmpresa(resultEmpresa.get());
             novaAvaliacao.setPessoaFisica(resultFisica.get());
@@ -91,7 +91,7 @@ public class AvaliacaoService {
             boolean existe = avaliacaoRepository.existsById(idAvaliacao);
 
             if(existe){
-                Avaliacao avaliacaoConvertida = AvaliacaoMapper.of(novaAvaliacao);
+                Avaliacao avaliacaoConvertida = AvaliacaoMapper.of(novaAvaliacao, usuarioEncontrado);
             avaliacaoConvertida.setId(idAvaliacao);
             avaliacaoConvertida.setEmpresa(empresaEncontrada);
             avaliacaoConvertida.setPessoaFisica(usuarioEncontrado);
@@ -187,4 +187,12 @@ public class AvaliacaoService {
     }
 
 
+    public Avaliacao postResposta(Long idAvaliacao, AvaliacaoCriacaoDTO resposta) {
+        Avaliacao avaliacao = avaliacaoRepository.findById(idAvaliacao)
+                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+
+        avaliacao.setResp(resposta.getResposta());
+        avaliacao.setTitle(resposta.getTitle());
+        return avaliacaoRepository.save(avaliacao);
+    }
 }

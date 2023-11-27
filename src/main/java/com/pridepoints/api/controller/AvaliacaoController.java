@@ -3,10 +3,12 @@ package com.pridepoints.api.controller;
 import com.pridepoints.api.dto.Avaliacao.AvaliacaoCriacaoDTO;
 import com.pridepoints.api.dto.Avaliacao.AvaliacaoDTO;
 import com.pridepoints.api.dto.Avaliacao.AvaliacaoMapper;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoRespostaEmpresaDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.services.AvaliacaoService;
 import com.pridepoints.api.services.PilhaService;
 import com.pridepoints.api.utilities.PilhaAvaliacao.PilhaAvaliacao;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,7 +61,7 @@ public class AvaliacaoController {
         return ResponseEntity.status(200).body(result);
     }
 
-    @GetMapping("/empresa/{idEmpresa}")
+    @GetMapping("/{idEmpresa}")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesDaEmpresa(@PathVariable Long idEmpresa){
 
         List<AvaliacaoDTO> result = avaliacaoService.listarAvaliacoesDaEmpresa(idEmpresa);
@@ -69,6 +71,13 @@ public class AvaliacaoController {
         }
 
         return ResponseEntity.status(200).body(result);
+    }
+
+    @SecurityRequirement(name = "Bearer")
+    @PostMapping("/resposta-empresa/{idAvaliacao}")
+    public ResponseEntity<AvaliacaoRespostaEmpresaDTO> postResposta(@PathVariable Long idAvaliacao, @RequestBody AvaliacaoCriacaoDTO resposta) {
+        Avaliacao updatedAvaliacao = avaliacaoService.postResposta(idAvaliacao, resposta);
+        return ResponseEntity.ok(AvaliacaoMapper.ofRespostaEmpresa(updatedAvaliacao));
     }
 
     @GetMapping("/usuario/{idUsuario}")
