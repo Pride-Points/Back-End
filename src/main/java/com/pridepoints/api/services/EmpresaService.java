@@ -1,9 +1,6 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.dto.Empresa.EmpresaCriacaoDTO;
-import com.pridepoints.api.dto.Empresa.EmpresaFullDTO;
-import com.pridepoints.api.dto.Empresa.EmpresaMapper;
-import com.pridepoints.api.dto.Empresa.EmpresaMinDTO;
+import com.pridepoints.api.dto.Empresa.*;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
 import com.pridepoints.api.entities.Empresa;
@@ -128,5 +125,10 @@ public class    EmpresaService {
         } else {
             return null;
         }
+    }
+
+
+    public Optional<Double> calcularMediaAvaliacoes(Long empresaId) {
+        return empresaRepository.calcularMediaAvaliacoes(empresaId);
     }
 }

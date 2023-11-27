@@ -4,3 +4,6 @@
 010000000001
 02000003Gerente                   Admin          true true 00003joaao                                                                                                                                                                                                                                                          douagllas@gmail.com                                                                                                                                                                                                                                            2023-11-25
 010000000001
+00Funcionarios27-11-2023 00:1201
+02000001Gerente                   Admin          true true 00001Ronald McDonald                                                                                                                                                                                                                                                mcdonalds@gmail.com                                                                                                                                                                                                                                            2023-11-27
+010000000001

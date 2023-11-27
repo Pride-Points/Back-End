@@ -6,6 +6,26 @@ public class UsuarioTokenDTO {
     private String email;
     private String token;
 
+    private String cnpj;
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    private Long idEmpresa;
+
+    public Long getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(Long idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
     public Long getUserId() {
         return userId;
     }
