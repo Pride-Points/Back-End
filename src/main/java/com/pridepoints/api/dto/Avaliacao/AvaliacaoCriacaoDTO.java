@@ -17,10 +17,40 @@ public class AvaliacaoCriacaoDTO {
     private String tag;
     private String comentario;
 
+    private String resposta;
+
+    private String title;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dtAvaliacao;
+
+    private boolean isShared;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getResposta() {
+        return resposta;
+    }
+
+    public void setResposta(String resposta) {
+        this.resposta = resposta;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
 
     public double getNota() {
         return nota;

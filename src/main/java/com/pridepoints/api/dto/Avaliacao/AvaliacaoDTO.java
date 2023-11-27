@@ -14,6 +14,15 @@ public class AvaliacaoDTO {
     private String tag;
     private String comentario;
 
+    private boolean isShared;
+
+    private String nomeAvaliador;
+
+    private String resp;
+
+    private String title;
+
+
     public AvaliacaoDTO(){}
 
     public AvaliacaoDTO(Avaliacao entity) {
@@ -22,6 +31,39 @@ public class AvaliacaoDTO {
         this.dtAvaliacao = entity.getDtAvaliacao();
         this.tag = entity.getTag();
         this.comentario = entity.getComentario();
+        this.isShared = entity.isShared();
+        this.resp = entity.getResp();
+        this.nomeAvaliador = entity.getNomeAvaliador();
+    }
+
+    public String getTitle() {
+        if(title == null){
+            return "";
+        }
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNomeAvaliador() {
+        return nomeAvaliador;
+    }
+
+    public void setNomeAvaliador(String nomeAvaliador) {
+        this.nomeAvaliador = nomeAvaliador;
+    }
+
+    public String getResp() {
+        if(resp == null){
+            return "";
+        }
+        return resp;
+    }
+
+    public void setResp(String resp) {
+        this.resp = resp;
     }
 
     public Long getId() {
@@ -62,5 +104,13 @@ public class AvaliacaoDTO {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
     }
 }
