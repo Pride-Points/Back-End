@@ -1,12 +1,10 @@
 package com.pridepoints.api.controller;
-
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.importacao.ImportacaoTxt;
 import com.pridepoints.api.entities.Funcionario;
-import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.exportacao.Exportacao;
 import com.pridepoints.api.utilities.Fila.FilaObj;
 import com.pridepoints.api.utilities.lista.ListaObj;
@@ -15,21 +13,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
-import com.pridepoints.api.services.EmpresaService;
-import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.download.DownloadCSV;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
-import com.pridepoints.api.services.FuncionarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
