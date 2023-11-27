@@ -16,9 +16,23 @@ public class FuncionarioCriacaoDTO {
                        " uma letra minúscula, um número e ter no mínimo 8 caracteres.")
     private String senha;
     private String cargo;
+
+    private String cpf;
     @NotBlank
     private String tipoFuncionario;
     private Boolean isGerente;
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Boolean getGerente() {
+        return isGerente;
+    }
 
     public String getNome() {
         return nome;
