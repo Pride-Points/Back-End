@@ -128,7 +128,6 @@ public class FuncionarioController {
     @PostMapping("/importacao/{empresaId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<FuncionarioFullDTO>> cadastrarFuncionariosTxt(
-            @PathVariable Long empresaId,
             @RequestParam MultipartFile file
     ) {
         // Verifique se o arquivo é nulo ou vazio antes de prosseguir
@@ -136,7 +135,7 @@ public class FuncionarioController {
             return ResponseEntity.badRequest().build();
         }
 
-        List<FuncionarioFullDTO> result = new ImportacaoTxt(funcionarioService, empresaService).leArquivoTxt(file, empresaId);
+        List<FuncionarioFullDTO> result = new ImportacaoTxt(funcionarioService, empresaService).leArquivoTxt(file);
 
         if (result.isEmpty()) {
             return ResponseEntity.status(404).build();

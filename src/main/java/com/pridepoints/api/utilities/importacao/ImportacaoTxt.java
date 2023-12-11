@@ -1,5 +1,6 @@
 package com.pridepoints.api.utilities.importacao;
 
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
@@ -26,8 +27,10 @@ public class ImportacaoTxt {
         this.empresaService = empresaService;
     }
 
-    public List<FuncionarioFullDTO> leArquivoTxt(MultipartFile file, long empresaId) {
-        List<Funcionario> listaLida = new ArrayList<>();
+    public List<FuncionarioFullDTO> leArquivoTxt(MultipartFile file) {
+        List<Funcionario> listaFuncionarios = new ArrayList<>();
+        List<Empresa> listaEmpresas = new ArrayList<>();
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try (BufferedReader entrada = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String registro;
@@ -35,43 +38,56 @@ public class ImportacaoTxt {
                 String tipoRegistro = registro.substring(0, 2);
 
                 if (tipoRegistro.equals("02")) {
-                    long id = Long.parseLong(registro.substring(2, 8).trim());
-                    String cargo = registro.substring(8, 23).trim();
-                    String cpf = registro.substring(23, 34).trim();
-                    String tipoFuncionario = registro.substring(34, 49).trim();
-                    boolean isGerente = registro.substring(49, 54).trim().equalsIgnoreCase("true");
-                    boolean isAtivo = registro.substring(54, 59).trim().equalsIgnoreCase("true");
-                    String nome = registro.substring(64, 319).trim();
-                    String email = registro.substring(319, 574).trim();
-                    String ultimaTrocaSenha = registro.substring(574, 584).trim();
-                    System.out.println(ultimaTrocaSenha);
-                    LocalDate dataFormatada = LocalDate.parse(ultimaTrocaSenha, formatter);
+
+                    String nome = registro.substring(2, 257).trim();
+
+                    String email = registro.substring(257, 257).trim();
+
+                    String cargo = registro.substring(257, 512).trim();
+
+                    String cpf = registro.substring(512, 542).trim();
+
+                    String tipoFuncionario = registro.substring(542, 553).trim();
+
+                    Boolean isGerente = registro.substring(542, 553).trim().equalsIgnoreCase("true");
+
 
                     Funcionario funcionario = new Funcionario();
-                    funcionario.setId(id);
                     funcionario.setCargo(cargo);
                     funcionario.setCpf(cpf);
                     funcionario.setTipoFuncionario(tipoFuncionario);
-                    funcionario.setIsGerente(isGerente);
-
-                    Empresa empresaBanco = empresaService.buscarPorIdTxt(empresaId);
-                    if(empresaBanco != null){
-                        funcionario.setEmpresa(empresaBanco);
-                    }
-                    funcionario.setIsAtivo(isAtivo);
                     funcionario.setNome(nome);
                     funcionario.setEmail(email);
-                    funcionario.setUltimaTrocaSenha(dataFormatada);
-
-                    listaLida.add(funcionario);
+                    funcionario.setSenha("SenhaPadrao@123");
+                    listaFuncionarios.add(funcionario);
                 }
+                else if(tipoRegistro.equals("03")){
+                    String cnpj = registro.substring(2, 20).trim();
+                    Empresa empresa = new Empresa();
+
+                    empresa.setCnpj(cnpj);
+                    listaEmpresas.add(empresa);
+                }else{
+                    System.out.println("Tipo de registro indevido: " + registro);
+                }
+
             }
         } catch (IOException erro) {
             System.out.println("Erro ao ler o arquivo");
         }
-
+        // Processar os dados de empresas e associá-los aos usuários
+        for (Funcionario funcionarioAtual : listaFuncionarios) {
+            for (Empresa empresa : listaEmpresas) {
+                if(empresa.getId() != null){
+                    Long idempresa = empresaService.procurarPorCnpj(empresa.getCnpj());
+                        empresa = empresaService.buscarPorIdTxt(idempresa);
+                        funcionarioAtual.setEmpresa(empresa);
+                    break;
+                }
+            }
+        }
         // Aqui seria possível salvar a lista no BD
-        List<FuncionarioFullDTO> funcionariosDTO = funcionarioService.salvarFuncionarios(listaLida);
+        List<FuncionarioFullDTO> funcionariosDTO = funcionarioService.salvarFuncionarios(listaFuncionarios);
         return funcionariosDTO;
     }
 }
