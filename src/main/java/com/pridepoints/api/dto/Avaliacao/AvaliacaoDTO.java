@@ -2,6 +2,7 @@ package com.pridepoints.api.dto.Avaliacao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pridepoints.api.entities.Avaliacao;
+import com.pridepoints.api.entities.Empresa;
 
 import java.util.Date;
 
@@ -22,6 +23,8 @@ public class AvaliacaoDTO {
 
     private String title;
 
+    private Empresa empresa;
+
 
     public AvaliacaoDTO(){}
 
@@ -34,6 +37,8 @@ public class AvaliacaoDTO {
         this.isShared = entity.isShared();
         this.resp = entity.getResp();
         this.nomeAvaliador = entity.getNomeAvaliador();
+        this.empresa = entity.getEmpresa();
+
     }
 
     public String getTitle() {
@@ -112,5 +117,13 @@ public class AvaliacaoDTO {
 
     public void setShared(boolean shared) {
         isShared = shared;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 }

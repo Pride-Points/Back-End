@@ -30,6 +30,7 @@ public class FisicaController {
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDTO> loginUsuario(@Valid @RequestBody UserDTO usuario){
+        System.out.println("esse é o usuario" + usuario.getEmail() + "essa é a senha " + usuario.getSenha());
         UsuarioTokenDTO result = null;
         boolean existsFisica = fisicaService.findUser(usuario);
         boolean existsFunc = funcionarioService.findUser(usuario);
