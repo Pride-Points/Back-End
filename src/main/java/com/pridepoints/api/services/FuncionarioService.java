@@ -5,6 +5,7 @@ import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMapper;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioUpdateDTO;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Funcionario;
 import com.pridepoints.api.repositories.EmpresaRepository;
@@ -28,6 +29,7 @@ import javax.mail.internet.AddressException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -164,7 +166,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     }
 
     public boolean findUser(UserDTO usuario) {
-        boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
+        boolean exists = funcionarioRepository.existsByEmailAndIsAtivoTrue(usuario.getEmail());
         if(exists){
             return true;
         }
@@ -188,12 +190,19 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return funcOpt.map(funcionario -> FuncionarioMapper.of(funcionario, idEmpresa, cnpj, token)).orElse(null);
     }
 
-    public boolean deletarFunc(Long idFunc) {
-        Optional<Funcionario> funcOpt = funcionarioRepository.findById(idFunc);
+    public boolean deletarFunc(Long idEmpresa, Long idFunc) {
+        Optional<Empresa> empresa = empresaRepository.findById(idEmpresa);
 
-        if (funcOpt.isPresent()) {
-            funcOpt.get().setIsAtivo(false);
-            return true;
+        if(empresa.isPresent()){
+            List<Funcionario> funcionarios = empresa.get().getFuncionarios();
+
+            for (Funcionario func : funcionarios) {
+                if(Objects.equals(func.getId(), idFunc)){
+                    func.setIsAtivo(false);
+                    funcionarioRepository.save(func);
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -224,5 +233,19 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return FuncionarioMapper.of(funcionarioList);
     }
 
+    public FuncionarioUpdateDTO updateFuncionario(Long id, FuncionarioCriacaoDTO funcionarioRequest) {
+        Optional<Funcionario> funcOpt = funcionarioRepository.findById(id);
 
+        if(funcOpt.isPresent()){
+            Funcionario funcionario = funcOpt.get();
+
+            funcionario.setNome(funcionarioRequest.getNome());
+            funcionario.setCargo(funcionarioRequest.getCargo());
+            funcionario.setEmail(funcionarioRequest.getEmail());
+
+           return FuncionarioMapper.of(funcionarioRepository.save(funcionario));
+        }
+
+        return null;
+    }
 }
