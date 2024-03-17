@@ -1,8 +1,8 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoCriacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoCriacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoDTO;
+import com.pridepoints.api.dto.Avaliacao.AvaliacaoMapper;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
@@ -11,23 +11,30 @@ import com.pridepoints.api.repositories.EmpresaRepository;
 import com.pridepoints.api.repositories.FisicaRepository;
 import com.pridepoints.api.utilities.ordenacao.Ordenacao;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AvaliacaoService {
 
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
-    @Autowired
-    private EmpresaRepository empresaRepository;
-    @Autowired
-    private FisicaRepository fisicaRepository;
+
+    private final AvaliacaoRepository avaliacaoRepository;
+
+    private final EmpresaRepository empresaRepository;
+
+    private final FisicaRepository fisicaRepository;
+
+    public AvaliacaoService(AvaliacaoRepository avaliacaoRepository,
+                            EmpresaRepository empresaRepository,
+                            FisicaRepository fisicaRepository){
+        this.avaliacaoRepository = avaliacaoRepository;
+        this.empresaRepository = empresaRepository;
+        this.fisicaRepository = fisicaRepository;
+    }
 
     @Transactional
     public AvaliacaoDTO publicarAvaliacaoDaEmpresa(AvaliacaoCriacaoDTO avaliacao,
@@ -39,7 +46,7 @@ public class AvaliacaoService {
 
         if(resultFisica.isPresent() && resultEmpresa.isPresent()){
 
-            Avaliacao novaAvaliacao = AvaliacaoMapper.of(avaliacao);
+            Avaliacao novaAvaliacao = AvaliacaoMapper.of(avaliacao, resultFisica.get());
 
             novaAvaliacao.setEmpresa(resultEmpresa.get());
             novaAvaliacao.setPessoaFisica(resultFisica.get());
@@ -54,21 +61,16 @@ public class AvaliacaoService {
     @Transactional
     public List<AvaliacaoDTO> listarTodasAvaliacoes() {
         List<Avaliacao> avaliacaoList = avaliacaoRepository.findAll();
-
         return AvaliacaoMapper.of(avaliacaoList);
     }
 
     public List<AvaliacaoDTO> listarAvaliacoesDaEmpresa(Long id) {
 
-        Optional<Empresa> result = empresaRepository.findById(id);
+        List<Avaliacao> result = avaliacaoRepository.findByEmpresaId(id);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Empresa empresaBanco = result.get();
-
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(empresaBanco.getAvaliacoes());
-
-            return avaliacoes;
+            return AvaliacaoMapper.of(result);
         }
 
         return null;
@@ -89,17 +91,15 @@ public class AvaliacaoService {
             boolean existe = avaliacaoRepository.existsById(idAvaliacao);
 
             if(existe){
-                Avaliacao avaliacaoConvertida = AvaliacaoMapper.of(novaAvaliacao);
+                Avaliacao avaliacaoConvertida = AvaliacaoMapper.of(novaAvaliacao, usuarioEncontrado);
             avaliacaoConvertida.setId(idAvaliacao);
             avaliacaoConvertida.setEmpresa(empresaEncontrada);
             avaliacaoConvertida.setPessoaFisica(usuarioEncontrado);
             avaliacaoConvertida.setDtAvaliacao(new Date());
 
-            AvaliacaoDTO avaliacaoAtualizada = AvaliacaoMapper
+                return AvaliacaoMapper
                     .of(avaliacaoRepository
                             .save(avaliacaoConvertida));
-
-            return avaliacaoAtualizada;
 
             }
         }
@@ -107,19 +107,34 @@ public class AvaliacaoService {
         return null;
     }
 
+    @Transactional
+    public Avaliacao buscarAvaliacaoDeUsuario(Long idAvaliacao, Long idUsuario, Long idEmpresa){
+        Optional<Empresa> empresaBanco = empresaRepository.findById(idEmpresa);
+        Optional<Fisica> usuarioBanco = fisicaRepository.findById(idUsuario);
+
+        if(empresaBanco.isPresent() && usuarioBanco.isPresent()){
+            Empresa empresaEncontrada = empresaBanco.get();
+            Fisica usuarioEncontrado = usuarioBanco.get();
+
+            Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(idAvaliacao);
+
+            if(avaliacao.isPresent()){
+                return avaliacao.get();
+
+            }
+        }
+        
+        return null;
+    }
 
 
     @Transactional
     public boolean deletarAvaliacaoDaEmpresa(Long idAvaliacao) {
 
-        Optional<Avaliacao> avaliacaoBanco = avaliacaoRepository.findById(idAvaliacao);
+        boolean exists = avaliacaoRepository.existsById(idAvaliacao);
 
-        if(avaliacaoBanco.isPresent()){
-
-            Avaliacao avaliacaoEncontrada = avaliacaoBanco.get();
-
-            avaliacaoRepository.delete(avaliacaoEncontrada);
-
+        if(exists){
+            avaliacaoRepository.deleteById(idAvaliacao);
             return true;
         }
         return false;
@@ -127,19 +142,21 @@ public class AvaliacaoService {
 
 
     public List<AvaliacaoDTO> listarAvaliacoesDoUsuario(Long idUsuario) {
-        Optional<Fisica> result = fisicaRepository.findById(idUsuario);
+        List<Avaliacao> result = avaliacaoRepository.findByPessoaFisicaId(idUsuario);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Fisica fisicaBanco = result.get();
-
-            List<AvaliacaoDTO> avaliacoes = AvaliacaoMapper.of(fisicaBanco.getAvaliacoesUsuario());
-
-            return avaliacoes;
+            return AvaliacaoMapper.of(result);
         }
 
         return null;
     }
+
+    @Transactional
+    public Integer contarAvaliacoes(Long idUsuario){
+        return avaliacaoRepository.countByPessoaFisicaId(idUsuario);
+    }
+
 
     @Transactional
     public List<AvaliacaoDTO> listarAvaliacoesPorMenorNota(Long idEmpresa) {
@@ -170,4 +187,12 @@ public class AvaliacaoService {
     }
 
 
+    public Avaliacao postResposta(Long idAvaliacao, AvaliacaoCriacaoDTO resposta) {
+        Avaliacao avaliacao = avaliacaoRepository.findById(idAvaliacao)
+                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+
+        avaliacao.setResp(resposta.getResposta());
+        avaliacao.setTitle(resposta.getTitle());
+        return avaliacaoRepository.save(avaliacao);
+    }
 }

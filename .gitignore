@@ -11,7 +11,10 @@ target/
 .project
 .settings
 .springBeans
+.funcionarios
 .sts4-cache
+.funcionarios.txt
+.funcionarios.csv
 
 ### IntelliJ IDEA ###
 .idea

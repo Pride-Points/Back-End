@@ -14,9 +14,15 @@ import java.util.List;
 @Table(name = "tb_fisica")
 public class Fisica extends Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String orientacaoSexual;
 
     private String genero;
+
+    private String cpf;
 
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private LocalDate dtNascimento;
@@ -26,6 +32,8 @@ public class Fisica extends Pessoa {
     @OneToMany(mappedBy = "pessoaFisica")
     private List<Avaliacao> avaliacoesUsuario;
 
+    public Fisica() {
+    }
 
     public String getOrientacaoSexual() {
         return orientacaoSexual;
@@ -61,6 +69,22 @@ public class Fisica extends Pessoa {
 
     public List<Avaliacao> getAvaliacoesUsuario() {
         return avaliacoesUsuario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public void adicionarAvaliacao(Avaliacao novaAvaliacao){

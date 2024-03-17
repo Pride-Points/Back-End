@@ -3,6 +3,7 @@ package com.pridepoints.api.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,19 +18,11 @@ public class Evento {
     @Column(columnDefinition = "TEXT")
     private String descricaoEvento;
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date dtEvento;
+    private LocalDate dtEvento;
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
-
-    public Evento(String nome, String imgEvento, String descricaoEvento, Date dtEvento) {
-        this.nome = nome;
-        this.imgEvento = imgEvento;
-        this.descricaoEvento = descricaoEvento;
-        this.dtEvento = dtEvento;
-    }
-
     public Evento(){}
 
     public Long getId() {
@@ -64,11 +57,11 @@ public class Evento {
         this.descricaoEvento = descricaoEvento;
     }
 
-    public Date getDtEvento() {
+    public LocalDate getDtEvento() {
         return dtEvento;
     }
 
-    public void setDtEvento(Date dtEvento) {
+    public void setDtEvento(LocalDate dtEvento) {
         this.dtEvento = dtEvento;
     }
 

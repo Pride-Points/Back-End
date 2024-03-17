@@ -1,10 +1,8 @@
 package com.pridepoints.api.services;
 
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoDTO;
-import com.pridepoints.api.DTO.Avaliacao.AvaliacaoMapper;
-import com.pridepoints.api.DTO.Evento.EventoCriacaoDTO;
-import com.pridepoints.api.DTO.Evento.EventoDTO;
-import com.pridepoints.api.DTO.Evento.EventoMapper;
+import com.pridepoints.api.dto.Evento.EventoCriacaoDTO;
+import com.pridepoints.api.dto.Evento.EventoDTO;
+import com.pridepoints.api.dto.Evento.EventoMapper;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Evento;
 import com.pridepoints.api.repositories.EmpresaRepository;
@@ -19,11 +17,16 @@ import java.util.Optional;
 @Service
 public class EventoService {
 
-    @Autowired
-    private EventoRepository eventoRepository;
+    private final EventoRepository eventoRepository;
 
-    @Autowired
-    private EmpresaRepository empresaRepository;
+
+    private final EmpresaRepository empresaRepository;
+
+    public EventoService(EventoRepository eventoRepository,
+                         EmpresaRepository empresaRepository){
+        this.eventoRepository = eventoRepository;
+        this.empresaRepository = empresaRepository;
+    }
 
     @Transactional
     public List<EventoDTO> listarEventos() {
@@ -39,7 +42,6 @@ public class EventoService {
         if(result.isPresent()){
             Evento eventoMapeado = EventoMapper.of(eventoCriacaoDTO);
             Empresa empresa = result.get();
-
             eventoMapeado.setEmpresa(empresa);
 
             return EventoMapper.of(eventoRepository.save(eventoMapeado));
@@ -68,13 +70,9 @@ public class EventoService {
 
     @Transactional
     public boolean removerEvento(Long idEvento) {
-        Optional<Evento> resultEvent = eventoRepository.findById(idEvento);
-
-        if(resultEvent.isPresent()){
-            Evento evento = resultEvent.get();
-
-            eventoRepository.delete(evento);
-
+        boolean exists = eventoRepository.existsById(idEvento);
+        if(exists){
+            eventoRepository.deleteById(idEvento);
             return true;
         }
 
@@ -82,32 +80,25 @@ public class EventoService {
     }
 
     public List<EventoDTO> listarEventosDaEmpresa(Long idEmpresa) {
-        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
+        List<Evento> result = eventoRepository.findByEmpresaId(idEmpresa);
 
-        if(result.isPresent()){
+        if(!result.isEmpty()){
 
-            Empresa empresaBanco = result.get();
-
-            List<EventoDTO> eventos = EventoMapper.ofListDtos(empresaBanco.getEventos());
+            List<EventoDTO> eventos = EventoMapper.ofListDtos(result);
 
             return eventos;
         }
-
         return null;
     }
 
     public EventoDTO buscarEventoPorId(Long idEmpresa, Long idEvento) {
-        Optional<Empresa> result = empresaRepository.findById(idEmpresa);
-        Optional<Evento> resultEvent = eventoRepository.findById(idEvento);
 
-        if(result.isPresent()){
-            Empresa empresaBanco = result.get();
-            Evento eventoBanco = resultEvent.get();
+        boolean exists = empresaRepository.existsById(idEmpresa);
 
-            for(Evento evento : empresaBanco.getEventos()){
-                if(evento.equals(eventoBanco)){
-                    return EventoMapper.of(eventoBanco);
-                }
+        if(exists){
+            Optional<Evento> resultEvent = eventoRepository.findByEmpresaIdAndId(idEmpresa, idEvento);
+            if(resultEvent.isPresent()){
+                return EventoMapper.of(resultEvent.get());
             }
         }
         return null;

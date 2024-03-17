@@ -30,10 +30,53 @@ public class Avaliacao {
     @JoinColumn(name = "fisica_id")
     private Fisica pessoaFisica;
 
+    private boolean isShared;
+
+    private String nomeAvaliador;
+
+    private String Resp;
+
+    private String title;
+
+    public Avaliacao() {
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
+    public String getNomeAvaliador() {
+        return nomeAvaliador;
+    }
+
+    public void setNomeAvaliador(String nomeAvaliador) {
+        this.nomeAvaliador = nomeAvaliador;
+    }
+
+    public String getResp() {
+        return Resp;
+    }
+
+    public void setResp(String resp) {
+        Resp = resp;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
 
     public Long getId() {
         return id;

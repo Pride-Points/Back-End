@@ -1,6 +1,5 @@
 package com.pridepoints.api.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class Empresa {
     private String cidade;
     private String estado;
 
+
+
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Funcionario> funcionarios;
 
@@ -34,22 +35,7 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Evento> eventos;
 
-
-
-    public Empresa(){
-        this.funcionarios = new ArrayList<>();
-        this.avaliacoes = new ArrayList<>();
-        this.eventos = new ArrayList<>();
-    }
-
-
-    public Empresa(String cnpj, String cep, int numero, String cidade, String estado, String nomeFantasia) {
-        this.cnpj = cnpj;
-        this.cep = cep;
-        this.numero = numero;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.nomeFantasia = nomeFantasia;
+    public Empresa() {
         this.funcionarios = new ArrayList<>();
         this.avaliacoes = new ArrayList<>();
         this.eventos = new ArrayList<>();

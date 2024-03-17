@@ -7,8 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
-    @Query("SELECT e FROM Empresa e WHERE e.cnpj = :cnpj")
-    Empresa findByCnpj(@Param("cnpj") String cnpj);
+
+    boolean existsByCnpj(String cnpj);
+    Optional<Empresa> findByCnpj(String cnpj);
+    Optional<Empresa> findByFuncionariosEmail(String email);
+
+    @Query("SELECT AVG(a.nota) FROM Avaliacao a WHERE a.empresa.id = :empresaId")
+    Optional<Double> calcularMediaAvaliacoes(@Param("empresaId") Long empresaId);
 }

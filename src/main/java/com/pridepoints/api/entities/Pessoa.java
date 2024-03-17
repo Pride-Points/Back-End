@@ -4,27 +4,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "tb_pessoa")
-public abstract class Pessoa{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@MappedSuperclass
+public abstract class Pessoa{
     private String nome;
     private String senha;
     private String email;
 
     @Column
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime ultimaTrocaSenha;
+    private LocalDate ultimaTrocaSenha;
 
 
     public String getNome() {
@@ -51,32 +46,11 @@ public abstract class Pessoa{
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getUltimaTrocaSenha() {
+    public LocalDate getUltimaTrocaSenha() {
         return ultimaTrocaSenha;
     }
 
-    public void setUltimaTrocaSenha(LocalDateTime ultimaTrocaSenha) {
+    public void setUltimaTrocaSenha(LocalDate ultimaTrocaSenha) {
         this.ultimaTrocaSenha = ultimaTrocaSenha;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
-        return Objects.equals(id, pessoa.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
