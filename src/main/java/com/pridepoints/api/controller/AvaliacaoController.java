@@ -7,7 +7,6 @@ import com.pridepoints.api.dto.Avaliacao.AvaliacaoRespostaEmpresaDTO;
 import com.pridepoints.api.entities.Avaliacao;
 import com.pridepoints.api.services.AvaliacaoService;
 import com.pridepoints.api.services.PilhaService;
-import com.pridepoints.api.utilities.PilhaAvaliacao.PilhaAvaliacao;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
