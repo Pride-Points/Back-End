@@ -2,10 +2,7 @@ package com.pridepoints.api.services;
 
 import com.pridepoints.api.dto.Autenticacao.UserDTO;
 import com.pridepoints.api.dto.Autenticacao.UsuarioTokenDTO;
-import com.pridepoints.api.dto.Usuario.Fisica.FisicaCriacaoDTO;
-import com.pridepoints.api.dto.Usuario.Fisica.FisicaFullDTO;
-import com.pridepoints.api.dto.Usuario.Fisica.FisicaMapper;
-import com.pridepoints.api.dto.Usuario.Fisica.FisicaMinDTO;
+import com.pridepoints.api.dto.Usuario.Fisica.*;
 import com.pridepoints.api.entities.Empresa;
 import com.pridepoints.api.entities.Fisica;
 import com.pridepoints.api.repositories.EmpresaRepository;
@@ -130,5 +127,32 @@ public class FisicaService implements iValidarTrocaDeSenha {
             return true;
         }
         return false;
+    }
+
+    public FisicaImgDTO salvarImg(Long idUser, FisicaImgDTO f) {
+        Optional<Fisica> fisicaOpt = fisicaRepository.findById(idUser);
+
+        if(fisicaOpt.isPresent()){
+            Fisica userBanco = fisicaOpt.get();
+            userBanco.setImgUser(f.getImgUser());
+
+            fisicaRepository.save(userBanco);
+
+            return f;
+        }
+
+        return null;
+    }
+
+    public FisicaImgDTO buscarImgUser(Long idUser) {
+        Optional<Fisica> fisicaOpt = fisicaRepository.findById(idUser);
+
+        if(fisicaOpt.isPresent()){
+            Fisica userBanco = fisicaOpt.get();
+
+            return new FisicaImgDTO(userBanco.getImgUser());
+        }
+
+        return null;
     }
 }

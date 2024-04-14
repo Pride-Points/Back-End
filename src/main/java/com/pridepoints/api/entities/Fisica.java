@@ -24,6 +24,8 @@ public class Fisica extends Pessoa {
 
     private String cpf;
 
+    private String imgUser;
+
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
     private LocalDate dtNascimento;
 
@@ -33,6 +35,14 @@ public class Fisica extends Pessoa {
     private List<Avaliacao> avaliacoesUsuario;
 
     public Fisica() {
+    }
+
+    public String getImgUser() {
+        return imgUser;
+    }
+
+    public void setImgUser(String imgUser) {
+        this.imgUser = imgUser;
     }
 
     public String getOrientacaoSexual() {
