@@ -131,4 +131,10 @@ public class    EmpresaService {
     public Optional<Double> calcularMediaAvaliacoes(Long empresaId) {
         return empresaRepository.calcularMediaAvaliacoes(empresaId);
     }
+
+    public List<EmpresaFullDTO> listarEmpresasCompleto() {
+        List<Empresa> empresaList = empresaRepository.findAll();
+        return EmpresaMapper.ofListMax(empresaList);
+    }
+
 }

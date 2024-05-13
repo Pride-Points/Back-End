@@ -1,6 +1,7 @@
 package com.pridepoints.api.controller;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioUpdateDTO;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
 import com.pridepoints.api.utilities.importacao.ImportacaoTxt;
@@ -145,11 +146,12 @@ public class FuncionarioController {
         }
     }
 
+
     @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{idFunc}")
+    @DeleteMapping("/{idEmpresa}/{idFunc}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deletarFunc(@PathVariable Long idFunc) {
-        boolean result = funcionarioService.deletarFunc(idFunc);
+    public ResponseEntity<Void> deletarFunc(@PathVariable Long idEmpresa, @PathVariable Long idFunc) {
+        boolean result = funcionarioService.deletarFunc(idEmpresa, idFunc);
 
         if (result) {
             return ResponseEntity.status(200).build();
@@ -273,6 +275,19 @@ public class FuncionarioController {
                 return ResponseEntity.internalServerError().build();
             }
         }
+    }
+
+    @SecurityRequirement(name = "Bearer")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<FuncionarioUpdateDTO> atualizarFuncionario(@PathVariable Long id, @RequestBody FuncionarioCriacaoDTO funcionarioRequest) {
+
+        FuncionarioUpdateDTO funcionarioAtualizado = funcionarioService.updateFuncionario(id, funcionarioRequest);
+
+        if(funcionarioAtualizado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

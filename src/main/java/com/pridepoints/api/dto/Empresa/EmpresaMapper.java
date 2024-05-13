@@ -67,4 +67,12 @@ public class EmpresaMapper {
 
         return empresaMediaDTO;
     }
+    public static List<EmpresaFullDTO> ofListMax(List<Empresa> empresas){
+
+        List<EmpresaFullDTO> empresasFullDTO = empresas.stream()
+                .map(EmpresaMapper::of)
+                .collect(Collectors.toList());
+
+        return empresasFullDTO;
+    }
 }
