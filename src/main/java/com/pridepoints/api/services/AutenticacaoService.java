@@ -25,21 +25,21 @@ public class AutenticacaoService implements UserDetailsService {
     }
 
     @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Funcionario> funcionario = funcionarioRepository.findByEmail(email);
-        if (funcionario.isPresent()) {
-            return new FuncionarioDetalhesDTO(funcionario.get());
-        }
-
-        // Verifica se o usuário é uma Pessoa Física
-        Optional<Fisica> fisica = fisicaRepository.findByEmail(email);
-        if (fisica.isPresent()) {
-            return new PessoaFisicaDetalhesDTO(fisica.get());
-        }
-
-        throw new UsernameNotFoundException(String.format("Usuário com email: %s não encontrado", email));
+@Override
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    System.out.println("Procurando Funcionário com email: " + email);
+    Optional<Funcionario> funcionario = funcionarioRepository.findByEmail(email);
+    if (funcionario.isPresent()) {
+        return new FuncionarioDetalhesDTO(funcionario.get());
     }
 
+    System.out.println("Procurando Física com email: " + email);
+    Optional<Fisica> fisica = fisicaRepository.findByEmail(email);
+    if (fisica.isPresent()) {
+        return new PessoaFisicaDetalhesDTO(fisica.get());
+    }
+
+    throw new UsernameNotFoundException(String.format("Usuário com email: %s não encontrado", email));
+}
 
 }
