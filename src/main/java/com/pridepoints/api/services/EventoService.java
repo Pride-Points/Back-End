@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,9 @@ public class EventoService {
 
     public List<EventoDTO> listarEventosDaEmpresa(Long idEmpresa) {
         List<Evento> result = eventoRepository.findByEmpresaId(idEmpresa);
-
+        if(result == null || result.isEmpty()){
+            return new ArrayList<>();
+        }
         if(!result.isEmpty()){
 
             List<EventoDTO> eventos = EventoMapper.ofListDtos(result);

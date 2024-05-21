@@ -65,15 +65,26 @@ public class FuncionarioMapper {
     }
 
     public static UsuarioTokenDTO of(Funcionario funcionario, Long idEmpresa, String cnpj, String token){
-            UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
-            usuarioTokenDTO.setUserId(funcionario.getId());
-            usuarioTokenDTO.setEmail(funcionario.getEmail());
-            usuarioTokenDTO.setIdEmpresa(idEmpresa);
-            usuarioTokenDTO.setCnpj(cnpj);
-            usuarioTokenDTO.setNome(funcionario.getNome());
-            usuarioTokenDTO.setToken(token);
+        UsuarioTokenDTO usuarioTokenDTO = new UsuarioTokenDTO();
+        usuarioTokenDTO.setUserId(funcionario.getId());
+        usuarioTokenDTO.setEmail(funcionario.getEmail());
+        usuarioTokenDTO.setIdEmpresa(idEmpresa);
+        usuarioTokenDTO.setCnpj(cnpj);
+        usuarioTokenDTO.setNome(funcionario.getNome());
+        usuarioTokenDTO.setToken(token);
 
-            return usuarioTokenDTO;
+        return usuarioTokenDTO;
+    }
+
+    public static FuncionarioUpdateDTO of(Funcionario funcionario){
+        FuncionarioUpdateDTO funcionarioUpdateDTO = new FuncionarioUpdateDTO();
+
+        funcionarioUpdateDTO.setId(funcionario.getId());
+        funcionarioUpdateDTO.setNome(funcionario.getNome());
+        funcionarioUpdateDTO.setCargo(funcionario.getCargo());
+        funcionarioUpdateDTO.setEmail(funcionario.getEmail());
+
+        return funcionarioUpdateDTO;
     }
 
     public static FuncionarioUpdateDTO of(Funcionario funcionario){

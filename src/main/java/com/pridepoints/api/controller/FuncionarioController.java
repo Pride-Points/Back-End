@@ -148,6 +148,7 @@ public class FuncionarioController {
         }
     }
 
+
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -289,6 +290,19 @@ public class FuncionarioController {
                 return ResponseEntity.internalServerError().build();
             }
         }
+    }
+
+    @SecurityRequirement(name = "Bearer")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<FuncionarioUpdateDTO> atualizarFuncionario(@PathVariable Long id, @RequestBody FuncionarioCriacaoDTO funcionarioRequest) {
+
+        FuncionarioUpdateDTO funcionarioAtualizado = funcionarioService.updateFuncionario(id, funcionarioRequest);
+
+        if(funcionarioAtualizado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

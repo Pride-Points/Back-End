@@ -190,9 +190,9 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
         return funcOpt.map(funcionario -> FuncionarioMapper.of(funcionario, idEmpresa, cnpj, token)).orElse(null);
     }
 
+
     public boolean deletarFunc(Long idEmpresa, Long idFunc) {
         Optional<Empresa> empresa = empresaRepository.findById(idEmpresa);
-
         if(empresa.isPresent()){
             List<Funcionario> funcionarios = empresa.get().getFuncionarios();
 
@@ -243,7 +243,8 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             funcionario.setCargo(funcionarioRequest.getCargo());
             funcionario.setEmail(funcionarioRequest.getEmail());
 
-           return FuncionarioMapper.of(funcionarioRepository.save(funcionario));
+            return FuncionarioMapper.of(funcionarioRepository.save(funcionario));
+
         }
 
         return null;
