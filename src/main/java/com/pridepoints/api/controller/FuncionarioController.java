@@ -1,6 +1,8 @@
 package com.pridepoints.api.controller;
+import com.pridepoints.api.dto.Autenticacao.FuncionarioDetalhesDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioCriacaoDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioFullDTO;
+import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioMinDTO;
 import com.pridepoints.api.dto.Usuario.Funcionario.FuncionarioUpdateDTO;
 import com.pridepoints.api.services.EmpresaService;
 import com.pridepoints.api.services.FuncionarioService;
@@ -146,6 +148,19 @@ public class FuncionarioController {
         }
     }
 
+
+    @SecurityRequirement(name = "Bearer")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<FuncionarioUpdateDTO> atualizarFuncionario(@PathVariable Long id, @RequestBody FuncionarioCriacaoDTO funcionarioRequest) {
+
+        FuncionarioUpdateDTO funcionarioAtualizado = funcionarioService.updateFuncionario(id, funcionarioRequest);
+
+        if(funcionarioAtualizado == null){
+            return ResponseEntity.notFound().build();
+    }
+        return ResponseEntity.ok().build();
+}
 
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{idEmpresa}/{idFunc}")

@@ -15,7 +15,6 @@ public class EventoCriacaoDTO {
     @Size(min = 20)
     private String descricaoEvento;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dtEvento;
 
     public String getNome() {

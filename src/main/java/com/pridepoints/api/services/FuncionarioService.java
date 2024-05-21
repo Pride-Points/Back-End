@@ -166,7 +166,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
     }
 
     public boolean findUser(UserDTO usuario) {
-        boolean exists = funcionarioRepository.existsByEmail(usuario.getEmail());
+        boolean exists = funcionarioRepository.existsByEmailAndIsAtivoTrue(usuario.getEmail());
         if(exists){
             return true;
         }
@@ -193,7 +193,6 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
 
     public boolean deletarFunc(Long idEmpresa, Long idFunc) {
         Optional<Empresa> empresa = empresaRepository.findById(idEmpresa);
-
         if(empresa.isPresent()){
             List<Funcionario> funcionarios = empresa.get().getFuncionarios();
 
@@ -245,6 +244,7 @@ public class FuncionarioService implements iValidarTrocaDeSenha {
             funcionario.setEmail(funcionarioRequest.getEmail());
 
             return FuncionarioMapper.of(funcionarioRepository.save(funcionario));
+
         }
 
         return null;

@@ -106,20 +106,14 @@ public class AvaliacaoController {
 
     }
 
-    @PutMapping("/{idUsuario}/{idEmpresa}")
+    @PutMapping("{idAvaliacao}/{idUsuario}/{idEmpresa}")
     @PreAuthorize("hasRole('ROLE_FISICA')")
     public ResponseEntity<AvaliacaoDTO> atualizarAvaliacaoDaEmpresa(@Valid @RequestBody AvaliacaoCriacaoDTO novaAvaliacao
-            , /*@PathVariable Long idAvaliacao,*/ @PathVariable Long idEmpresa, @PathVariable Long idUsuario){
-
-            //utilizando o topo para att
-            Long idAvaliacao = pilhaService.espiar().getId();
-
+            , @PathVariable Long idAvaliacao, @PathVariable Long idEmpresa, @PathVariable Long idUsuario){
 
             AvaliacaoDTO result = avaliacaoService.atualizarAvaliacaoDaEmpresa(novaAvaliacao,
                     idAvaliacao, idEmpresa, idUsuario);
 
-            //pop AQUI
-            pilhaService.retirar();
 
             if(result ==  null){
                 return ResponseEntity.status(204).build();
